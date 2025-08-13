@@ -1,119 +1,110 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>2051: Алгоритм Пробуждение</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Диагностика видео+музыки</title>
 <style>
-  html, body { height:100%; margin:0; background:#000; overflow:hidden; font-family: Arial, sans-serif; }
-  video { position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:-1; background:#000; }
-  .content { position:relative; z-index:1; color:#fff; text-align:center; top:40%; padding:0 16px; }
-  h1 { margin:0 0 12px; font-size:3rem; }
-  p  { margin:0 auto; max-width:680px; font-size:1.2rem; opacity:.9; }
-  .hint { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); color:#bbb; font-size:.95rem; 
-          text-align:center; z-index:2; padding:8px 14px; background:rgba(0,0,0,.4); border-radius:8px;
-          pointer-events:none; opacity:0; transition:opacity .35s ease; }
-  .hint.show { opacity:1; }
+  html,body{margin:0;height:100%;background:#000;color:#fff;font:16px/1.4 Arial}
+  .wrap{max-width:900px;margin:24px auto;padding:16px}
+  .card{background:#111;border:1px solid #222;border-radius:10px;padding:16px;margin:0 0 16px}
+  h1{margin:0 0 8px}
+  .row{display:flex;gap:16px;flex-wrap:wrap}
+  .col{flex:1 1 420px}
+  .ok{color:#27c93f} .err{color:#ff453a} .info{color:#ffd60a}
+  .log{background:#0b0b0b;border:1px solid #222;border-radius:8px;padding:10px;height:120px;overflow:auto;font-family:ui-monospace,Consolas,monospace}
+  video, audio{width:100%;max-height:240px;background:#000}
+  button{background:#ff6600;border:0;border-radius:8px;color:#000;font-weight:700;padding:8px 12px;cursor:pointer}
+  .muted{opacity:.8}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<!-- ФОНОВОЕ ВИДЕО -->
-<video id="bgVideo" autoplay muted loop playsinline preload="auto">
-  <source src="https://raykedy.github.io/vidhub555.mp4?v=1" type="video/mp4">
-</video>
+  <h1>Диагностика</h1>
+  <p class="muted">Страница проверяет загрузку и автоплей. Если что-то не так — увидишь ошибку ниже.</p>
 
-<!-- МУЗЫКА -->
-<audio id="bgMusic" preload="auto" loop>
-  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=1" type="audio/mpeg">
-</audio>
+  <div class="card row">
+    <div class="col">
+      <h3>Видео</h3>
+      <!-- ЕСЛИ файл лежит рядом с index.html, оставь относительный путь -->
+      <video id="v" playsinline muted loop preload="auto" controls>
+        <!-- ВАРИАНТ 1: относительный путь (если vidhub555.mp4 в корне репозитория рядом с index.html) -->
+        <source src="./vidhub555.mp4?v=2" type="video/mp4">
+        <!-- ВАРИАНТ 2: прямая ссылка на Pages (раскомментируй, если используешь домен) -->
+        <!-- <source src="https://raykedy.github.io/vidhub555.mp4?v=2" type="video/mp4"> -->
+      </video>
+      <div id="vStatus" class="info">⏳ Жду загрузку...</div>
+      <p><button id="vPlay">▶️ Проиграть видео</button> <button id="vPause">⏸ Пауза</button></p>
+      <div id="vLog" class="log"></div>
+    </div>
 
-<div class="content">
-  <h1>2051: Алгоритм Пробуждение</h1>
-  <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
+    <div class="col">
+      <h3>Музыка</h3>
+      <audio id="a" preload="auto" loop controls>
+        <!-- Если mp3 лежит в корне рядом с index.html, лучше экранировать скобки: -->
+        <!-- <source src="./motivational-adventure-cinematic-150072%282%29.mp3?v=2" type="audio/mpeg"> -->
+        <!-- Либо используй RAW GitHub (как у тебя было): -->
+        <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=2" type="audio/mpeg">
+      </audio>
+      <div id="aStatus" class="info">⏳ Жду загрузку...</div>
+      <p><button id="aPlay">🔊 Включить музыку</button> <button id="aPause">🔇 Пауза</button></p>
+      <div id="aLog" class="log"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Итог</h3>
+    <p id="final" class="info">Пока проверяю...</p>
+    <p class="muted">
+      Подсказки:
+      <br>• Если видео/аудио не грузятся — почти всегда **не тот путь** или **регистр букв** (Windows не чувствителен, GitHub Pages — чувствителен).
+      <br>• Если файл в подкаталоге (например <code>/media/vidhub555.mp4</code>), пропиши тот же путь и в ссылке.
+      <br>• Скобки в имени файла лучше экранировать: <code>(</code> → <code>%28</code>, <code>)</code> → <code>%29</code>.
+    </p>
+  </div>
 </div>
 
-<div id="hint" class="hint"></div>
-
 <script>
-(function () {
-  const video = document.getElementById('bgVideo');
-  const audio = document.getElementById('bgMusic');
-  const hint  = document.getElementById('hint');
+  const v = document.getElementById('v');
+  const a = document.getElementById('a');
+  const vS = document.getElementById('vStatus');
+  const aS = document.getElementById('aStatus');
+  const vLog = document.getElementById('vLog');
+  const aLog = document.getElementById('aLog');
+  const final = document.getElementById('final');
 
-  function showHint(msg) {
-    hint.textContent = msg;
-    hint.classList.add('show');
-    clearTimeout(showHint._t);
-    showHint._t = setTimeout(() => hint.classList.remove('show'), 5000);
-  }
+  function log(el, msg){ el.textContent += (el.textContent ? "\n" : "") + msg; el.scrollTop = el.scrollHeight; }
 
-  // Старт аудио с нулевой громкости (обход блокировок)
-  audio.volume = 0;
+  // VIDEO EVENTS
+  v.addEventListener('loadedmetadata', ()=>{ vS.textContent = '✅ Метаданные видео загружены'; vS.className='ok'; });
+  v.addEventListener('canplay', ()=>{ vS.textContent = '✅ Видео готово к проигрыванию'; vS.className='ok'; });
+  v.addEventListener('play', ()=>log(vLog,'▶️ play'));
+  v.addEventListener('pause', ()=>log(vLog,'⏸ pause'));
+  v.addEventListener('error', ()=>{ vS.textContent = '❌ Ошибка видео (путь/кодек)'; vS.className='err'; });
 
-  function fadeInAudio(targetVol = 1, step = 0.02, interval = 100) {
-    let vol = audio.volume;
-    const id = setInterval(() => {
-      vol = Math.min(targetVol, vol + step);
-      audio.volume = vol;
-      if (vol >= targetVol) clearInterval(id);
-    }, interval);
-  }
+  // AUDIO EVENTS
+  a.addEventListener('loadedmetadata', ()=>{ aS.textContent = '✅ Метаданные аудио загружены'; aS.className='ok'; });
+  a.addEventListener('canplay', ()=>{ aS.textContent = '✅ Аудио готово к проигрыванию'; aS.className='ok'; });
+  a.addEventListener('play', ()=>log(aLog,'🔊 play'));
+  a.addEventListener('pause', ()=>log(aLog,'🔇 pause'));
+  a.addEventListener('error', ()=>{ aS.textContent = '❌ Ошибка аудио (путь)'; aS.className='err'; });
 
-  function alignAudioToVideo() {
-    if (isFinite(audio.duration) && audio.duration > 0) {
-      const target = video.currentTime % audio.duration;
-      const cur    = (audio.currentTime % audio.duration);
-      const drift  = Math.abs(cur - target);
-      if (drift > 0.35) audio.currentTime = target;
-    }
-  }
+  // Buttons
+  document.getElementById('vPlay').onclick = () => v.play().catch(e=>log(vLog,'❌ '+e));
+  document.getElementById('vPause').onclick = () => v.pause();
+  document.getElementById('aPlay').onclick = () => a.play().catch(e=>log(aLog,'❌ '+e));
+  document.getElementById('aPause').onclick = () => a.pause();
 
-  let driftTimer = null;
-  function startDriftCorrection() {
-    if (!driftTimer) driftTimer = setInterval(alignAudioToVideo, 2000);
-  }
-  function stopDriftCorrection() {
-    if (driftTimer) { clearInterval(driftTimer); driftTimer = null; }
-  }
-
-  function trySyncStart() {
-    alignAudioToVideo();
-    audio.play().then(() => {
-      fadeInAudio(1, 0.02, 100);
-      startDriftCorrection();
-    }).catch(() => {
-      showHint('Нажми на экран, чтобы включить звук');
-    });
-  }
-
-  video.addEventListener('loadedmetadata', () => {
-    video.play().catch(() => { /* ждём жест пользователя */ });
-  });
-
-  video.addEventListener('play', trySyncStart);
-  video.addEventListener('pause', () => { audio.pause(); stopDriftCorrection(); });
-  video.addEventListener('seeking', alignAudioToVideo);
-  video.addEventListener('seeked', alignAudioToVideo);
-  video.addEventListener('timeupdate', alignAudioToVideo);
-
-  function userUnlock() {
-    audio.play().then(() => {
-      fadeInAudio(1, 0.02, 100);
-      startDriftCorrection();
-      hint.classList.remove('show');
-      window.removeEventListener('pointerdown', userUnlock, { passive: true });
-    }).catch(() => {
-      showHint('Разреши звук в браузере и нажми ещё раз');
-    });
-  }
-  window.addEventListener('pointerdown', userUnlock, { passive: true });
-
-  video.addEventListener('error', () => showHint('Ошибка видео: проверь ссылку или имя файла'));
-  audio.addEventListener('error', () => showHint('Ошибка аудио: проверь ссылку на mp3'));
-})();
+  // Final summary after a bit
+  setTimeout(()=>{
+    const vOK = v.readyState >= 2; // HAVE_CURRENT_DATA
+    const aOK = a.readyState >= 2;
+    if (vOK && aOK) { final.textContent = '✅ Всё загружается. Можно возвращать фон и автоплей.'; final.className='ok'; }
+    else if (!vOK && !aOK) { final.textContent = '❌ Не грузятся и видео, и аудио — проверь пути/имена файлов и регистр букв.'; final.className='err'; }
+    else if (!vOK) { final.textContent = '❌ Видео не грузится — проверь ссылку/кодек/папку.'; final.className='err'; }
+    else { final.textContent = '❌ Аудио не грузится — проверь ссылку (скобки в названии экранируй).'; final.className='err'; }
+  }, 2000);
 </script>
-
 </body>
 </html>
