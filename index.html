@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,55 +6,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>2051: Алгоритм Пробуждение</title>
 <style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    background: #000;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-  }
-  /* Фоновое видео на весь экран */
-  video {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-    background:#000;
-  }
-  /* Контент поверх */
-  .content {
-    position: relative;
-    z-index: 1;
-    color: #fff;
-    text-align: center;
-    top: 40%;
-    padding: 0 16px;
-  }
-  h1 { margin: 0 0 12px; font-size: 3rem; }
-  p  { margin: 0 auto; max-width: 680px; font-size: 1.2rem; opacity: .9; }
-
-  /* Подсказка/ошибки */
-  .hint {
-    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
-    color: #bbb; font-size: .95rem; text-align: center;
-    z-index: 2; padding: 8px 14px; background: rgba(0,0,0,.4); border-radius: 8px;
-    pointer-events: none; opacity: 0; transition: opacity .35s ease;
-  }
-  .hint.show { opacity: 1; }
+  html, body { height:100%; margin:0; background:#000; overflow:hidden; font-family: Arial, sans-serif; }
+  video { position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:-1; background:#000; }
+  .content { position:relative; z-index:1; color:#fff; text-align:center; top:40%; padding:0 16px; }
+  h1 { margin:0 0 12px; font-size:3rem; }
+  p  { margin:0 auto; max-width:680px; font-size:1.2rem; opacity:.9; }
+  .hint { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); color:#bbb; font-size:.95rem; 
+          text-align:center; z-index:2; padding:8px 14px; background:rgba(0,0,0,.4); border-radius:8px;
+          pointer-events:none; opacity:0; transition:opacity .35s ease; }
+  .hint.show { opacity:1; }
 </style>
 </head>
 <body>
 
-<!-- Фоновое видео (заменил на твою ссылку GitHub Pages) -->
+<!-- ФОНОВОЕ ВИДЕО -->
 <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-  <source src="https://raykedy.github.io/vidhub555.mp4" type="video/mp4">
+  <source src="https://raykedy.github.io/vidhub555.mp4?v=1" type="video/mp4">
 </video>
 
-<!-- Фоновая музыка (твой mp3 с GitHub) -->
+<!-- МУЗЫКА -->
 <audio id="bgMusic" preload="auto" loop>
-  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=1" type="audio/mpeg">
 </audio>
 
 <div class="content">
@@ -76,10 +49,9 @@
     showHint._t = setTimeout(() => hint.classList.remove('show'), 5000);
   }
 
-  // Запускаем аудио «в ноль», чтобы не блокировали автоплей
+  // Старт аудио с нулевой громкости (обход блокировок)
   audio.volume = 0;
 
-  // Плавный фейдин
   function fadeInAudio(targetVol = 1, step = 0.02, interval = 100) {
     let vol = audio.volume;
     const id = setInterval(() => {
@@ -89,7 +61,6 @@
     }, interval);
   }
 
-  // Подгон позиции аудио к видео (учитываем loop)
   function alignAudioToVideo() {
     if (isFinite(audio.duration) && audio.duration > 0) {
       const target = video.currentTime % audio.duration;
@@ -107,23 +78,18 @@
     if (driftTimer) { clearInterval(driftTimer); driftTimer = null; }
   }
 
-  // Ждём метаданные видео, затем пытаемся запустить аудио синхронно
   function trySyncStart() {
     alignAudioToVideo();
     audio.play().then(() => {
       fadeInAudio(1, 0.02, 100);
       startDriftCorrection();
-    }).catch((e) => {
+    }).catch(() => {
       showHint('Нажми на экран, чтобы включить звук');
     });
   }
 
-  // Основные события
   video.addEventListener('loadedmetadata', () => {
-    // На некоторых устройствах без этого play не стартует мгновенно
-    video.play().catch(() => {
-      // Ок, ждём жест пользователя
-    });
+    video.play().catch(() => { /* ждём жест пользователя */ });
   });
 
   video.addEventListener('play', trySyncStart);
@@ -132,7 +98,6 @@
   video.addEventListener('seeked', alignAudioToVideo);
   video.addEventListener('timeupdate', alignAudioToVideo);
 
-  // Фолбэк: любой тап включает звук, если заблокировали
   function userUnlock() {
     audio.play().then(() => {
       fadeInAudio(1, 0.02, 100);
@@ -145,7 +110,6 @@
   }
   window.addEventListener('pointerdown', userUnlock, { passive: true });
 
-  // Доп. диагностика
   video.addEventListener('error', () => showHint('Ошибка видео: проверь ссылку или имя файла'));
   audio.addEventListener('error', () => showHint('Ошибка аудио: проверь ссылку на mp3'));
 })();
