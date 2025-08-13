@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,113 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>2051: Алгоритм Пробуждение — витрина</title>
   <style>
-    :root{
-      --orange:#ff6600;
-      --mint:#b6ffb6;
-      --text:#ffffff;
-    }
+    :root{ --orange:#ff6600; --mint:#b6ffb6; --text:#fff; }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      font-family:Arial, Helvetica, sans-serif;
-      color:var(--text);
-      /* запасной фон, если видео не запустится */
-      background: #0d1117 url('./5819192413179202364_121.jpg') center/cover no-repeat fixed;
-      overflow:hidden; /* чтобы не было прокрутки при фоне-видео */
+      font-family:Arial, Helvetica, sans-serif; color:var(--text);
+      background:#0d1117 url('./5819192413179202364_121.jpg') center/cover no-repeat;
+      overflow:hidden;
     }
-
-    /* ВИДЕО-ФОН */
     #bg-video{
-      position:fixed;
-      inset:0;                /* top:0;right:0;bottom:0;left:0 */
-      width:100%;
-      height:100%;
-      object-fit:cover;       /* заполняем экран без полос */
-      z-index:-1;             /* под контентом */
-      background:#000;
+      position:fixed; inset:0; width:100%; height:100%;
+      object-fit:cover; z-index:-1; background:#000;
     }
-
-    /* КОНТЕНТ СВЕРХУ */
     .content{
-      position:relative;
-      z-index:2;
-      text-align:center;
-      padding:20px 12px 60px;
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
+      position:relative; z-index:2; text-align:center;
+      padding:20px 12px 60px; min-height:100%;
+      display:flex; flex-direction:column; align-items:center;
     }
-    h1{
-      color:var(--orange);
-      font-size:32px;
-      line-height:1.15;
-      text-shadow:0 1px 2px rgba(0,0,0,.5);
-      margin-bottom:6px;
-    }
-    p.sub{
-      color:var(--mint);
-      font-size:18px;
-      text-shadow:0 1px 2px rgba(0,0,0,.5);
-    }
-    footer{
-      margin-top:auto;
-      color:#cfd6df;
-      font-size:14px;
-      text-shadow:0 1px 2px rgba(0,0,0,.35);
-      padding:16px 0 8px;
-    }
-
-    /* Небольшое увеличение размера заголовка на широких экранах */
+    h1{color:var(--orange); font-size:32px; line-height:1.15; text-shadow:0 1px 2px rgba(0,0,0,.5); margin-bottom:6px}
+    p.sub{color:var(--mint); font-size:18px; text-shadow:0 1px 2px rgba(0,0,0,.5)}
+    footer{margin-top:auto; color:#cfd6df; font-size:14px; text-shadow:0 1px 2px rgba(0,0,0,.35); padding:16px 0}
     @media (min-width:480px){ h1{font-size:36px} }
   </style>
 </head>
 <body>
 
-  <!-- ВИДЕО-ФОН: абсолютная ссылка на твой файл -->
-  <video id="bg-video"
-         src="https://raykedy.github.io/vidhub555.mp4"
-         playsinline
-         autoplay
-         muted
-         loop
-         preload="metadata">
+  <!-- Видео‑фон: mp4 + опционально webm -->
+  <video id="bg-video" playsinline muted loop preload="metadata" poster="./5819192413179202364_121.jpg">
+    <source src="https://raykedy.github.io/vidhub555.mp4" type="video/mp4">
+    <!-- добавь, если сделаешь webm‑копию -->
+    <!-- <source src="https://raykedy.github.io/vidhub555.webm" type="video/webm"> -->
+    Ваш браузер не поддерживает видео.
   </video>
 
   <div class="content">
     <h1>2051: Алгоритм Пробуждение</h1>
-    <p class="sub">Официальный хаб раздачи. Скачать книгу можно здесь.</p>
-
+    <p class="sub">Официальный хаб раздачи книги</p>
     <footer>© 2025 Рэй Кеди</footer>
   </div>
 
-  <!-- Подстраховка автоплея на некоторых браузерах -->
   <script>
-    (function () {
+    // Агрессивная попытка автоплея для Android
+    (function(){
       const v = document.getElementById('bg-video');
-      if (!v) return;
+      if(!v) return;
 
-      // Гарантируем mute и пытаемся запустить
+      // важно задать свойства ДО play()
       v.muted = true;
+      v.playsInline = true; // iOS/Android
+      v.setAttribute('muted','');
+      v.setAttribute('playsinline','');
+      v.setAttribute('autoplay','');
+
       const tryPlay = () => {
         const p = v.play();
         if (p && typeof p.then === 'function') {
-          p.catch(() => {
-            // если автоплей заблокирован — просто остаётся фон-картинка;
-            // пользователь нажмёт Play вручную (UI у фона не показываем)
-          });
+          p.catch(() => {/* молча игнорируем, останется фон-картинка */});
         }
       };
 
-      // Первая попытка
+      // последовательные попытки
+      v.addEventListener('loadedmetadata', tryPlay, {once:true});
+      v.addEventListener('canplay', tryPlay, {once:true});
+      v.addEventListener('canplaythrough', tryPlay, {once:true});
+
+      // иногда помогает явный load перед play
+      v.load();
       tryPlay();
 
-      // Ещё одна попытка после готовности метаданных
-      v.addEventListener('loadedmetadata', tryPlay, { once: true });
-
-      // На iOS / некоторых Android помогает при взаимодействии со страницей
-      document.addEventListener('touchstart', tryPlay, { once: true });
-      document.addEventListener('click', tryPlay, { once: true });
+      // автоплей после первого взаимодействия
+      const once = () => { tryPlay(); document.removeEventListener('touchstart', once); document.removeEventListener('click', once); };
+      document.addEventListener('touchstart', once, {passive:true});
+      document.addEventListener('click', once);
     })();
   </script>
 </body>
