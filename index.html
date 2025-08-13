@@ -1,83 +1,155 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>2051: Алгоритм Пробуждение — витрина</title>
-  <style>
-    :root{ --orange:#ff6600; --mint:#b6ffb6; --text:#fff; }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family:Arial, Helvetica, sans-serif; color:var(--text);
-      background:#0d1117 url('./5819192413179202364_121.jpg') center/cover no-repeat;
-      overflow:hidden;
-    }
-    #bg-video{
-      position:fixed; inset:0; width:100%; height:100%;
-      object-fit:cover; z-index:-1; background:#000;
-    }
-    .content{
-      position:relative; z-index:2; text-align:center;
-      padding:20px 12px 60px; min-height:100%;
-      display:flex; flex-direction:column; align-items:center;
-    }
-    h1{color:var(--orange); font-size:32px; line-height:1.15; text-shadow:0 1px 2px rgba(0,0,0,.5); margin-bottom:6px}
-    p.sub{color:var(--mint); font-size:18px; text-shadow:0 1px 2px rgba(0,0,0,.5)}
-    footer{margin-top:auto; color:#cfd6df; font-size:14px; text-shadow:0 1px 2px rgba(0,0,0,.35); padding:16px 0}
-    @media (min-width:480px){ h1{font-size:36px} }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>2051: Алгоритм Пробуждение</title>
+<style>
+  /* Фон-видео на весь экран */
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: #000;
+    overflow: hidden;
+  }
+  video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  /* Контент поверх */
+  .content {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    top: 40%;
+    padding: 0 16px;
+  }
+  h1 { margin: 0 0 12px; font-size: 3rem; }
+  p  { margin: 0 auto; max-width: 680px; font-size: 1.2rem; opacity: .9; }
+  /* Подсказка на случай, если автоплей аудио заблокирован */
+  .tap-hint {
+    position: fixed; inset: auto 0 24px 0;
+    text-align: center; color: #bbb; font-size: .95rem;
+    z-index: 2; pointer-events: none; transition: opacity .4s ease;
+  }
+  .tap-hint.hidden { opacity: 0; }
+</style>
 </head>
 <body>
 
-  <!-- Видео‑фон: mp4 + опционально webm -->
-  <video id="bg-video" playsinline muted loop preload="metadata" poster="./5819192413179202364_121.jpg">
-    <source src="https://raykedy.github.io/vidhub555.mp4" type="video/mp4">
-    <!-- добавь, если сделаешь webm‑копию -->
-    <!-- <source src="https://raykedy.github.io/vidhub555.webm" type="video/webm"> -->
-    Ваш браузер не поддерживает видео.
-  </video>
+<!-- Фоновое видео (muted обязателен для автоплея) -->
+<video id="bgVideo" autoplay muted loop playsinline>
+  <!-- ЗАМЕНИ на свой файл/ссылку -->
+  <source src="video.mp4" type="video/mp4">
+</video>
 
-  <div class="content">
-    <h1>2051: Алгоритм Пробуждение</h1>
-    <p class="sub">Официальный хаб раздачи книги</p>
-    <footer>© 2025 Рэй Кеди</footer>
-  </div>
+<!-- Фоновая музыка -->
+<audio id="bgMusic" preload="auto" loop>
+  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3" type="audio/mpeg">
+</audio>
 
-  <script>
-    // Агрессивная попытка автоплея для Android
-    (function(){
-      const v = document.getElementById('bg-video');
-      if(!v) return;
+<div class="content">
+  <h1>2051: Алгоритм Пробуждение</h1>
+  <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
+</div>
 
-      // важно задать свойства ДО play()
-      v.muted = true;
-      v.playsInline = true; // iOS/Android
-      v.setAttribute('muted','');
-      v.setAttribute('playsinline','');
-      v.setAttribute('autoplay','');
+<div id="tapHint" class="tap-hint hidden">Нажми на экран, чтобы включить звук</div>
 
-      const tryPlay = () => {
-        const p = v.play();
-        if (p && typeof p.then === 'function') {
-          p.catch(() => {/* молча игнорируем, останется фон-картинка */});
-        }
-      };
+<script>
+(function () {
+  const video = document.getElementById('bgVideo');
+  const audio = document.getElementById('bgMusic');
+  const hint  = document.getElementById('tapHint');
 
-      // последовательные попытки
-      v.addEventListener('loadedmetadata', tryPlay, {once:true});
-      v.addEventListener('canplay', tryPlay, {once:true});
-      v.addEventListener('canplaythrough', tryPlay, {once:true});
+  // стартуем аудио без звука, чтобы обойти блокировку автоплея
+  audio.volume = 0;
 
-      // иногда помогает явный load перед play
-      v.load();
-      tryPlay();
+  // Функция плавного подъёма громкости
+  function fadeIn(targetVol = 1, step = 0.02, interval = 100) {
+    let vol = audio.volume;
+    const id = setInterval(() => {
+      vol = Math.min(targetVol, vol + step);
+      audio.volume = vol;
+      if (vol >= targetVol) clearInterval(id);
+    }, interval);
+  }
 
-      // автоплей после первого взаимодействия
-      const once = () => { tryPlay(); document.removeEventListener('touchstart', once); document.removeEventListener('click', once); };
-      document.addEventListener('touchstart', once, {passive:true});
-      document.addEventListener('click', once);
-    })();
-  </script>
+  // Подравнивание тайминга аудио под видео (аккуратно, с допуском)
+  function alignAudioToVideo() {
+    // Если длительность аудио известна — маппим позицию с учётом loop
+    if (isFinite(audio.duration) && audio.duration > 0) {
+      const target = video.currentTime % audio.duration;
+      const drift = Math.abs((audio.currentTime % audio.duration) - target);
+      if (drift > 0.3) audio.currentTime = target;
+    }
+  }
+
+  // Периодическая коррекция дрейфа
+  let driftTimer = null;
+  function startDriftCorrection() {
+    if (driftTimer) return;
+    driftTimer = setInterval(alignAudioToVideo, 2000);
+  }
+  function stopDriftCorrection() {
+    if (driftTimer) { clearInterval(driftTimer); driftTimer = null; }
+  }
+
+  // Синхронизация состояний: play/pause/seek/loop
+  video.addEventListener('play', async () => {
+    alignAudioToVideo();
+    try {
+      await audio.play();
+      fadeIn(1, 0.02, 100); // ~5 секунд до полной громкости
+      hint.classList.add('hidden');
+      startDriftCorrection();
+    } catch (e) {
+      // Браузер требует жест пользователя
+      hint.classList.remove('hidden');
+    }
+  });
+
+  video.addEventListener('pause', () => {
+    audio.pause();
+    stopDriftCorrection();
+  });
+
+  video.addEventListener('seeking', alignAudioToVideo);
+  video.addEventListener('seeked', alignAudioToVideo);
+  video.addEventListener('timeupdate', () => {
+    // быстрая лёгкая коррекция при резких скачках (защита)
+    alignAudioToVideo();
+  });
+
+  // При зацикливании видео — выравниваем и продолжаем
+  video.addEventListener('ended', () => {
+    // с loop это не сработает, но оставим на случай отключения loop
+    alignAudioToVideo();
+  });
+
+  // Фолбэк: если автоплей аудио запрещён — один тап включает звук
+  function tryResumeAudio() {
+    audio.play().then(() => {
+      fadeIn(1, 0.02, 100);
+      hint.classList.add('hidden');
+      startDriftCorrection();
+      window.removeEventListener('pointerdown', tryResumeAudio, { passive: true });
+    }).catch(() => {
+      // если снова не получилось — оставляем подсказку
+      hint.classList.remove('hidden');
+    });
+  }
+  window.addEventListener('pointerdown', tryResumeAudio, { passive: true });
+
+  // На старте пробуем запустить видео (для некоторых браузеров на iOS это важно)
+  // video.play().catch(() => {/* ок, ждём жест пользователя */});
+})();
+</script>
+
 </body>
 </html>
