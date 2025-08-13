@@ -1,61 +1,45 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>2051: Алгоритм Пробуждение — витрина</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-image: url('5819192413179202364_121.jpg');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      color: #fff;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+    :root{
+      --orange:#ff6600;
+      --mint:#b6ffb6;   /* светло‑салатовый */
+      --text:#ffffff;
+      --fallback:#0d1117;
     }
-    header {
-      padding: 20px;
-      background: rgba(0,0,0,0.6);
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text); text-align:center;
+      background-color:var(--fallback);                    /* запасной цвет */
+      background-image:url('./5819192413179202364_121.jpg');/* ТВОЙ ФОН */
+      background-size:cover; background-position:center; background-attachment:fixed;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      font-family:Arial, Helvetica, sans-serif;
     }
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-      color: orange;
-    }
-    header p {
-      color: lightgreen;
-      margin: 5px 0 0;
-    }
-    .cover {
-      max-width: 300px;
-      margin: 20px auto;
-      border-radius: 8px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: #ccc;
-      background: rgba(0,0,0,0.6);
-      padding: 10px;
-    }
+    .wrap{min-height:100%; display:flex; flex-direction:column; align-items:center; padding:24px 12px}
+    header{margin-top:8px}
+    header h1{margin:0 0 6px; font-size:28px; line-height:1.15; color:var(--orange); text-shadow:0 1px 2px rgba(0,0,0,.45)}
+    header p{margin:0; font-size:18px; color:var(--mint); text-shadow:0 1px 2px rgba(0,0,0,.45)}
+    .cover{max-width:300px; width:100%; margin:20px auto 0; display:block; border-radius:10px; border:1px solid rgba(0,0,0,.25)}
+    footer{margin-top:auto; font-size:14px; color:#cfd6df; text-shadow:0 1px 2px rgba(0,0,0,.35); padding:16px 0}
+    @media (min-width:480px){ header h1{font-size:32px} }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <h1>2051: Алгоритм Пробуждение</h1>
+      <p>Официальный хаб раздачи книги</p>
+    </header>
 
-<header>
-  <h1>2051: Алгоритм Пробуждение</h1>
-  <p>Официальный хаб раздачи книги</p>
-</header>
+    <img src="./обложка.jpg" alt="Обложка книги" class="cover" />
 
-<img src="обложка.jpg" alt="Обложка книги" class="cover">
-
-<footer>
-  © 2025 Рэй Кеди
-</footer>
-
+    <footer>© Рэй Кеди</footer>
+  </div>
 </body>
 </html>
