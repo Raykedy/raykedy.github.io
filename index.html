@@ -5,36 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>2051: Алгоритм Пробуждение — витрина</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #0d1117; color: #fff; text-align: center; }
-    header { padding: 20px; background: #161b22; }
-    header h1 { margin: 0; font-size: 28px; }
-    .cover { max-width: 300px; margin: 20px auto; }
-    .buttons a {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 20px;
-      background: orange;
-      color: black;
-      font-weight: bold;
-      border-radius: 8px;
-       }
-    .buttons a:hover { background: gold; }
-    footer { margin-top: 40px; font-size: 14px; color: #aaa; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: url('5819192413179202364_121.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff; text-align: center;
+    }
+    header { padding: 20px; }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #ff6600; /* оранжевый */
+    }
+    header p {
+      margin: 8px 0 0;
+      color: #b6ffb6; /* светло-салатовый */
+      font-size: 18px;
+    }
+    .video-block {
+      max-width: 360px;
+      margin: 20px auto;
+    }
+    .video-block video {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #1d2636;
+      display: block;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #aaa;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
   </style>
 </head>
 <body>
 
 <header>
   <h1>2051: Алгоритм Пробуждение</h1>
-  <p>Официальная страница раздачи книги</p>
+  <p>Официальный хаб раздачи книги</p>
 </header>
 
-<img src="обложка.jpg" alt="Обложка книги" class="cover">
-
-<div class="buttons">
-  <a href="files/book.pdf" target="_blank">Скачать PDF</a>
-  <a href="https://t.me/yourchannel" target="_blank">Telegram</a>
-  <a href="https://youtube.com/yourtrailer" target="_blank">Трейлер</a>
+<div class="video-block">
+  <video
+    src="media/intro.mp4"
+    poster="media/poster.jpg"
+    playsinline autoplay muted loop preload="metadata">
+    Ваш браузер не поддерживает видео. <a href="media/intro.mp4">Скачать ролик</a>
+  </video>
+  <div style="margin-top:8px; font-size:14px;">
+    <a href="https://www.youtube.com/watch?v=YOUTUBE_ID"
+       target="_blank" rel="noopener"
+       style="color:#b6ffb6; text-decoration:none; border-bottom:1px dashed #b6ffb6;">
+      Полная версия на YouTube (2:00)
+    </a>
+  </div>
 </div>
 
 <footer>
@@ -42,3 +69,4 @@
 </footer>
 
 </body>
+</html>
