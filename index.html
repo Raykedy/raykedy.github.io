@@ -11,7 +11,7 @@
   h1 { margin: 0 0 12px; font-size: 3rem; }
   p  { margin: 0 auto; max-width: 680px; font-size: 1.2rem; opacity: .9; }
 
-  /* Верхний баннер (две строки, адаптивный) */
+  /* Верхний баннер (две строки) */
   .fixed-line-top{
     position: fixed;
     top: calc(8px + env(safe-area-inset-top));
@@ -31,7 +31,7 @@
   }
   .fixed-line-top div { white-space: normal; }
 
-  /* В Firefox до запуска делаем баннер кликабельным (как кнопку) */
+  /* Когда баннер — кнопка запуска (FF и Android при блокировке) */
   .clickable {
     cursor: pointer;
     box-shadow: 0 0 0 0 rgba(255,102,0,.75);
@@ -44,14 +44,14 @@
     100% { box-shadow: 0 0 0 0 rgba(255,102,0,0); }
   }
 
-  /* Подсказки/ошибки */
+  /* Подсказка/ошибки */
   .hint{
     position: fixed; left: 50%; bottom: calc(60px + env(safe-area-inset-bottom)); transform: translateX(-50%);
-    color: #bbb; font-size: .95rem; text-align: center; z-index: 3;
-    padding: 8px 14px; background: rgba(0,0,0,.4); border-radius: 8px;
-    pointer-events: none; opacity: 0; transition: opacity .35s ease;
+    color:#bbb; font-size:.95rem; text-align:center; z-index:3;
+    padding:8px 14px; background:rgba(0,0,0,.4); border-radius:8px;
+    pointer-events:none; opacity:0; transition:opacity .35s ease;
   }
-  .hint.show{ opacity: 1; }
+  .hint.show{ opacity:1; }
 
   /* Мобильные правки */
   @media (max-width: 600px){
@@ -76,7 +76,7 @@
   <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
 </audio>
 
-<!-- Верхний баннер (в Firefox будет как кнопка запуска) -->
+<!-- Верхний баннер (может стать кнопкой) -->
 <div id="topBanner" class="fixed-line-top" aria-live="polite" role="button" tabindex="0">
   <div>Официальный хаб раздачи.</div>
   <div>Скачать книгу можно здесь.</div>
@@ -97,17 +97,19 @@
   const banner  = document.getElementById('topBanner');
   const hint    = document.getElementById('hint');
 
-  // Определяем Firefox
-  const isFirefox = /firefox/i.test(navigator.userAgent);
+  // Кто мы
+  const ua = navigator.userAgent;
+  const isFirefox = /firefox/i.test(ua);
+  const isAndroidChrome = /Android/i.test(ua) && /Chrome/i.test(ua);
 
-  // В не-Firefox: автозапуск как раньше (аудио с fade-in)
+  // Готовим звук
   audio.volume = 0;
 
   const showHint = (msg) => {
     hint.textContent = msg;
     hint.classList.add('show');
     clearTimeout(showHint._t);
-    showHint._t = setTimeout(() => hint.classList.remove('show'), 4000);
+    showHint._t = setTimeout(() => hint.classList.remove('show'), 3500);
   };
 
   const fadeInAudio = (target=1, step=0.02, ms=100) => {
@@ -119,71 +121,51 @@
     }, ms);
   };
 
-  // ----- ЛОГИКА ДЛЯ FIREFOX -----
-  if (isFirefox) {
-    // Делаем баннер кликабельным стартером
-    banner.classList.add('clickable');
-    banner.setAttribute('aria-label', 'Запустить видео и музыку');
+  // Универсальный запуск по клику баннера
+  async function startFromBanner() {
+    banner.classList.remove('clickable');
+    try { video.muted = true; await video.play(); } catch(e) { /* в Android обычно ок */ }
+    try { await audio.play(); fadeInAudio(1,0.02,100); }
+    catch (e) { showHint('Разреши звук в браузере и нажми ещё раз'); banner.classList.add('clickable'); }
+  }
 
-    async function startFromBanner() {
-      // Снимаем пульсацию после клика/Enter/Space
-      banner.classList.remove('clickable');
-
-      try {
-        // Вначале — немое видео (Firefox разрешает в рамках жеста)
-        video.muted = true;
-        await video.play();
-      } catch (e) {
-        showHint('Firefox заблокировал видео. Разреши автоплей через значок замка.');
-        // возвращаем «кликабельность» для повторной попытки
-        banner.classList.add('clickable');
-        return;
-      }
-
-      try {
-        // Затем — аудио в том же жесте
-        await audio.play();
-        fadeInAudio(1, 0.02, 100);
-      } catch (e) {
-        showHint('Firefox заблокировал звук. Разреши звук через значок замка.');
-        banner.classList.add('clickable');
-        return;
-      }
-    }
-
-    // Клик/тап по баннеру
-    banner.addEventListener('click', startFromBanner);
-    // Доступность с клавиатуры (Enter/Space)
-    banner.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        startFromBanner();
-      }
-    });
-
-  } else {
-    // ----- НЕ FIREFOX: автозапуск -----
+  // ----- НЕ Firefox: пытаемся автозапуск -----
+  if (!isFirefox) {
     try {
       await video.play();
-      try {
-        await audio.play();
-        fadeInAudio(1, 0.02, 100);
-      } catch (e) {
-        showHint('Нажми где угодно, чтобы включить звук');
-        window.addEventListener('pointerdown', async function once() {
-          window.removeEventListener('pointerdown', once, { passive: true });
-          try { await audio.play(); fadeInAudio(1, 0.02, 100); } catch {}
-        }, { passive: true });
+      // Пробуем включить звук без клика
+      try { await audio.play(); fadeInAudio(1,0.02,100); }
+      catch (e) {
+        // Если блокируют — попросим любой тап
+        showHint('Нажми баннер, чтобы включить звук');
+        banner.classList.add('clickable');
+        banner.addEventListener('click', startFromBanner);
+        banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }});
       }
     } catch (e) {
-      // Если даже видео не разрешили (редко) — используем баннер как кнопку и здесь
+      // Если даже видео не дало автоплей (редко) — старт тоже через баннер
       banner.classList.add('clickable');
-      banner.addEventListener('click', async () => {
-        try { await video.play(); } catch {}
-        try { await audio.play(); fadeInAudio(1, 0.02, 100); } catch {}
-        banner.classList.remove('clickable');
-      }, { passive: true });
+      banner.addEventListener('click', startFromBanner);
+      banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }});
     }
+
+    // Доп. страховка для Chrome Android:
+    // через ~1.2с проверяем — если аудио всё ещё молчит, активируем баннер-кнопку.
+    setTimeout(() => {
+      const audioStuck = audio.paused || audio.currentTime === 0 || audio.volume < 0.01;
+      if (isAndroidChrome && audioStuck) {
+        banner.classList.add('clickable');
+        showHint('Тапни по баннеру, чтобы включить звук');
+        banner.addEventListener('click', startFromBanner, { once:true });
+        banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }}, { once:true });
+      }
+    }, 1200);
+
+  } else {
+    // ----- FIREFOX: баннер — кнопка запуска всегда -----
+    banner.classList.add('clickable');
+    banner.addEventListener('click', startFromBanner);
+    banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }});
   }
 
   // Отладка ресурсов
