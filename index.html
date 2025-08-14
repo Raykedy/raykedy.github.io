@@ -11,7 +11,7 @@
   h1 { margin: 0 0 12px; font-size: 3rem; }
   p  { margin: 0 auto; max-width: 680px; font-size: 1.2rem; opacity: .9; }
 
-  /* Верхний баннер (две строки, адаптивный) */
+  /* Верхний баннер (две строки) */
   .fixed-line-top{
     position: fixed;
     top: calc(8px + env(safe-area-inset-top));
@@ -30,19 +30,19 @@
   }
   .fixed-line-top div { white-space: normal; }
 
-  /* Подсказки (для ошибок/заметок) */
+  /* Подсказки/ошибки */
   .hint{
     position: fixed; left: 50%; bottom: calc(60px + env(safe-area-inset-bottom)); transform: translateX(-50%);
-    color: #bbb; font-size: .95rem; text-align: center; z-index: 3;
+    color: #bbb; font-size: .95rem; text-align: center; z-index: 4;
     padding: 8px 14px; background: rgba(0,0,0,.4); border-radius: 8px;
     pointer-events: none; opacity: 0; transition: opacity .35s ease;
   }
   .hint.show{ opacity: 1; }
 
-  /* Оверлей старта — показываем только в Firefox */
+  /* Оверлей старта — показываем ТОЛЬКО в Firefox */
   .start-overlay{
     position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 3;
-    background: rgba(0,0,0,.35);
+    background: rgba(0,0,0,.42);
   }
   .start-btn{
     background:#ff6600; color:#000; font-weight:700; border:0; border-radius:12px; padding:14px 20px; font-size:1.05rem;
@@ -82,17 +82,16 @@
 <div id="startOverlay" class="start-overlay"><button id="startBtn" class="start-btn">Запустить</button></div>
 
 <script>
-(function () {
+(async function () {
   const video   = document.getElementById('bgVideo');
   const audio   = document.getElementById('bgMusic');
   const hint    = document.getElementById('hint');
   const overlay = document.getElementById('startOverlay');
   const startBtn= document.getElementById('startBtn');
 
-  // Определяем Firefox
   const isFirefox = /firefox/i.test(navigator.userAgent);
 
-  // Стартуем аудио без звука (для обхода автоплея вне Firefox)
+  // Для автоплея вне Firefox: стартуем аудио с нулевой громкости
   audio.volume = 0;
 
   const showHint = (msg) => {
@@ -102,75 +101,70 @@
     showHint._t = setTimeout(() => hint.classList.remove('show'), 4000);
   };
 
-  const fadeInAudio = (target=1, step=0.02, ms=100) => {
+  // Плавный фейдин громкости
+  function fadeInAudio(target=1, step=0.02, ms=100) {
     let v = audio.volume;
     const id = setInterval(() => {
       v = Math.min(target, v + step);
       audio.volume = v;
       if (v >= target) clearInterval(id);
     }, ms);
-  };
-
-  // Подгоняем аудио под видео только когда видео ИДЁТ
-  function alignAudioToVideo() {
-    if (video.paused || video.seeking || video.readyState < 2) return;
-    if (!isFinite(audio.duration) || audio.duration <= 0) return;
-    const target = video.currentTime % audio.duration;
-    const cur    = audio.currentTime % audio.duration;
-    if (Math.abs(cur - target) > 0.35) audio.currentTime = target;
   }
 
-  let driftTimer = null;
-  function startDrift(){ if (!driftTimer) driftTimer = setInterval(alignAudioToVideo, 2000); }
-  function stopDrift(){ if (driftTimer){ clearInterval(driftTimer); driftTimer = null; } }
+  // ---- ЛОГИКА ЗАПУСКА ----
+  if (isFirefox) {
+    // В Firefox показываем кнопку сразу, не ждём метаданные
+    overlay.style.display = 'flex';
 
-  // Старт логика:
-  // - В НЕ-Firefox пытаемся автозапустить.
-  // - В Firefox сразу показываем кнопку.
-  function initStartLogic() {
-    if (isFirefox) {
-      overlay.style.display = 'flex'; // ждем явный клик
-      return;
-    }
-    // Не Firefox → пробуем автозапуск
-    video.play().then(() => {
-      // Видео пошло → запускаем аудио
-      alignAudioToVideo();
-      audio.play().then(() => { fadeInAudio(1,0.02,100); startDrift(); })
-                  .catch(() => { showHint('Нажми где угодно, чтобы включить звук'); });
-    }).catch(() => {
-      // Даже не в Firefox не дали автоплей (редко) — просим клик
+    const userStart = async () => {
+      try {
+        // сначала видео (оно muted → Firefox разрешает)
+        video.muted = true;
+        await video.play();
+      } catch (e) {
+        showHint('Firefox заблокировал видео. Разреши автоплей через значок замка.');
+        return;
+      }
+
+      // затем — аудио в том же жесте
+      try {
+        await audio.play();
+        fadeInAudio(1, 0.02, 100);
+      } catch (e) {
+        showHint('Firefox заблокировал звук. Разреши звук через значок замка.');
+      }
+
+      overlay.style.display = 'none';
+    };
+
+    startBtn.addEventListener('click', userStart, { passive: true });
+  } else {
+    // НЕ Firefox → пробуем автозапуск как раньше
+    try {
+      await video.play();
+      try {
+        await audio.play();
+        fadeInAudio(1, 0.02, 100);
+      } catch (e) {
+        // звук не дали — попросим клик в любом месте
+        showHint('Нажми где угодно, чтобы включить звук');
+        window.addEventListener('pointerdown', async function once() {
+          window.removeEventListener('pointerdown', once, { passive: true });
+          try { await audio.play(); fadeInAudio(1, 0.02, 100); } catch {}
+        }, { passive: true });
+      }
+    } catch (e) {
+      // даже видео не дали (редко) — просим клик
       overlay.style.display = 'flex';
-    });
+      startBtn.addEventListener('click', async () => {
+        try { await video.play(); } catch {}
+        try { await audio.play(); fadeInAudio(1, 0.02, 100); } catch {}
+        overlay.style.display = 'none';
+      }, { passive: true });
+    }
   }
 
-  // Пользовательский запуск (для Firefox и фолбэков)
-  function userStart() {
-    video.play().catch(()=>{});
-    audio.play().then(() => {
-      alignAudioToVideo();
-      fadeInAudio(1, 0.02, 100);
-      startDrift();
-    }).catch(()=>{});
-    overlay.style.display = 'none';
-    hint.classList.remove('show');
-    window.removeEventListener('pointerdown', userStart, { passive:true });
-  }
-
-  // События
-  video.addEventListener('loadedmetadata', initStartLogic);
-  video.addEventListener('play', () => { // если кто-то запустил видео вручную
-    if (audio.paused) { audio.play().then(()=>{ fadeInAudio(1,0.02,100); startDrift(); }).catch(()=>{}); }
-  });
-  video.addEventListener('pause', () => { audio.pause(); stopDrift(); });
-  video.addEventListener('seeking', alignAudioToVideo);
-  video.addEventListener('seeked',  alignAudioToVideo);
-  video.addEventListener('timeupdate', alignAudioToVideo);
-
-  startBtn.addEventListener('click', userStart);
-  // На всякий случай — клик по странице тоже стартует (помогает на некоторых сборках)
-  window.addEventListener('pointerdown', userStart, { passive:true });
-
+  // Отладка ошибок ресурсов
   video.addEventListener('error', () => showHint('Ошибка видео: проверь ссылку или имя файла'));
   audio.addEventListener('error', () => showHint('Ошибка аудио: проверь ссылку на mp3'));
 })();
