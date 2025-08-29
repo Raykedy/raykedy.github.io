@@ -1,18 +1,39 @@
-<section class="hub-sections">
+<!-- КНОПКИ -->
+<div class="cta-wrap" aria-label="Площадки книги">
+  <style>
+    .hub-block { backdrop-filter: blur(6px); background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 1rem; margin-bottom: 1rem; }
+    .hub-block h2 { margin: 0 0 .8rem; font-size: 1.1rem; color: #e7ffe7; }
+    .btn-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    @media(max-width:800px){ .btn-grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:500px){ .btn-grid{grid-template-columns:1fr;} }
+
+    .btn {
+      display:flex;align-items:center;justify-content:center;
+      min-height:52px;padding:0 14px;border-radius:12px;
+      font-weight:600;text-decoration:none;color:#fff;
+      border:1px solid rgba(255,255,255,.25);
+      background:rgba(255,255,255,.08);
+      transition:.2s;
+    }
+    .btn:hover{background:rgba(255,255,255,.15);}
+    .disabled{pointer-events:none;opacity:.55;}
+
+    .btn-tg{background:linear-gradient(135deg,rgba(0,255,163,.15),rgba(0,160,255,.12));}
+    .btn-msg{background:linear-gradient(135deg,rgba(255,140,0,.18),rgba(0,255,163,.12));}
+    .btn-tt{background:linear-gradient(135deg,rgba(0,255,163,.12),rgba(255,255,255,.08));}
+    .btn-yt{background:linear-gradient(135deg,rgba(255,80,80,.18),rgba(255,255,255,.08));}
+    .btn-bst{background:linear-gradient(135deg,rgba(0,255,163,.18),rgba(255,255,255,.08));}
+    .btn-amz{background:linear-gradient(135deg,rgba(255,140,0,.18),rgba(255,255,255,.08));}
+    .btn-gb{background:linear-gradient(135deg,rgba(0,160,255,.18),rgba(255,255,255,.08));}
+    .btn-mirror{background:linear-gradient(135deg,rgba(160,0,255,.18),rgba(255,255,255,.08));}
+  </style>
+
   <!-- Читать и связь -->
   <div class="hub-block">
     <h2>Читать и связь</h2>
     <div class="btn-grid">
-      <!-- Telegram канал (чтение) -->
-      <a href="https://t.me/raykedy2051?utm_source=hub&utm_medium=button&utm_campaign=read"
-         class="btn btn-tg" target="_blank" rel="noopener">
-        <span>Telegram — читать</span>
-      </a>
-      <!-- Личное сообщение за звезды -->
-      <a href="https://t.me/Ray_Kedy?utm_source=hub&utm_medium=button&utm_campaign=dm_stars"
-         class="btn btn-msg" target="_blank" rel="noopener">
-        <span>✉️ Отправить сообщение (за звёзды)</span>
-      </a>
+      <a href="https://t.me/raykedy2051" class="btn btn-tg" target="_blank">Telegram — читать</a>
+      <a href="https://t.me/Ray_Kedy" class="btn btn-msg" target="_blank">✉️ Сообщение (за звёзды)</a>
     </div>
   </div>
 
@@ -20,12 +41,9 @@
   <div class="hub-block">
     <h2>Соцсети</h2>
     <div class="btn-grid">
-      <a href="https://www.tiktok.com/@raykedy1?utm_source=hub&utm_medium=button&utm_campaign=social"
-         class="btn btn-tt" target="_blank" rel="noopener"><span>TikTok</span></a>
-      <a href="https://youtube.com/@raykedy?si=zV6cvntxmkS8sNbw&utm_source=hub&utm_medium=button&utm_campaign=social"
-         class="btn btn-yt" target="_blank" rel="noopener"><span>YouTube</span></a>
-      <a href="https://bastyon.com/raykedy?utm_source=hub&utm_medium=button&utm_campaign=social"
-         class="btn btn-bst" target="_blank" rel="noopener"><span>Bastyon</span></a>
+      <a href="https://www.tiktok.com/@raykedy1" class="btn btn-tt" target="_blank">TikTok</a>
+      <a href="https://youtube.com/@raykedy?si=zV6cvntxmkS8sNbw" class="btn btn-yt" target="_blank">YouTube</a>
+      <a href="https://bastyon.com/raykedy" class="btn btn-bst" target="_blank">Bastyon</a>
     </div>
   </div>
 
@@ -33,8 +51,8 @@
   <div class="hub-block">
     <h2>Купить</h2>
     <div class="btn-grid">
-      <a class="btn btn-amz disabled" aria-disabled="true" title="Скоро"><span>Amazon — скоро</span></a>
-      <a class="btn btn-gb disabled" aria-disabled="true" title="Скоро"><span>Google Books — скоро</span></a>
+      <a class="btn btn-amz disabled">Amazon — скоро</a>
+      <a class="btn btn-gb disabled">Google Books — скоро</a>
     </div>
   </div>
 
@@ -42,38 +60,7 @@
   <div class="hub-block">
     <h2>Web3</h2>
     <div class="btn-grid">
-      <a class="btn btn-mirror disabled" aria-disabled="true" title="Скоро"><span>Mirror — скоро</span></a>
+      <a class="btn btn-mirror disabled">Mirror — скоро</a>
     </div>
   </div>
-</section>
-CSS (добавь в style.css, если ещё не вставил из предыдущего сообщения)
-css
-Копировать код
-.hub-sections { display: grid; gap: 2rem; padding: 2rem 1rem; }
-.hub-block { backdrop-filter: blur(6px); background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 1.25rem; }
-.hub-block h2 { margin: 0 0 1rem; font-size: 1.1rem; letter-spacing: .02em; color: #e7ffe7; }
-
-.btn-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .75rem; }
-@media (max-width: 900px){ .btn-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-@media (max-width: 560px){ .btn-grid{ grid-template-columns: 1fr; } }
-
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: 48px; padding: .85rem 1rem; border-radius: 12px;
-  text-decoration: none; font-weight: 600; letter-spacing: .02em;
-  background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12);
-  transition: transform .08s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
-}
-.btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.25); }
-.btn:focus-visible { outline: 2px solid #00ffa3; outline-offset: 2px; }
-
-.btn-tg  { background: linear-gradient(135deg, rgba(0,255,163,.15), rgba(0,160,255,.12)); }
-.btn-msg { background: linear-gradient(135deg, rgba(255,140,0,.18), rgba(0,255,163,.12)); }
-.btn-tt  { background: linear-gradient(135deg, rgba(0,255,163,.12), rgba(255,255,255,.08)); }
-.btn-yt  { background: linear-gradient(135deg, rgba(255,80,80,.18), rgba(255,255,255,.08)); }
-.btn-bst { background: linear-gradient(135deg, rgba(0,255,163,.18), rgba(255,255,255,.08)); }
-.btn-amz { background: linear-gradient(135deg, rgba(255,140,0,.18), rgba(255,255,255,.08)); }
-.btn-gb  { background: linear-gradient(135deg, rgba(0,160,255,.18), rgba(255,255,255,.08)); }
-.btn-mirror { background: linear-gradient(135deg, rgba(160,0,255,.18), rgba(255,255,255,.08)); }
-
-.disabled { pointer-events: none; opacity: .55; filter: grayscale(.2); }
+</div>
