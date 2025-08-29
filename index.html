@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Купить книгу 2051: Алгоритм Пробуждение — Рэй Кеди</title>
+<title>2051: Алгоритм Пробуждение — Рэй Кеди</title>
 <meta name="description" content="Официальная страница книги Рэй Кеди «2051: Алгоритм Пробуждение».">
-<meta property="og:title" content="Купить книгу 2051: Алгоритм Пробуждение — Рэй Кеди">
-<meta property="og:description" content="Официальный хаб. Читать, соцсети, покупка, Web3.">
+<meta property="og:title" content="2051: Алгоритм Пробуждение — Рэй Кеди">
+<meta property="og:description" content="Официальный хаб. Telegram, соцсети, покупка, Web3.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://raykedy.com/">
 
 <style>
-  /* БАЗА — гарантия скролла */
+  /* БАЗА: скролл включён */
   html { min-height:100%; background:#000; }
   body {
-    margin:0; min-height:100%; background:#000;
-    font-family: Arial, sans-serif; color:#fff;
-    overflow-y:auto; /* скролл всегда доступен */
+    margin:0; min-height:100%; background:#000; color:#fff;
+    font-family: Arial, sans-serif; overflow-y:auto;
   }
 
   /* ВИДЕОФОН */
@@ -36,36 +35,23 @@
 
   /* СТРАНИЦА */
   .page {
-    position:relative; z-index:1;           /* над видео */
-    display:flex; flex-direction:column;
-    min-height:100vh;                        /* занимать высоту экрана */
-    padding: 14vh 16px 10vh;                 /* сверху место под центр, снизу — под кнопки */
-    box-sizing:border-box;
+    position:relative; z-index:1; display:flex; flex-direction:column;
+    min-height:100vh; padding: 14vh 16px 10vh; box-sizing:border-box;
   }
 
-  /* ГЕРО-БЛОК */
-  .hero {
-    text-align:center; margin: 0 auto 24px;
-    max-width: 900px;
-  }
+  /* ГЕРО */
+  .hero { text-align:center; margin: 0 auto 24px; max-width: 900px; }
   .hero h1 { margin:0 0 12px; font-size: 3rem; line-height:1.05; }
   .hero p  { margin:0 auto; max-width: 680px; font-size:1.2rem; opacity:.9; }
 
-  /* КНОПКИ — столбец */
-  .cta-wrap {
-    width: min(440px, 96%);
-    margin: 0 auto;                          /* центрируем */
-  }
-  .cta-list {
-    display:grid; grid-template-columns:1fr; gap:12px;
-  }
-  .cta {
+  /* КНОПКИ */
+  .cta-wrap { width:min(440px,96%); margin:0 auto; }
+  .cta-list { display:grid; grid-template-columns:1fr; gap:12px; }
+  .cta{
     display:flex; align-items:center; justify-content:center;
     min-height:52px; padding:0 16px; border-radius:14px;
-    background:rgba(5,15,20,.45);
-    color:#e9faff; text-decoration:none; font-weight:700;
-    border:1px solid rgba(180,240,255,.35);
-    backdrop-filter: blur(4px);
+    background:rgba(5,15,20,.45); color:#e9faff; text-decoration:none; font-weight:700;
+    border:1px solid rgba(180,240,255,.35); backdrop-filter: blur(4px);
     box-shadow: inset 0 0 12px rgba(120,220,255,.18), 0 6px 18px rgba(0,0,0,.35);
     text-shadow: 0 0 10px rgba(160,240,255,.5);
     transition: transform .15s ease, filter .25s ease;
@@ -95,7 +81,8 @@
 
 <!-- МУЗЫКА -->
 <audio id="bgMusic" preload="auto" loop>
-  <source src="https://raw.githubusercontent.com/RayKedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
+  <!-- Важно: правильный путь и регистр -->
+  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
 </audio>
 
 <!-- ВЕРХНИЙ БАННЕР -->
@@ -104,7 +91,7 @@
   <div>Скачать книгу можно здесь.</div>
 </div>
 
-<!-- СОДЕРЖИМОЕ СТРАНИЦЫ -->
+<!-- СОДЕРЖИМОЕ -->
 <main class="page">
 
   <section class="hero">
@@ -112,11 +99,11 @@
     <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
   </section>
 
-  <!-- КНОПКИ (столбец; «Сообщение» — в самом низу) -->
+  <!-- КНОПКИ (столбец; «Отправить сообщение» — в самом низу) -->
   <section class="cta-wrap" aria-label="Площадки книги">
     <div class="cta-list">
-      <!-- Читать -->
-      <a class="cta" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Telegram — читать</a>
+      <!-- Telegram -->
+      <a class="cta" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Telegram</a>
 
       <!-- Соцсети -->
       <a class="cta" href="https://www.tiktok.com/@raykedy1" target="_blank" rel="noopener">TikTok</a>
@@ -130,17 +117,16 @@
       <!-- Web3 -->
       <a class="cta disabled">Mirror — скоро</a>
 
-      <!-- Отправить сообщение — самый низ -->
-      <a class="cta" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">✉️ Сообщение (за звёзды)</a>
+      <!-- ЛС за звёзды — самый низ -->
+      <a class="cta" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">Отправить сообщение</a>
     </div>
   </section>
 
-  <!-- Доп. отступ снизу, чтобы скролл был приятным -->
   <div style="height:12vh;"></div>
 </main>
 
 <script>
-/* Автозапуск видео/аудио с мягким набором громкости; на мобилках звук включится по тапу по баннеру */
+/* Видео/аудио: автозапуск с мягким набором громкости; если браузер блокирует звук — включится по клику на баннер */
 (async function () {
   const video  = document.getElementById('bgVideo');
   const audio  = document.getElementById('bgMusic');
@@ -163,7 +149,7 @@
   }
 
   try { await startMedia(); }
-  catch(e){ /* если браузер блокирует автоплей со звуком */
+  catch(e){
     banner.addEventListener('click', startMedia, { once:true });
   }
 })();
