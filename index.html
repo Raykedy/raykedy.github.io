@@ -24,19 +24,40 @@
     object-fit:cover; z-index:0; pointer-events:none; background:#000;
   }
 
-  /* ВЕРХНИЙ БАННЕР */
+  /* ВЕРХНИЙ БАННЕР (кнопка запуска аудио/видео) */
   .fixed-line-top{
     position:fixed; top:calc(8px + env(safe-area-inset-top)); left:50%; transform:translateX(-50%);
     z-index:3; color:#ffcc66; background:rgba(0,0,0,.45);
-    padding:8px 16px; border-radius:12px; text-align:center;
+    padding:10px 16px; border-radius:12px; text-align:center;
     max-width:calc(100% - 24px); font-size:1.05rem; line-height:1.3;
     box-shadow:0 2px 10px rgba(0,0,0,.35);
   }
+  .clickable{
+    cursor:pointer;
+    box-shadow:0 0 0 0 rgba(255,140,0,.7);
+    animation:pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(255,140,0,.7);}
+    70%{ box-shadow:0 0 0 14px rgba(255,140,0,0);}
+    100%{ box-shadow:0 0 0 0 rgba(255,140,0,0);}
+  }
+
+  /* Подсказка */
+  .hint{
+    position:fixed; left:50%; bottom:calc(64px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+    color:#ddd; font-size:.95rem; text-align:center; z-index:3;
+    padding:8px 14px; background:rgba(0,0,0,.45); border-radius:8px;
+    opacity:0; transition:opacity .25s ease;
+  }
+  .hint.show{ opacity:1; }
 
   /* СТРАНИЦА */
   .page {
     position:relative; z-index:1; display:flex; flex-direction:column;
-    min-height:100vh; padding: 14vh 16px 10vh; box-sizing:border-box;
+    min-height:100vh;
+    padding: 22vh 16px 10vh;           /* ↑↑ опустил контент ниже, чтобы баннер не наезжал */
+    box-sizing:border-box;
   }
 
   /* ГЕРО */
@@ -61,12 +82,12 @@
 
   /* АДАПТИВ */
   @media (max-width: 600px){
-    .page{ padding-top: 12vh; }
+    .page{ padding-top: 20vh; }          /* ещё чуток ниже на очень узких экранах */
     .hero h1{ font-size:2.2rem; }
     .hero p { font-size:1.05rem; }
   }
   @media (max-width: 380px){
-    .page{ padding-top: 11vh; }
+    .page{ padding-top: 19vh; }
     .hero h1{ font-size:1.9rem; }
     .hero p { font-size:.98rem; }
   }
@@ -81,15 +102,15 @@
 
 <!-- МУЗЫКА -->
 <audio id="bgMusic" preload="auto" loop>
-  <!-- Важно: правильный путь и регистр -->
-  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/RayKedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
 </audio>
 
-<!-- ВЕРХНИЙ БАННЕР -->
+<!-- ВЕРХНЯЯ ПЛАШКА (кнопка запуска) -->
 <div id="topBanner" class="fixed-line-top" role="button" tabindex="0">
   <div>Официальный хаб раздачи.</div>
   <div>Скачать книгу можно здесь.</div>
 </div>
+<div id="hint" class="hint"></div>
 
 <!-- СОДЕРЖИМОЕ -->
 <main class="page">
@@ -126,11 +147,19 @@
 </main>
 
 <script>
-/* Видео/аудио: автозапуск с мягким набором громкости; если браузер блокирует звук — включится по клику на баннер */
+/* Автозапуск медиа; если браузер блокирует звук — верхняя плашка мерцает и запускает по клику */
 (async function () {
   const video  = document.getElementById('bgVideo');
   const audio  = document.getElementById('bgMusic');
   const banner = document.getElementById('topBanner');
+  const hint   = document.getElementById('hint');
+
+  function showHint(msg){
+    hint.textContent = msg;
+    hint.classList.add('show');
+    clearTimeout(showHint._t);
+    showHint._t = setTimeout(()=>hint.classList.remove('show'), 2500);
+  }
 
   audio.volume = 0;
 
@@ -146,12 +175,27 @@
   async function startMedia(){
     try { await video.play(); } catch(e) {}
     try { await audio.play(); fadeIn(); } catch(e) {}
+    banner.classList.remove('clickable');
   }
 
-  try { await startMedia(); }
-  catch(e){
-    banner.addEventListener('click', startMedia, { once:true });
+  // Пытаемся автозапустить
+  try {
+    await startMedia();
+  } catch(e) {
+    // если не получилось — делаем баннер кликабельным
+    banner.classList.add('clickable');
+    showHint('Тапни по баннеру, чтобы включить звук');
+    const run = ()=>startMedia();
+    banner.addEventListener('click', run, { once:true });
+    banner.addEventListener('keydown', (ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); run(); }}, { once:true });
   }
+
+  // Доп.проверка через секунду: на Android иногда нужен ручной запуск
+  setTimeout(()=>{
+    if (audio.paused || audio.currentTime === 0){
+      banner.classList.add('clickable');
+    }
+  }, 1200);
 })();
 </script>
 </body>
