@@ -24,7 +24,7 @@
     object-fit:cover; z-index:0; pointer-events:none; background:#000;
   }
 
-  /* ВЕРХНИЙ БАННЕР (кнопка запуска аудио/видео) */
+  /* ВЕРХНЯЯ ПЛАШКА (кнопка запуска) */
   .fixed-line-top{
     position:fixed; top:calc(8px + env(safe-area-inset-top)); left:50%; transform:translateX(-50%);
     z-index:3; color:#ffcc66; background:rgba(0,0,0,.45);
@@ -56,12 +56,12 @@
   .page {
     position:relative; z-index:1; display:flex; flex-direction:column;
     min-height:100vh;
-    padding: 22vh 16px 10vh;           /* ↑↑ опустил контент ниже, чтобы баннер не наезжал */
+    padding: 28vh 16px 12vh;   /* ⬆️ опустили контент ещё ниже */
     box-sizing:border-box;
   }
 
   /* ГЕРО */
-  .hero { text-align:center; margin: 0 auto 24px; max-width: 900px; }
+  .hero { text-align:center; margin: 0 auto 28px; max-width: 900px; }
   .hero h1 { margin:0 0 12px; font-size: 3rem; line-height:1.05; }
   .hero p  { margin:0 auto; max-width: 680px; font-size:1.2rem; opacity:.9; }
 
@@ -82,12 +82,12 @@
 
   /* АДАПТИВ */
   @media (max-width: 600px){
-    .page{ padding-top: 20vh; }          /* ещё чуток ниже на очень узких экранах */
+    .page{ padding-top: 26vh; }
     .hero h1{ font-size:2.2rem; }
     .hero p { font-size:1.05rem; }
   }
   @media (max-width: 380px){
-    .page{ padding-top: 19vh; }
+    .page{ padding-top: 24vh; }
     .hero h1{ font-size:1.9rem; }
     .hero p { font-size:.98rem; }
   }
@@ -105,8 +105,8 @@
   <source src="https://raw.githubusercontent.com/RayKedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
 </audio>
 
-<!-- ВЕРХНЯЯ ПЛАШКА (кнопка запуска) -->
-<div id="topBanner" class="fixed-line-top" role="button" tabindex="0">
+<!-- ВЕРХНЯЯ ПЛАШКА (запуск) -->
+<div id="topBanner" class="fixed-line-top clickable" role="button" tabindex="0" aria-label="Включить звук и видео">
   <div>Официальный хаб раздачи.</div>
   <div>Скачать книгу можно здесь.</div>
 </div>
@@ -138,7 +138,7 @@
       <!-- Web3 -->
       <a class="cta disabled">Mirror — скоро</a>
 
-      <!-- ЛС за звёзды — самый низ -->
+      <!-- ЛС — самый низ -->
       <a class="cta" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">Отправить сообщение</a>
     </div>
   </section>
@@ -147,8 +147,8 @@
 </main>
 
 <script>
-/* Автозапуск медиа; если браузер блокирует звук — верхняя плашка мерцает и запускает по клику */
-(async function () {
+/* Медиазапуск: работаем и для Chrome/Edge, и для Firefox. Плашка мерцает, пока аудио не играет. */
+(function () {
   const video  = document.getElementById('bgVideo');
   const audio  = document.getElementById('bgMusic');
   const banner = document.getElementById('topBanner');
@@ -158,12 +158,12 @@
     hint.textContent = msg;
     hint.classList.add('show');
     clearTimeout(showHint._t);
-    showHint._t = setTimeout(()=>hint.classList.remove('show'), 2500);
+    showHint._t = setTimeout(()=>hint.classList.remove('show'), 2400);
   }
 
-  audio.volume = 0;
+  audio.volume = 0; // начнём с нуля и плавно поднимем
 
-  function fadeIn(target=1, step=0.02, interval=100){
+  function fadeIn(target=1, step=0.03, interval=100){
     let v = audio.volume;
     const id = setInterval(()=>{
       v = Math.min(target, v + step);
@@ -173,29 +173,32 @@
   }
 
   async function startMedia(){
-    try { await video.play(); } catch(e) {}
+    try { video.muted = true; await video.play(); } catch(e) {}
     try { await audio.play(); fadeIn(); } catch(e) {}
-    banner.classList.remove('clickable');
-  }
-
-  // Пытаемся автозапустить
-  try {
-    await startMedia();
-  } catch(e) {
-    // если не получилось — делаем баннер кликабельным
-    banner.classList.add('clickable');
-    showHint('Тапни по баннеру, чтобы включить звук');
-    const run = ()=>startMedia();
-    banner.addEventListener('click', run, { once:true });
-    banner.addEventListener('keydown', (ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); run(); }}, { once:true });
-  }
-
-  // Доп.проверка через секунду: на Android иногда нужен ручной запуск
-  setTimeout(()=>{
-    if (audio.paused || audio.currentTime === 0){
-      banner.classList.add('clickable');
+    if (!audio.paused) {
+      banner.classList.remove('clickable');
     }
-  }, 1200);
+  }
+
+  // 1) Пытаемся автозапуском
+  startMedia().then(()=> {
+    if (audio.paused) {
+      banner.classList.add('clickable');
+      showHint('Тапни по баннеру, чтобы включить звук');
+    }
+  });
+
+  // 2) Любое взаимодействие пользователя — тоже запуск
+  const userKick = () => { startMedia(); };
+  banner.addEventListener('click', userKick);
+  banner.addEventListener('keydown', (ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); userKick(); }});
+  document.addEventListener('pointerdown', userKick, { once:true });
+  document.addEventListener('touchend',   userKick, { once:true });
+  document.addEventListener('keydown',    userKick, { once:true });
+
+  // 3) Для Firefox: когда видео готово — дёрнем play ещё раз
+  video.addEventListener('canplay', ()=> { if (video.paused) { video.play().catch(()=>{}); } });
+
 })();
 </script>
 </body>
