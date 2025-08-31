@@ -9,5 +9,15 @@
 
   <h2>Шаг 1 — Оплата USDT (TRC20)</h2>
   <p><b>Цена:</b> 9.99 USDT</p>
-  <p><b>Адрес (TRC20):</b> <code>TESiBciC6hfDm9QwdwvWdpDRn3hPiXwsfK</code></p>
+  <p>
+    <b>Адрес (TRC20):</b>
+    <code id="addr">ТВОЙ_АДРЕС_ТУТ</code>
+    <button id="copy" style="margin-left:8px">Скопировать</button>
+  </p>
+
+  <script>
+    const addr = document.getElementById('addr').textContent.trim();
+    document.getElementById('copy').onclick = () =>
+      navigator.clipboard.writeText(addr).then(()=>alert('Адрес скопирован'));
+  </script>
 </body>
