@@ -8,15 +8,28 @@
   <p>Страница скрыта. Ссылка нигде не размещена.</p>
 
   <h2>Шаг 1 — Оплата USDT (TRC20)</h2>
-  <p><b>Цена:</b> 9.99 USDT</p>
+  <p><b>Цена:</b> <span id="price">9.99</span> USDT</p>
+
   <p>
     <b>Адрес (TRC20):</b>
-    <code id="addr">ТВОЙ_АДРЕС_ТУТ</code>
+    <code id="addr">TESiBciC6hfDm9QwdwvWdpDRn3hPiXwsfK</code>
     <button id="copy" style="margin-left:8px">Скопировать</button>
   </p>
 
+   <div style="margin-top:12px">
+    <img id="qr" alt="QR для оплаты" style="max-width:200px;border:1px solid #1e2630;border-radius:12px;background:#0e141b">
+  </div>
+
   <script>
-    const addr = document.getElementById('addr').textContent.trim();
+    const PRICE = '9.99';
+    const addr  = document.getElementById('addr').textContent.trim();
+
+    // QR
+    const qrText = Send ${PRICE} USDT (TRC20) to: ${addr};
+    const qrUrl  = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(qrText);
+    document.getElementById('qr').src = qrUrl;
+
+    // Copy
     document.getElementById('copy').onclick = () =>
       navigator.clipboard.writeText(addr).then(()=>alert('Адрес скопирован'));
   </script>
