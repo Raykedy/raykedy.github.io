@@ -8,8 +8,9 @@
   <p style="opacity:.8">Страница скрыта. Доступ по прямой ссылке.</p>
 
   <h2>1) Выберите формат</h2>
-  <label><input type="radio" name="fmt" value="pdf" checked> PDF (скачать файл)</label><br>
-  <label><input type="radio" name="fmt" value="sub"> Читать по подписке</label>
+  <label><input type="radio" name="fmt" value="pdf" checked> PDF (файл)</label><br>
+  <label><input type="radio" name="fmt" value="fixed"> Fixed eBook</label><br>
+  <label><input type="radio" name="fmt" value="reflow"> Reflow eBook</label>
 
   <h2 style="margin-top:18px">2) Оплата (автоматически)</h2>
   <p>Сумма: <b>5.99 USD</b> в <b>USDT (TRC20)</b>. Откроется платёжная страница NOWPayments.</p>
@@ -31,16 +32,17 @@
   </div>
 
   <script>
-    // одна и та же постоянная ссылка для обоих вариантов (позже можно заменить по отдельности)
-    const PDF_LINK = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
-    const SUB_LINK = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+    // сейчас все три ведут на один и тот же инвойс; позже подменим отдельно
+    const PDF_LINK   = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+    const FIXED_LINK = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+    const REFLOW_LINK= "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
 
     const payBtn = document.getElementById('pay');
     const radios = document.querySelectorAll('input[name="fmt"]');
 
     function setLink() {
       const fmt = [...radios].find(r => r.checked).value;
-      payBtn.href = (fmt === 'pdf') ? PDF_LINK : SUB_LINK;
+      payBtn.href = fmt === 'pdf' ? PDF_LINK : (fmt === 'fixed' ? FIXED_LINK : REFLOW_LINK);
     }
     radios.forEach(r => r.addEventListener('change', setLink));
     setLink();
