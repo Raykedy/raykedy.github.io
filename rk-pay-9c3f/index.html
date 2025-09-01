@@ -4,44 +4,45 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>Оплата</title>
 <body style="font-family:system-ui;padding:24px;background:#0b0f13;color:#e8eef4">
-  <h1>Оплата (черновик)</h1>
-  <p>Страница скрыта. Ссылка нигде не размещена.</p>
+  <h1>Оплата</h1>
+  <p style="opacity:.8">Страница скрыта. Доступ по прямой ссылке.</p>
 
-  <!-- Авто-оплата через NOWPayments -->
-  <h2>Авто-оплата</h2>
-  <p>Сумма: <b>5.99 USD</b> (USDT TRC20). Откроется защищённая платёжная страница.</p>
+  <h2>1) Выберите формат</h2>
+  <label><input type="radio" name="fmt" value="pdf" checked> PDF (скачать файл)</label><br>
+  <label><input type="radio" name="fmt" value="sub"> Читать по подписке</label>
+
+  <h2 style="margin-top:18px">2) Оплата (автоматически)</h2>
+  <p>Сумма: <b>5.99 USD</b> в <b>USDT (TRC20)</b>. Откроется платёжная страница NOWPayments.</p>
   <p>
-    <a href="https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785" target="_blank" rel="noopener"
+    <a id="pay" href="#" target="_blank" rel="noopener"
        style="display:inline-block;padding:12px 16px;border:1px solid #2b3948;border-radius:10px;color:#e8eef4;text-decoration:none">
-      Оплатить автоматически (5.99 USD)
-      </a>
+      Оплатить автоматически
+    </a>
   </p>
 
-  <hr style="border:none;border-top:1px solid #1e2630;margin:24px 0">
-
-  <!-- Ручная оплата (дешевле) -->
-  <h2>Ручная оплата (альтернатива)</h2>
-  <p><b>Цена:</b> 3.5 USDT (TRC20)</p>
-  <p>
-    <b>Адрес (TRC20):</b>
-    <code id="addr">TESiBciC6hfDm9QwdvwWdpDRn3hPiXwsfK</code>
-    <button id="copy" style="margin-left:8px">Скопировать</button>
-  </p>
-  <div style="margin-top:12px">
-    <img id="qr" alt="QR для оплаты" style="max-width:200px;border:1px solid #1e2630;border-radius:12px;background:#0e141b">
+  <div style="opacity:.85;margin:14px 0">
+    <b>Статусы на платёжной странице:</b>
+    <ul>
+      <li><b>Waiting</b> — счёт создан, ждёт перевода.</li>
+      <li><b>Confirming</b> — перевод получен, идёт подтверждение сети.</li>
+      <li><b>Finished/Paid</b> — оплата принята.</li>
+      <li><b>Expired</b> — время вышло, создайте новый счёт.</li>
+    </ul>
   </div>
-  <p style="opacity:.85">Важно: сеть только <b>TRC20 (TRON)</b>.</p>
 
   <script>
-    const PRICE = '3.5';
-    const addr  = document.getEleme
-    document.getElementById('addr').textContent.trim();
-    // QR
-    const qrText = Send ${PRICE} USDT (TRC20) to: ${addr};
-    const qrUrl  = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(qrText);
-    document.getElementById('qr').src = qrUrl;
-    // Copy
-    document.getElementById('copy').onclick = () =>
-      navigator.clipboard.writeText(addr).then(()=>alert('Адрес скопирован'));
+    // одна и та же постоянная ссылка для обоих вариантов (позже можно заменить по отдельности)
+    const PDF_LINK = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+    const SUB_LINK = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+
+    const payBtn = document.getElementById('pay');
+    const radios = document.querySelectorAll('input[name="fmt"]');
+
+    function setLink() {
+      const fmt = [...radios].find(r => r.checked).value;
+      payBtn.href = (fmt === 'pdf') ? PDF_LINK : SUB_LINK;
+    }
+    radios.forEach(r => r.addEventListener('change', setLink));
+    setLink();
   </script>
 </body>
