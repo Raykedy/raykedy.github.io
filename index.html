@@ -17,17 +17,20 @@
     font-family: Arial, sans-serif; overflow-y:auto;
   }
 
+  /* Видеофон */
   #bgVideo{
     position:fixed; inset:0; width:100%; height:100%;
     object-fit:cover; z-index:0; pointer-events:none; background:#000;
   }
 
+  /* Верхняя плашка (кнопка включения музыки) */
   .fixed-line-top{
     position:fixed; top:calc(8px + env(safe-area-inset-top)); left:50%; transform:translateX(-50%);
     z-index:3; color:#ffcc66; background:rgba(0,0,0,.45);
     padding:10px 16px; border-radius:12px; text-align:center;
     max-width:calc(100% - 24px); font-size:1.05rem; line-height:1.3;
     box-shadow:0 2px 10px rgba(0,0,0,.35);
+    transition: opacity .4s ease;
   }
   .clickable{
     cursor:pointer;
@@ -39,14 +42,9 @@
     70%{ box-shadow:0 0 0 14px rgba(255,140,0,0);}
     100%{ box-shadow:0 0 0 0 rgba(255,140,0,0);}
   }
-  .hint{
-    position:fixed; left:50%; bottom:calc(64px + env(safe-area-inset-bottom)); transform:translateX(-50%);
-    color:#ddd; font-size:.95rem; text-align:center; z-index:3;
-    padding:8px 14px; background:rgba(0,0,0,.45); border-radius:8px;
-    opacity:0; transition:opacity .25s ease;
-  }
-  .hint.show{ opacity:1; }
+  .fixed-line-top.hide { opacity:0; pointer-events:none; }
 
+  /* Страница */
   .page {
     position:relative; z-index:1; display:flex; flex-direction:column;
     min-height:100vh; padding: 28vh 16px 12vh; box-sizing:border-box;
@@ -56,6 +54,7 @@
   .hero h1 { margin:0 0 12px; font-size: 3rem; line-height:1.05; }
   .hero p  { margin:0 auto; max-width: 680px; font-size:1.2rem; opacity:.9; }
 
+  /* Кнопки */
   .cta-wrap { width:min(440px,96%); margin:0 auto; }
   .cta-list { display:grid; grid-template-columns:1fr; gap:12px; }
   .cta{
@@ -84,44 +83,38 @@
 </head>
 <body>
 
-<video id="bgVideo" autoplay muted loop playsinline preload="auto">
+<!-- ВИДЕОФОН (автозапуск без звука) -->
+<video id="bgVideo" autoplay muted loop playsinline preload="auto" poster="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop">
   <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
 </video>
 
+<!-- МУЗЫКА -->
 <audio id="bgMusic" preload="auto" loop>
-  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/RayKedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
 </audio>
 
-<div id="topBanner" class="fixed-line-top clickable" role="button" tabindex="0" aria-label="Включить звук и видео">
+<!-- ВЕРХНЯЯ ПЛАШКА -->
+<div id="topBanner" class="fixed-line-top clickable" role="button" tabindex="0" aria-label="Включить звук">
   <div>Официальный хаб раздачи.</div>
-  <div>Скачать книгу можно здесь.</div>
+  <div>Нажми сюда — включится музыка.</div>
 </div>
-<div id="hint" class="hint"></div>
 
 <main class="page">
-
   <section class="hero">
     <h1>2051: Алгоритм Пробуждение</h1>
     <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
   </section>
 
+  <!-- КНОПКИ (порядок по твоему списку) -->
   <section class="cta-wrap" aria-label="Площадки книги">
     <div class="cta-list">
-      <!-- 1. Amazon -->
       <a class="cta disabled">Amazon — скоро</a>
-      <!-- 2. Google -->
       <a class="cta disabled">Google Books — скоро</a>
-      <!-- 3. Mirror -->
       <a class="cta disabled">Mirror — скоро</a>
-      <!-- 4. Telegram -->
       <a class="cta" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Telegram</a>
-      <!-- 5. Bastyon -->
       <a class="cta" href="https://bastyon.com/raykedy" target="_blank" rel="noopener">Bastyon</a>
-      <!-- 6. YouTube -->
       <a class="cta" href="https://youtube.com/@raykedy?si=zV6cvntxmkS8sNbw" target="_blank" rel="noopener">YouTube</a>
-      <!-- 7. TikTok -->
       <a class="cta" href="https://www.tiktok.com/@raykedy1" target="_blank" rel="noopener">TikTok</a>
-      <!-- 8. Отправить сообщение -->
       <a class="cta" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">Отправить сообщение</a>
     </div>
   </section>
@@ -134,19 +127,17 @@
   const video  = document.getElementById('bgVideo');
   const audio  = document.getElementById('bgMusic');
   const banner = document.getElementById('topBanner');
-  const hint   = document.getElementById('hint');
 
-  function showHint(msg){
-    hint.textContent = msg;
-    hint.classList.add('show');
-    clearTimeout(showHint._t);
-    showHint._t = setTimeout(()=>hint.classList.remove('show'), 2400);
+  /* 1) Видео: автозапуск без звука */
+  async function playVideo() {
+    try { video.muted = true; await video.play(); } catch(e) {}
   }
+  playVideo();
+  video.addEventListener('canplay', () => { if (video.paused) video.play().catch(()=>{}); });
 
-  audio.volume = 0;
-
+  /* 2) Звук: только по клику на плашку; затем баннер сообщает и плавно исчезает */
   function fadeIn(target=1, step=0.03, interval=100){
-    let v = audio.volume;
+    let v = audio.volume || 0;
     const id = setInterval(()=>{
       v = Math.min(target, v + step);
       audio.volume = v;
@@ -154,28 +145,26 @@
     }, interval);
   }
 
-  async function startMedia(){
-    try { video.muted = true; await video.play(); } catch(e) {}
-    try { await audio.play(); fadeIn(); } catch(e) {}
-    if (!audio.paused) banner.classList.remove('clickable');
+  async function playAudio() {
+    try {
+      audio.volume = 0;
+      await audio.play();
+      fadeIn(1, 0.03, 100);
+      // меняем текст и мягко скрываем баннер
+      banner.innerHTML = '<div>Музыка включена ✅</div>';
+      banner.classList.remove('clickable');
+      setTimeout(()=> banner.classList.add('hide'), 800);
+    } catch(e) {
+      // если вдруг браузер не дал — оставим плашку кликабельной
+      banner.classList.add('clickable');
+    }
   }
 
-  startMedia().then(()=> {
-    if (audio.paused) {
-      banner.classList.add('clickable');
-      showHint('Тапни по баннеру, чтобы включить звук');
-    }
+  banner.classList.add('clickable');
+  banner.addEventListener('click', playAudio);
+  banner.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playAudio(); }
   });
-
-  const userKick = () => { startMedia(); };
-  banner.addEventListener('click', userKick);
-  banner.addEventListener('keydown', (ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); userKick(); }});
-  document.addEventListener('pointerdown', userKick, { once:true });
-  document.addEventListener('touchend',   userKick, { once:true });
-  document.addEventListener('keydown',    userKick, { once:true });
-
-  video.addEventListener('canplay', ()=> { if (video.paused) { video.play().catch(()=>{}); } });
-
 })();
 </script>
 </body>
