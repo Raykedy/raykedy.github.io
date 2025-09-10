@@ -108,8 +108,11 @@
   <!-- КНОПКИ -->
   <section class="cta-wrap" aria-label="Площадки книги">
     <div class="cta-list">
-      <a class="cta disabled">Amazon — скоро</a>
-      <a class="cta disabled">Google Books — скоро</a>
+      <!-- ЗАМЕНА: Вместо Amazon/Google -->
+      <a class="cta" href="buy.html">Купить</a>
+      <a class="cta" href="read.html">Читать</a>
+
+      <!-- Остальные ссылки без изменений -->
       <a class="cta disabled">Mirror — скоро</a>
       <a class="cta" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Telegram</a>
       <a class="cta" href="https://bastyon.com/raykedy" target="_blank" rel="noopener">Bastyon</a>
@@ -130,7 +133,6 @@
 
   /* --- ВИДЕО: один аккуратный автозапуск без перезагрузок источника --- */
   function ensureVideoProps(){
-    // Некоторые браузеры требуют именно свойства, не только атрибуты
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
@@ -139,11 +141,10 @@
   ensureVideoProps();
 
   async function tryPlayVideo(){
-    try { await video.play(); } catch(e) { /* ок, просто оставим попытку на user-gesture */ }
+    try { await video.play(); } catch(e) { /* user-gesture позже */ }
   }
   tryPlayVideo();
 
-  // Если вкладка была в бэкграунде/видео не стартануло — при первом взаимодействии просто play(), без load()
   const kickVideoOnce = () => { ensureVideoProps(); video.play().catch(()=>{}); cleanup(); };
   function cleanup(){
     document.removeEventListener('pointerdown', kickVideoOnce, { passive:true });
@@ -152,13 +153,10 @@
   }
   document.addEventListener('pointerdown', kickVideoOnce, { passive:true });
   document.addEventListener('keydown',   kickVideoOnce);
-  // клик по баннеру тоже подстрахует видео (но не трогаем src)
   banner.addEventListener('click', kickVideoOnce);
 
-  // Если браузер сам сообщил, что можно играть — просто дернём play ещё раз
   video.addEventListener('canplay', () => { if (video.paused) video.play().catch(()=>{}); });
 
-  // На случай, если кто-то поставит паузу — при возврате на вкладку попробуем продолжить
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && video.paused) {
       ensureVideoProps();
@@ -166,7 +164,7 @@
     }
   });
 
-  /* --- АУДИО: только по клику на плашку; видео не трогаем --- */
+  /* --- АУДИО: только по клику на плашку --- */
   function fadeIn(target=1, step=0.03, interval=100){
     let v = audio.volume || 0;
     const id = setInterval(()=>{
@@ -185,7 +183,6 @@
       banner.classList.remove('clickable');
       setTimeout(()=> banner.classList.add('hide'), 800);
     } catch(e) {
-      // Если браузер не дал — оставим кликабельной
       banner.classList.add('clickable');
     }
   }
