@@ -21,9 +21,8 @@
   #bgVideo{
     position:fixed; inset:0; width:100%; height:100%;
     object-fit:cover; z-index:0; pointer-events:none; background:#000;
-    opacity: 0; transition: opacity .4s ease; /* плавное проявление */
+    /* ВАЖНО: видео видно сразу, без затемнения/классов .ready */
   }
-  #bgVideo.ready { opacity: 1; }
 
   /* Верхняя плашка (кнопка включения музыки) */
   .fixed-line-top{
@@ -86,8 +85,8 @@
 <body>
 
 <!-- ВИДЕОФОН -->
-<video id="bgVideo" autoplay muted playsinline loop preload="metadata">
-  <!-- WebM для Firefox/Chrome (если файл ещё не залит, браузер упадёт на следующий source) -->
+<video id="bgVideo" autoplay muted playsinline loop preload="auto" crossorigin="anonymous">
+  <!-- WebM для Firefox/Chrome (если файла нет — браузер возьмёт MP4 ниже) -->
   <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.webm?v=1" type="video/webm">
   <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
 </video>
@@ -145,17 +144,21 @@
   }
   ensureVideoProps();
 
-  // Отметить готовность и проявить фон
-  function markReady(){ video.classList.add('ready'); }
-  video.addEventListener('playing', markReady, { once:true });
-
   // Первая попытка автозапуска
   (async () => { try { await video.play(); } catch(e) {} })();
 
-  // Если кадр загружен, но не играет — подстрахуем
+  // Если кадр загружен — подстрахуем запуск
   video.addEventListener('loadeddata', () => {
+    // Небольшой «тычок» в таймлайн иногда помогает FF отрисовать кадр
+    if (video.currentTime === 0) {
+      try { video.currentTime = 0.001; } catch(_) {}
+    }
     if (video.paused) video.play().catch(()=>{});
   });
+
+  // Когда можно играть — пробуем ещё раз
+  video.addEventListener('canplay', () => { if (video.paused) video.play().catch(()=>{}); });
+  video.addEventListener('canplaythrough', () => { if (video.paused) video.play().catch(()=>{}); });
 
   // Ретрай по первому взаимодействию пользователя
   const kickVideoOnce = () => { ensureVideoProps(); video.play().catch(()=>{}); cleanup(); };
@@ -167,9 +170,6 @@
   document.addEventListener('pointerdown', kickVideoOnce, { passive:true });
   document.addEventListener('keydown',   kickVideoOnce);
   banner.addEventListener('click',       kickVideoOnce);
-
-  // Когда браузер сказал canplay — дернём play ещё раз
-  video.addEventListener('canplay', () => { if (video.paused) video.play().catch(()=>{}); });
 
   // Возврат на вкладку — ещё одна попытка
   document.addEventListener('visibilitychange', () => {
