@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2051: Алгоритм Пробуждение — Читать</title>
+  <meta name="description" content="Официальная страница чтения книги «2051: Алгоритм Пробуждение». Подписка на платные каналы: Telegram и Bastyon." />
+  <meta property="og:title" content="2051: Алгоритм Пробуждение — Читать" />
+  <meta property="og:description" content="Подписка на платные каналы: Telegram и Bastyon." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/cover_og.jpg" />
+  <meta name="theme-color" content="#0ea15a" />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root{
+      --bg:#0b0f12;
+      --card:#11171c;
+      --fg:#e7f2ec;
+      --muted:#9fb4aa;
+      --accent:#0ea15a;
+      --accent-2:#ff6a00;
+      --border:#1b252c;
+      --radius: 18px;
+      --max: 980px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family: system-ui, Arial, sans-serif; line-height:1.55;
+      display:flex; align-items:center; justify-content:center; padding:32px;
+    }
+    .wrap{ width:100%; max-width:var(--max); }
+    header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
+    .brand{ text-decoration:none; color:var(--fg); font-weight:700; font-size:18px; }
+    .back{ color:var(--muted); text-decoration:none; font-size:14px; }
+    .card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; }
+    .hero h2{ font-size:28px; margin:0 0 10px; color:var(--accent-2); }
+    .hero p{ margin:0 0 20px; color:var(--muted); }
+    .buttons{ display:grid; gap:14px; }
+    .btn{
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      text-decoration:none; font-weight:700; padding:14px; border-radius:12px;
+      transition: all .15s ease; border:1px solid var(--border);
+    }
+    .btn:hover{ transform: translateY(-2px); }
+    .btn-telegram{ background:#d8f0ff; color:#0b2a3d; }
+    .btn-bastyon{ background:#ffe6d3; color:#3d1b00; }
+    footer{ margin-top:22px; color:var(--muted); font-size:12px; text-align:center }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <a class="brand" href="/">2051: Алгоритм Пробуждение</a>
+      <a class="back" href="/">← На главную</a>
+    </header>
+
+    <section class="card">
+      <div class="hero">
+        <h2>Читать книгу по подписке</h2>
+        <p>Выбери платформу и получи доступ к главам и обновлениям:</p>
+        <div class="buttons">
+          <!-- ВСТАВЬ СВОИ ССЫЛКИ НИЖЕ -->
+          <a class="btn btn-telegram" href="https://t.me/your_channel" target="_blank">
+            Подписка в Telegram
+          </a>
+          <a class="btn btn-bastyon" href="https://bastyon.com/your_page" target="_blank">
+            Подписка в Bastyon
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="y"></span> Ray Kedy • Официальный хаб
+    </footer>
+  </main>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
