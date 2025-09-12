@@ -34,10 +34,10 @@
       display:flex; justify-content:center; align-items:flex-start;
       min-height:100vh;
       padding:32px;
-      padding-top:90px;
+      padding-top:60px; /* подтянул выше */
       text-rendering:optimizeLegibility;
     }
-    .wrap{width:100%; max-width:var(--max); text-align:center;} /* весь текст центр */
+    .wrap{width:100%; max-width:var(--max); text-align:center;}
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 60%), var(--card);
       border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
@@ -48,10 +48,10 @@
       background:linear-gradient(90deg, var(--accent-2), var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;
     }
     .hero p{
-      margin:0 auto; 
+      margin:0 auto;
       color:var(--muted);
       font-size: clamp(15px, 4vw, 18px);
-      max-width:600px; /* ограничиваем ширину, чтобы пропорционально распределялось */
+      max-width:600px;
     }
     .buttons{display:grid; gap:14px; margin-top:12px; width:100%;}
     @media (min-width:700px){.buttons{grid-template-columns:1fr 1fr;}}
@@ -69,14 +69,14 @@
     .btn:active{transform:translateY(0) scale(.99)}
     .faq h3{margin:.8rem 0 .6rem; font-size:18px}
     .faq p{margin:.2rem 0 .9rem}
-    aside{ text-align:center; } 
+    aside{ text-align:center; }
     .note{margin-top:18px; font-size:13px; color:#a7b8b0; border-top:1px dashed var(--border); padding-top:14px;}
     footer{margin-top:22px; color:var(--muted); font-size:12px; text-align:center}
     .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--border);
       background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700; letter-spacing:.3px;}
     .divider{height:1px; background:var(--border); margin:16px 0}
     @media (max-width:480px){
-      body{padding:18px; padding-top:100px;}
+      body{padding:18px; padding-top:70px;} /* тоже подтянул выше на мобилке */
       .card{padding:20px 16px;}
       .hero h2{font-size:28px;}
       .hero p{font-size:15px;}
