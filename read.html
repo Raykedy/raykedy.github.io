@@ -39,15 +39,32 @@
     /* Контент поверх видео */
     .wrap{width:100%; max-width:var(--max); text-align:center; position:relative; z-index:1;}
 
-    /* Полупрозрачная карточка */
+    /* Полупрозрачная карточка со свечением */
     .card{
-      background:rgba(17,23,28,.45); /* прозрачность 45% */
+      background:rgba(17,23,28,.45);
       border:1px solid var(--border);
       border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(14px); /* чуть больше размытие */
+      box-shadow:
+        0 0 20px rgba(14,161,90,.25),  /* мягкое зелёное свечение */
+        0 0 40px rgba(255,106,0,.15),  /* лёгкий оранжевый ореол */
+        var(--shadow);
+      backdrop-filter:blur(14px);
       padding:clamp(24px,3.5vw,40px);
       margin-top:clamp(-70px, -30px, -20px);
+      position:relative;
+      overflow:hidden;
+    }
+    /* Тонкий градиент по краям */
+    .card::before{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:inherit;
+      padding:2px;
+      background:linear-gradient(120deg, rgba(14,161,90,.4), rgba(255,106,0,.35));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
     }
 
     .hero h2{
@@ -86,7 +103,7 @@
 </head>
 <body>
 
-  <!-- Тот же источник, что на главной -->
+  <!-- Видео как на главной -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
     <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
   </video>
