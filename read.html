@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
   <title>2051: Алгоритм Пробуждение — Читать</title>
   <meta name="description" content="Официальная страница чтения книги «2051: Алгоритм Пробуждение». Подписка на платные каналы: Telegram и Bastyon." />
@@ -34,7 +34,8 @@
       display:flex; justify-content:center; align-items:flex-start;
       min-height:100vh;
       padding:24px;
-      padding-top:0; /* убрали стандартный отступ */
+      /* базовый безопасный верхний отступ (учитывает разные браузеры) */
+      padding-top: calc(env(safe-area-inset-top, 0px));
       text-rendering:optimizeLegibility;
     }
     .wrap{width:100%; max-width:var(--max); text-align:center;}
@@ -42,6 +43,13 @@
       background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 60%), var(--card);
       border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
       padding: clamp(24px, 3.5vw, 40px);
+      /* поднимем карточку: -50px, но скорректируем под safe-area
+         и зажмём диапазон, чтобы в Chrome/Firefox не «улетало» */
+      margin-top: clamp(-70px, calc(-50px + env(safe-area-inset-top, 0px)), -20px);
+    }
+    @media (min-width:900px){
+      /* на десктопе обычно панели нет — поднимем чуть меньше */
+      .card{ margin-top: -30px; }
     }
     .hero h2{
       font-size: clamp(26px, 5vw, 40px); line-height:1.15; margin:6px 0 10px; font-weight:800;
@@ -76,7 +84,7 @@
       background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700; letter-spacing:.3px;}
     .divider{height:1px; background:var(--border); margin:16px 0}
     @media (max-width:480px){
-      body{padding:16px; padding-top:0;} 
+      body{padding:16px; padding-top: calc(env(safe-area-inset-top, 0px));}
       .card{padding:20px 16px;}
       .hero h2{font-size:28px;}
       .hero p{font-size:15px;}
@@ -87,8 +95,7 @@
 </head>
 <body>
   <main class="wrap">
-    <!-- подняли весь блок на 50px вверх -->
-    <section class="card" style="margin-top:-50px;">
+    <section class="card">
       <div class="hero">
         <span class="chip">Официальное чтение</span>
         <h2>Читать книгу по подписке</h2>
@@ -120,7 +127,9 @@
 
     <footer>© <span id="y"></span> Ray Kedy • Официальный хаб</footer>
   </main>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
 
