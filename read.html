@@ -34,7 +34,7 @@
       display:flex; justify-content:center; align-items:flex-start;
       min-height:100vh;
       padding:24px;
-      padding-top:0; /* полностью убрали отступ */
+      padding-top:0; /* убрали стандартный отступ */
       text-rendering:optimizeLegibility;
     }
     .wrap{width:100%; max-width:var(--max); text-align:center;}
@@ -76,7 +76,7 @@
       background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700; letter-spacing:.3px;}
     .divider{height:1px; background:var(--border); margin:16px 0}
     @media (max-width:480px){
-      body{padding:16px; padding-top:0;} /* убрали и на мобилке */
+      body{padding:16px; padding-top:0;} 
       .card{padding:20px 16px;}
       .hero h2{font-size:28px;}
       .hero p{font-size:15px;}
@@ -87,7 +87,8 @@
 </head>
 <body>
   <main class="wrap">
-    <section class="card">
+    <!-- подняли весь блок на 50px вверх -->
+    <section class="card" style="margin-top:-50px;">
       <div class="hero">
         <span class="chip">Официальное чтение</span>
         <h2>Читать книгу по подписке</h2>
