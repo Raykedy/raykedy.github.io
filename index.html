@@ -3,241 +3,182 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Купить книгу 2051: Алгоритм Пробуждение — Рэй Кеди</title>
-<meta name="description" content="Официальная страница книги Рэй Кеди «2051: Алгоритм Пробуждение». Купить онлайн: Amazon KDP, Google Книги, ЛитРес. Научная фантастика, киберпанк, философия.">
-<meta name="keywords" content="купить книгу 2051 Алгоритм Пробуждение, Рэй Кеди, научная фантастика, киберпанк, философский роман">
-
-<meta property="og:title" content="Купить книгу 2051: Алгоритм Пробуждение — Рэй Кеди">
-<meta property="og:description" content="Официальный хаб раздачи. Купить онлайн: Amazon KDP, Google Книги, ЛитРес.">
+<title>2051: Алгоритм Пробуждение — Рэй Кеди</title>
+<meta name="description" content="Официальная страница книги Рэй Кеди «2051: Алгоритм Пробуждение».">
+<meta property="og:title" content="2051: Алгоритм Пробуждение — Рэй Кеди">
+<meta property="og:description" content="Официальный хаб. Telegram, соцсети, покупка, Web3.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://raykedy.github.io/">
+<meta property="og:url" content="https://raykedy.com/">
 
 <style>
-  html, body { height: 100%; margin: 0; background: #000; overflow: hidden; font-family: Arial, sans-serif; }
-  #bgVideo { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; background: #000; }
-  .content { position: relative; z-index: 1; color: #fff; text-align: center; top: 32%; padding: 0 16px; }
-  h1 { margin: 0 0 12px; font-size: 3rem; }
-  p  { margin: 0 auto; max-width: 680px; font-size: 1.2rem; opacity: .9; }
+  html { min-height:100%; background:#000; }
+  body {
+    margin:0; min-height:100%; background:#000; color:#fff;
+    font-family: Arial, sans-serif; overflow-y:auto;
+  }
+
+  #bgVideo{
+    position:fixed; inset:0; width:100%; height:100%;
+    object-fit:cover; z-index:0; pointer-events:none; background:#000;
+  }
 
   .fixed-line-top{
-    position: fixed;
-    top: calc(8px + env(safe-area-inset-top));
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    color: #ffcc66;
-    background: rgba(0,0,0,0.45);
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-align: center;
-    max-width: calc(100% - 24px);
-    font-size: 1.05rem;
-    line-height: 1.3;
-    box-shadow: 0 2px 10px rgba(0,0,0,.35);
-    transition: box-shadow .25s ease, transform .15s ease, opacity .25s ease;
+    position:fixed; top:calc(8px + env(safe-area-inset-top)); left:50%; transform:translateX(-50%);
+    z-index:3; color:#ffcc66; background:rgba(0,0,0,.45);
+    padding:10px 16px; border-radius:12px; text-align:center;
+    max-width:calc(100% - 24px); font-size:1.05rem; line-height:1.3;
+    box-shadow:0 2px 10px rgba(0,0,0,.35);
   }
-  .fixed-line-top div { white-space: normal; }
-  .clickable { cursor: pointer; box-shadow: 0 0 0 0 rgba(255,102,0,.75); animation: pulse 1.4s ease-in-out infinite; }
-  .clickable:active { transform: translateX(-50%) scale(0.98); }
-  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(255,102,0,.65);}70%{box-shadow:0 0 0 14px rgba(255,102,0,0);}100%{box-shadow:0 0 0 0 rgba(255,102,0,0);} }
-
+  .clickable{
+    cursor:pointer;
+    box-shadow:0 0 0 0 rgba(255,140,0,.7);
+    animation:pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(255,140,0,.7);}
+    70%{ box-shadow:0 0 0 14px rgba(255,140,0,0);}
+    100%{ box-shadow:0 0 0 0 rgba(255,140,0,0);}
+  }
   .hint{
-    position: fixed; left: 50%; bottom: calc(60px + env(safe-area-inset-bottom)); transform: translateX(-50%);
-    color:#bbb; font-size:.95rem; text-align:center; z-index: 3;
-    padding:8px 14px; background:rgba(0,0,0,.4); border-radius:8px;
-    pointer-events:none; opacity:0; transition:opacity .35s ease;
+    position:fixed; left:50%; bottom:calc(64px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+    color:#ddd; font-size:.95rem; text-align:center; z-index:3;
+    padding:8px 14px; background:rgba(0,0,0,.45); border-radius:8px;
+    opacity:0; transition:opacity .25s ease;
   }
   .hint.show{ opacity:1; }
 
-  .cta-wrap{
-    position: fixed;
-    left: 50%; bottom: calc(18px + env(safe-area-inset-bottom));
-    transform: translateX(-50%);
-    z-index: 2;
-    width: min(980px, calc(100% - 24px));
+  .page {
+    position:relative; z-index:1; display:flex; flex-direction:column;
+    min-height:100vh; padding: 28vh 16px 12vh; box-sizing:border-box;
   }
-  .cta-row{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
+
+  .hero { text-align:center; margin: 0 auto 28px; max-width: 900px; }
+  .hero h1 { margin:0 0 12px; font-size: 3rem; line-height:1.05; }
+  .hero p  { margin:0 auto; max-width: 680px; font-size:1.2rem; opacity:.9; }
+
+  .cta-wrap { width:min(440px,96%); margin:0 auto; }
+  .cta-list { display:grid; grid-template-columns:1fr; gap:12px; }
   .cta{
-    display: flex; align-items: center; justify-content: center;
-    min-height: 58px; padding: 0 16px;
-    border-radius: 16px;
-    background: rgba(5,15,20,.45);
-    color: #e9faff; text-decoration: none; font-weight: 800; letter-spacing: .2px;
-    border: 1px solid rgba(180,240,255,.35);
-    backdrop-filter: blur(4px);
+    display:flex; align-items:center; justify-content:center;
+    min-height:52px; padding:0 16px; border-radius:14px;
+    background:rgba(5,15,20,.45); color:#e9faff; text-decoration:none; font-weight:700;
+    border:1px solid rgba(180,240,255,.35); backdrop-filter: blur(4px);
     box-shadow: inset 0 0 12px rgba(120,220,255,.18), 0 6px 18px rgba(0,0,0,.35);
     text-shadow: 0 0 10px rgba(160,240,255,.5);
-    transition: transform .15s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease, filter .25s ease;
+    transition: transform .15s ease, filter .25s ease;
   }
-  .cta:hover{ transform: translateY(-2px); box-shadow: inset 0 0 14px rgba(160,240,255,.28), 0 10px 24px rgba(0,0,0,.45); filter: brightness(1.08); }
-  .cta:active{ transform: translateY(0); }
-  .cta:focus-visible{ outline: 2px solid #66d9ff; outline-offset: 3px; }
+  .cta:hover{ transform:translateY(-2px); filter:brightness(1.08); }
+  .cta.disabled{ pointer-events:none; opacity:.55; filter:grayscale(.3); }
 
-  .cta.kdp    { border-color: rgba(255,161,64,.45);  text-shadow: 0 0 12px rgba(255,161,64,.5); }
-  .cta.google { border-color: rgba(66,133,244,.45);  text-shadow: 0 0 12px rgba(66,133,244,.5); }
-  .cta.litres { border-color: rgba(255,80,60,.45);   text-shadow: 0 0 12px rgba(255,80,60,.55); }
-
-  @media (max-width: 820px){ .content{ top: 30%; } }
   @media (max-width: 600px){
-    h1{font-size:2.2rem;} .content p{font-size:1rem;}
-    .fixed-line-top{font-size:.95rem; padding:6px 10px;}
-    .cta-row{ grid-template-columns: 1fr; }
-    .cta{ min-height: 52px; }
-    .content{ top: 28%; }
+    .page{ padding-top: 26vh; }
+    .hero h1{ font-size:2.2rem; }
+    .hero p { font-size:1.05rem; }
   }
   @media (max-width: 380px){
-    h1{font-size:1.9rem;}
-    .fixed-line-top{font-size:.9rem; padding:6px 8px;}
-    .content{ top: 26%; }
+    .page{ padding-top: 24vh; }
+    .hero h1{ font-size:1.9rem; }
+    .hero p { font-size:.98rem; }
   }
 </style>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Book",
-  "name": "2051: Алгоритм Пробуждение",
-  "author": { "@type": "Person", "name": "Рэй Кеди" },
-  "inLanguage": "ru",
-  "description": "Научная фантастика/киберпанк. Официальная страница: купить книгу «2051: Алгоритм Пробуждение» — Рэй Кеди.",
-  "genre": ["Научная фантастика", "Киберпанк", "Философский роман"],
-  "offers": [{
-    "@type": "Offer",
-    "url": "https://kdp.amazon.com/",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/PreOrder"
-  },{
-    "@type": "Offer",
-    "url": "https://books.google.com/",
-    "priceCurrency": "USD",
-    "availability": "https://schema.org/PreOrder"
-  },{
-    "@type": "Offer",
-    "url": "https://www.litres.ru/",
-    "priceCurrency": "RUB",
-    "availability": "https://schema.org/PreOrder"
-  }]
-}
-</script>
 </head>
 <body>
 
-<!-- Скрытый SEO-блок -->
-<div style="display:none;">
-Купить книгу «2051: Алгоритм Пробуждение» — автор Рэй Кеди. Купить онлайн на Amazon KDP, Google Книги, ЛитРес.
-2051 Алгоритм Пробуждение — научная фантастика, киберпанк, философия. Скачать электронную книгу и читать онлайн.
-</div>
-
-<!-- ФОНОВОЕ ВИДЕО (НОВЫЙ ФАЙЛ) -->
 <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-  <!-- URL-кодировка кириллицы и пробела; оставил ?v=4 для сброса кэша -->
   <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
 </video>
 
-<!-- МУЗЫКА -->
 <audio id="bgMusic" preload="auto" loop>
   <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
 </audio>
 
-<!-- Верхний баннер (кнопка запуска при блокировке) -->
-<div id="topBanner" class="fixed-line-top" aria-live="polite" role="button" tabindex="0">
+<div id="topBanner" class="fixed-line-top clickable" role="button" tabindex="0" aria-label="Включить звук и видео">
   <div>Официальный хаб раздачи.</div>
   <div>Скачать книгу можно здесь.</div>
 </div>
-
-<!-- Центральный текст -->
-<div class="content">
-  <h1>2051: Алгоритм Пробуждение</h1>
-  <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
-</div>
-
-<!-- Три баннера-кнопки -->
-<div class="cta-wrap" aria-label="Площадки книги">
-  <div class="cta-row">
-    <a class="cta kdp"    href="https://kdp.amazon.com/"   target="_blank" rel="noopener">Amazon KDP</a>
-    <a class="cta google" href="https://books.google.com/" target="_blank" rel="noopener">Google&nbsp;Книги</a>
-    <a class="cta litres" href="https://www.litres.ru/"    target="_blank" rel="noopener">ЛитРес</a>
-  </div>
-</div>
-
 <div id="hint" class="hint"></div>
 
+<main class="page">
+
+  <section class="hero">
+    <h1>2051: Алгоритм Пробуждение</h1>
+    <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
+  </section>
+
+  <section class="cta-wrap" aria-label="Площадки книги">
+    <div class="cta-list">
+      <!-- 1. Amazon -->
+      <a class="cta disabled">Amazon — скоро</a>
+      <!-- 2. Google -->
+      <a class="cta disabled">Google Books — скоро</a>
+      <!-- 3. Mirror -->
+      <a class="cta disabled">Mirror — скоро</a>
+      <!-- 4. Telegram -->
+      <a class="cta" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Telegram</a>
+      <!-- 5. Bastyon -->
+      <a class="cta" href="https://bastyon.com/raykedy" target="_blank" rel="noopener">Bastyon</a>
+      <!-- 6. YouTube -->
+      <a class="cta" href="https://youtube.com/@raykedy?si=zV6cvntxmkS8sNbw" target="_blank" rel="noopener">YouTube</a>
+      <!-- 7. TikTok -->
+      <a class="cta" href="https://www.tiktok.com/@raykedy1" target="_blank" rel="noopener">TikTok</a>
+      <!-- 8. Отправить сообщение -->
+      <a class="cta" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">Отправить сообщение</a>
+    </div>
+  </section>
+
+  <div style="height:12vh;"></div>
+</main>
+
 <script>
-(async function () {
-  const video   = document.getElementById('bgVideo');
-  const audio   = document.getElementById('bgMusic');
-  const banner  = document.getElementById('topBanner');
-  const hint    = document.getElementById('hint');
+(function () {
+  const video  = document.getElementById('bgVideo');
+  const audio  = document.getElementById('bgMusic');
+  const banner = document.getElementById('topBanner');
+  const hint   = document.getElementById('hint');
 
-  const ua = navigator.userAgent;
-  const isFirefox = /firefox/i.test(ua);
-  const isAndroidChrome = /Android/i.test(ua) && /Chrome/i.test(ua);
-
-  audio.volume = 0;
-
-  const showHint = (msg) => {
+  function showHint(msg){
     hint.textContent = msg;
     hint.classList.add('show');
     clearTimeout(showHint._t);
-    showHint._t = setTimeout(() => hint.classList.remove('show'), 3500);
-  };
+    showHint._t = setTimeout(()=>hint.classList.remove('show'), 2400);
+  }
 
-  const fadeInAudio = (target=1, step=0.02, ms=100) => {
+  audio.volume = 0;
+
+  function fadeIn(target=1, step=0.03, interval=100){
     let v = audio.volume;
-    const id = setInterval(() => {
+    const id = setInterval(()=>{
       v = Math.min(target, v + step);
       audio.volume = v;
       if (v >= target) clearInterval(id);
-    }, ms);
-  };
+    }, interval);
+  }
 
-  async function startFromBanner() {
-    banner.classList.remove('clickable');
+  async function startMedia(){
     try { video.muted = true; await video.play(); } catch(e) {}
-    try { await audio.play(); fadeInAudio(1,0.02,100); }
-    catch (e) { showHint('Разреши звук в браузере и нажми ещё раз'); banner.classList.add('clickable'); }
+    try { await audio.play(); fadeIn(); } catch(e) {}
+    if (!audio.paused) banner.classList.remove('clickable');
   }
 
-  if (!isFirefox) {
-    try {
-      await video.play();
-      try { await audio.play(); fadeInAudio(1,0.02,100); }
-      catch (e) {
-        showHint('Нажми баннер, чтобы включить звук');
-        banner.classList.add('clickable');
-        banner.addEventListener('click', startFromBanner);
-        banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }});
-      }
-    } catch (e) {
+  startMedia().then(()=> {
+    if (audio.paused) {
       banner.classList.add('clickable');
-      banner.addEventListener('click', startFromBanner);
-      banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }});
+      showHint('Тапни по баннеру, чтобы включить звук');
     }
+  });
 
-    setTimeout(() => {
-      const audioStuck = audio.paused || audio.currentTime === 0 || audio.volume < 0.01;
-      if (isAndroidChrome && audioStuck) {
-        banner.classList.add('clickable');
-        showHint('Тапни по баннеру, чтобы включить звук');
-        banner.addEventListener('click', startFromBanner, { once:true });
-        banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }}, { once:true });
-      }
-    }, 1200);
+  const userKick = () => { startMedia(); };
+  banner.addEventListener('click', userKick);
+  banner.addEventListener('keydown', (ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); userKick(); }});
+  document.addEventListener('pointerdown', userKick, { once:true });
+  document.addEventListener('touchend',   userKick, { once:true });
+  document.addEventListener('keydown',    userKick, { once:true });
 
-  } else {
-    banner.classList.add('clickable');
-    banner.addEventListener('click', startFromBanner);
-    banner.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); startFromBanner(); }});
-  }
+  video.addEventListener('canplay', ()=> { if (video.paused) { video.play().catch(()=>{}); } });
 
-  video.addEventListener('error', () => showHint('Ошибка видео: проверь ссылку или имя файла'));
-  audio.addEventListener('error', () => showHint('Ошибка аудио: проверь ссылку на mp3'));
 })();
 </script>
 </body>
 </html>
+
 
