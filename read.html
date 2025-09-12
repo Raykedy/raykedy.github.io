@@ -19,55 +19,169 @@
       --muted:#9fb4aa;
       --accent:#0ea15a;
       --accent-2:#ff6a00;
+      --accent-2b:#ff7f22;
       --border:#1b252c;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 18px;
       --max: 980px;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin:0; background:var(--bg); color:var(--fg);
-      font-family: system-ui, Arial, sans-serif; line-height:1.55;
+      margin:0; background: radial-gradient(1200px 600px at 80% -10%, rgba(14,161,90,.08), transparent 60%),
+                        radial-gradient(900px 500px at 10% 110%, rgba(255,106,0,.08), transparent 60%),
+                        var(--bg);
+      color:var(--fg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      line-height:1.55; letter-spacing:.2px;
       display:flex; align-items:center; justify-content:center; padding:32px;
     }
     .wrap{ width:100%; max-width:var(--max); }
-    header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
-    .brand{ text-decoration:none; color:var(--fg); font-weight:700; font-size:18px; }
-    .back{ color:var(--muted); text-decoration:none; font-size:14px; }
-    .card{ background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; }
-    .hero h2{ font-size:28px; margin:0 0 10px; color:var(--accent-2); }
-    .hero p{ margin:0 0 20px; color:var(--muted); }
-    .buttons{ display:grid; gap:14px; }
-    .btn{
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      text-decoration:none; font-weight:700; padding:14px; border-radius:12px;
-      transition: all .15s ease; border:1px solid var(--border);
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px;
     }
-    .btn:hover{ transform: translateY(-2px); }
-    .btn-telegram{ background:#d8f0ff; color:#0b2a3d; }
-    .btn-bastyon{ background:#ffe6d3; color:#3d1b00; }
+    .brand{
+      display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--fg);
+    }
+    .logo{
+      width:42px; height:42px; border-radius:50%;
+      background: conic-gradient(from 180deg, var(--accent), var(--accent-2), var(--accent));
+      box-shadow: inset 0 0 18px rgba(255,255,255,.15), 0 6px 18px rgba(14,161,90,.25);
+    }
+    .brand h1{ font-size:18px; margin:0; letter-spacing:.4px; font-weight:700 }
+    .back{
+      color:var(--muted); text-decoration:none; font-size:14px; border:1px solid var(--border);
+      padding:8px 12px; border-radius:12px;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 60%), var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 2.5vw, 28px);
+    }
+    .hero{
+      display:grid; grid-template-columns: 1fr; gap:18px; margin-bottom:18px;
+      text-align:center;        /* центрируем текст */
+      justify-items:center;     /* центрируем кнопки */
+    }
+    .hero h2{
+      font-size: clamp(22px, 3.6vw, 38px);
+      line-height:1.15; margin:0 0 6px 0; font-weight:800;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero p{ margin:0; color:var(--muted); font-size: clamp(14px, 2vw, 16px) }
+    .buttons{
+      display:grid; grid-template-columns: 1fr; gap:14px; margin-top:8px;
+    }
+    @media (min-width: 700px){
+      .buttons{ grid-template-columns: 1fr 1fr; }
+    }
+    .btn{
+      display:flex; align-items:center; justify-content:center; gap:12px;
+      text-decoration:none; color:#0c1013; font-weight:800; letter-spacing:.3px;
+      background:var(--fg); padding:16px 18px; border-radius:16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.25); transition: transform .12s ease, box-shadow .12s ease;
+      border:1px solid rgba(255,255,255,.05)
+    }
+    .btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.32); }
+    .btn:active{ transform: translateY(0) scale(.99) }
+    .btn-telegram{
+      background: linear-gradient(180deg, #eaf6ff, #d8f0ff);
+      color:#0b2a3d; border-color:#b6dcff;
+    }
+    .btn-bastyon{
+      background: linear-gradient(180deg, #fff2e7, #ffe6d3);
+      color:#3d1b00; border-color:#ffd1b0;
+    }
+    .btn .icon{ width:22px; height:22px; }
+    .grid{
+      display:grid; grid-template-columns: 1fr; gap:18px; margin-top:18px;
+    }
+    @media (min-width: 900px){
+      .grid{ grid-template-columns: 1.2fr .8fr; }
+    }
+    .muted{ color:var(--muted) }
+    .faq h3{ margin:.2rem 0 .6rem; font-size:18px }
+    .faq p{ margin:.2rem 0 .9rem }
+    .note{
+      margin-top:18px; font-size:13px; color:#a7b8b0;
+      border-top:1px dashed var(--border); padding-top:14px;
+    }
     footer{ margin-top:22px; color:var(--muted); font-size:12px; text-align:center }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px; border:1px solid var(--border);
+      background: rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700; letter-spacing:.3px;
+    }
+    .divider{ height:1px; background:var(--border); margin:16px 0 }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: .95em; padding: 2px 6px; border:1px solid var(--border); border-bottom-color:#0a0f12;
+      border-radius:6px; background:#0d1318; color:#d9e7df;
+    }
   </style>
 </head>
 <body>
   <main class="wrap">
     <header>
-      <a class="brand" href="/">2051: Алгоритм Пробуждение</a>
+      <a class="brand" href="/" aria-label="Вернуться на главную">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>2051: Алгоритм Пробуждение</h1>
+      </a>
       <a class="back" href="/">← На главную</a>
     </header>
 
     <section class="card">
       <div class="hero">
-        <h2>Читать книгу по подписке</h2>
-        <p>Выбери платформу и получи доступ к главам и обновлениям:</p>
-        <div class="buttons">
-          <!-- ВСТАВЬ СВОИ ССЫЛКИ НИЖЕ -->
-          <a class="btn btn-telegram" href="https://t.me/your_channel" target="_blank">
-            Подписка в Telegram
-          </a>
-          <a class="btn btn-bastyon" href="https://bastyon.com/your_page" target="_blank">
-            Подписка в Bastyon
-          </a>
+        <div>
+          <span class="chip">Официальное чтение</span>
+          <h2>Читать книгу по подписке</h2>
+          <p>Выбери платформу. После оформления подписки все новые главы и обновления будут доступны в выбранном канале.</p>
+          <div class="buttons">
+            <!-- ВСТАВЬ СВОИ ССЫЛКИ НИЖЕ -->
+            <a class="btn btn-telegram" href="https://t.me/your_channel"
+               rel="noopener" target="_blank">
+              <svg class="icon" viewBox="0 0 240 240" aria-hidden="true">
+                <path d="M120 0a120 120 0 1 0 0 240 120 120 0 0 0 0-240Zm57 72-23 109c-2 8-7 10-14 6l-40-30-19 18c-2 2-4 3-6 3l2-36 67-61c3-3-1-4-5-1l-83 52-36-11c-8-2-8-8 2-12l140-54c6-2 11 1 9 7Z" fill="currentColor"/>
+              </svg>
+              Подписка в Telegram
+            </a>
+            <a class="btn btn-bastyon" href="https://bastyon.com/your_page"
+               rel="noopener" target="_blank">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2 2 7v10l10 5 10-5V7L12 2Zm0 2.2 7.5 3.7v4.1L12 16.9 4.5 12V7.9L12 4.2Z" fill="currentColor"/>
+              </svg>
+              Подписка в Bastyon
+            </a>
+          </div>
         </div>
+      </div>
+
+      <div class="grid">
+        <div class="faq">
+          <h3>Как это работает?</h3>
+          <p><strong>1.</strong> Нажимаешь на кнопку нужной платформы.</p>
+          <p><strong>2.</strong> Оформляешь подписку в канале.</p>
+          <p><strong>3.</strong> Получаешь доступ к главам и обновлениям. Уведомления приходят автоматически.</p>
+
+          <div class="divider"></div>
+
+          <h3>Что внутри подписки?</h3>
+          <p>Готовые главы, правки к финальной версии, визуальные материалы и короткие заметки из разработки проекта.</p>
+
+          <div class="divider"></div>
+
+          <h3>Если у меня нет Telegram/Bastyon?</h3>
+          <p>Выбери удобную платформу. Позже можно сменить канал — доступ сохранится по активной подписке.</p>
+        </div>
+
+        <aside class="muted">
+          <h3 style="margin:.2rem 0 .6rem;">Примечание</h3>
+          <p>Некоторый контент может выходить на платформы с разной задержкой из-за модерации. Рекомендуется подписаться в том канале, который удобнее лично тебе.</p>
+          <p class="note">Вопросы по оплате и доступу: <a href="mailto:contact@raykedy.com">contact@raykedy.com</a></p>
+          <p class="note">Нажимая на кнопку, ты переходишь на сторонний сервис и принимаешь его условия использования.</p>
+        </aside>
       </div>
     </section>
 
