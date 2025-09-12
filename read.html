@@ -28,17 +28,16 @@
       padding-top: calc(env(safe-area-inset-top, 0px));
       color:var(--fg);
     }
-    #bg-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      z-index: -1;
+    /* видео на весь экран */
+    #bg-video{
+      position:fixed; inset:0; width:100%; height:100%;
+      object-fit:cover; z-index:-1; background:#0b0f12;
     }
     .wrap{width:100%; max-width:800px; text-align:center;}
     .card{
-      background: rgba(17, 23, 28, 0.82);
+      background: rgba(17,23,28,.78);
       backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-radius:18px;
       box-shadow:0 10px 30px rgba(0,0,0,.4);
       padding: clamp(24px, 3.5vw, 40px);
@@ -98,9 +97,14 @@
   </style>
 </head>
 <body>
-  <!-- Видео-фон -->
-  <video autoplay muted loop playsinline id="bg-video">
+  <!-- ВИДЕО-ФОН -->
+  <video autoplay muted loop playsinline id="bg-video" poster="/assets/cover_og.jpg">
+    <!-- 1) видео как на главной -->
+    <source src="/vidhu555.mp4" type="video/mp4" />
+    <!-- 2) запасной вариант -->
     <source src="/assets/bg.mp4" type="video/mp4" />
+    <!-- 3) если файл с кириллицей -->
+    <source src="/%D0%92%D0%B8%D0%B4%D0%B5%D0%BE%20%D0%BD%D0%B0%20%D0%A5%D0%B0%D0%B1.mp4" type="video/mp4" />
   </video>
 
   <main class="wrap">
