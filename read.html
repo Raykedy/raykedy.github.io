@@ -1,196 +1,135 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Читать — 2051: Алгоритм Пробуждение</title>
-<meta name="description" content="Читай книгу «2051: Алгоритм Пробуждение». Официальная страница чтения." />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Читать — 2051: Алгоритм Пробуждение" />
-<meta property="og:description" content="Официальная страница чтения." />
-
-<style>
-  /* База */
-  * { box-sizing: border-box; }
-  html, body { height: 100%; margin: 0; }
-  body { background:#000; color:#fff; font-family: Arial, sans-serif; }
-
-  /* Слой видео */
-  .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; background:#000; }
-  .bg video {
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    min-width:100%; min-height:100%; width:auto; height:auto;
-    object-fit:cover; opacity:0; transition:opacity .8s ease;
-    background:#000;
-  }
-  .bg.is-ready video { opacity:1; }
-
-  /* Fallback (для случаев, когда видео не стартует) */
-  .bg .fallback {
-    position:absolute; inset:0; display:none;
-    background:#000 center/cover no-repeat;
-  }
-  .bg.is-fallback .fallback { display:block; }
-
-  /* Контент поверх видео */
-  .content {
-    position: relative; z-index: 1; min-height: 100vh;
-    display: grid; grid-template-rows: auto 1fr auto;
-  }
-  header, footer {
-    padding: 16px;
-    background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0));
-  }
-  footer {
-    background: linear-gradient(0deg, rgba(0,0,0,.55), rgba(0,0,0,0));
-  }
-  main {
-    display: grid; place-items: center; padding: 6vh 16px;
-  }
-  .reader {
-    width: min(900px, 92vw);
-    background: rgba(0,0,0,.45);
-    border: 1px solid rgba(255,255,255,.18);
-    border-radius: 16px;
-    backdrop-filter: blur(8px);
-    padding: 20px;
-  }
-  .title { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
-  .subtitle { margin: 0 0 16px; opacity: .9; }
-
-  /* Кнопки управления */
-  .controls {
-    position: fixed; right: 14px; bottom: 14px; z-index: 2; display:flex; gap:10px;
-  }
-  .chip {
-    padding:10px 14px; border-radius:999px;
-    border:1px solid rgba(255,255,255,.18);
-    background: rgba(0,0,0,.45);
-    backdrop-filter: blur(8px);
-    color:#fff; font-weight:600; cursor:pointer;
-  }
-  .chip[aria-pressed="true"] { outline: 2px solid rgba(255,255,255,.25); }
-
-  @media (max-width: 480px) {
-    .title { font-size: 22px; }
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>2051: Алгоритм Пробуждение — Читать</title>
+  <meta name="description" content="Официальная страница чтения книги «2051: Алгоритм Пробуждение». Подписка на платные каналы: Telegram и Bastyon." />
+  <meta property="og:title" content="2051: Алгоритм Пробуждение — Читать" />
+  <meta property="og:description" content="Подписка на платные каналы: Telegram и Bastyon." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/cover_og.jpg" />
+  <meta name="theme-color" content="#0ea15a" />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root{
+      --bg:#0b0f12; --card:#11171c; --fg:#e7f2ec; --muted:#9fb4aa;
+      --accent:#0ea15a; --accent-2:#ff6a00; --border:#1b252c;
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px; --max:800px;
+      --btn:#1e6eff; --btn-hover:#1656c7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{-webkit-text-size-adjust:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(14,161,90,.08), transparent 60%),
+        radial-gradient(900px 500px at 10% 110%, rgba(255,106,0,.08), transparent 60%),
+        var(--bg);
+      color:var(--fg);
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      line-height:1.55; letter-spacing:.2px;
+      display:flex; justify-content:center; align-items:flex-start;
+      min-height:100vh;
+      padding:24px;
+      /* базовый безопасный верхний отступ (учитывает разные браузеры) */
+      padding-top: calc(env(safe-area-inset-top, 0px));
+      text-rendering:optimizeLegibility;
+    }
+    .wrap{width:100%; max-width:var(--max); text-align:center;}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 60%), var(--card);
+      border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
+      padding: clamp(24px, 3.5vw, 40px);
+      /* поднимем карточку: -50px, но скорректируем под safe-area
+         и зажмём диапазон, чтобы в Chrome/Firefox не «улетало» */
+      margin-top: clamp(-70px, calc(-50px + env(safe-area-inset-top, 0px)), -20px);
+    }
+    @media (min-width:900px){
+      /* на десктопе обычно панели нет — поднимем чуть меньше */
+      .card{ margin-top: -30px; }
+    }
+    .hero h2{
+      font-size: clamp(26px, 5vw, 40px); line-height:1.15; margin:6px 0 10px; font-weight:800;
+      background:linear-gradient(90deg, var(--accent-2), var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero p{
+      margin:0 auto;
+      color:var(--muted);
+      font-size: clamp(15px, 4vw, 18px);
+      max-width:600px;
+    }
+    .buttons{display:grid; gap:14px; margin-top:12px; width:100%;}
+    @media (min-width:700px){.buttons{grid-template-columns:1fr 1fr;}}
+    .btn{
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; background:var(--btn); color:#fff;
+      font-weight:800; letter-spacing:.3px;
+      padding:16px 18px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 6px 16px rgba(0,0,0,.25);
+      transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+      width:100%;
+    }
+    .btn:hover{transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.32); background:var(--btn-hover);}
+    .btn:active{transform:translateY(0) scale(.99)}
+    .faq h3{margin:.8rem 0 .6rem; font-size:18px}
+    .faq p{margin:.2rem 0 .9rem}
+    aside{ text-align:center; }
+    .note{margin-top:18px; font-size:13px; color:#a7b8b0; border-top:1px dashed var(--border); padding-top:14px;}
+    footer{margin-top:22px; color:var(--muted); font-size:12px; text-align:center}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--border);
+      background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700; letter-spacing:.3px;}
+    .divider{height:1px; background:var(--border); margin:16px 0}
+    @media (max-width:480px){
+      body{padding:16px; padding-top: calc(env(safe-area-inset-top, 0px));}
+      .card{padding:20px 16px;}
+      .hero h2{font-size:28px;}
+      .hero p{font-size:15px;}
+      .faq h3{font-size:16px;}
+      .faq p{font-size:14px;}
+    }
+  </style>
 </head>
 <body>
-
-<!-- ВИДЕО-ФОН -->
-<div class="bg" id="bg">
-  <!-- ЗАМЕНИ ссылки ниже на свои (желательно хранить в этом же репо) -->
-  <video id="bgVideo" playsinline muted loop autoplay preload="auto"
-         poster="assets/read-fallback.jpg"><!-- ← poster: статический кадр -->
-    <source src="assets/read-bg.webm" type="video/webm" />
-    <source src="assets/read-bg.mp4"  type="video/mp4" />
-  </video>
-  <div class="fallback" id="bgFallback"
-       style="background-image:url('assets/read-fallback.jpg');"></div>
-</div>
-
-<!-- КОНТРОЛЫ -->
-<div class="controls">
-  <button class="chip" id="videoToggle" aria-pressed="false">Видео</button>
-  <button class="chip" id="muteToggle"  aria-pressed="true">Звук выкл</button>
-</div>
-
-<!-- СОДЕРЖИМОЕ СТРАНИЦЫ ЧТЕНИЯ -->
-<div class="content">
-  <header>
-    <strong>Официальный хаб · Читать</strong>
-  </header>
-
-  <main>
-    <article class="reader">
-      <h1 class="title">2051: Алгоритм Пробуждение</h1>
-      <p class="subtitle">Глава 1 (демо)</p>
-
-      <!-- Сюда поставим текст/встраивание чтения -->
-      <div id="chapter">
-        <p>Здесь будет текст главы / виджет чтения / ссылки на Telegram/Bastyon с доступом.</p>
-        <!-- Пример ссылки на Telegram-канал: -->
-        <p><a href="https://t.me/raykedy2051" target="_blank" rel="noopener">Открыть главы в Telegram</a></p>
+  <main class="wrap">
+    <section class="card">
+      <div class="hero">
+        <span class="chip">Официальное чтение</span>
+        <h2>Читать книгу по подписке</h2>
+        <p>Выберите платформу. После оформления подписки все новые главы и обновления будут доступны в выбранном канале.</p>
+        <div class="buttons">
+          <a class="btn" href="https://t.me/readme2051" rel="noopener" target="_blank">Подписка в Telegram</a>
+          <a class="btn" href="https://bastyon.com/raykedy?ref=PTnZ6KD5EfeFP9A1GqZjH9F6c6Mqyb9KFK" rel="noopener" target="_blank">Подписка в Bastyon</a>
+        </div>
       </div>
-    </article>
+
+      <div class="faq">
+        <h3>Как это работает?</h3>
+        <p><strong>1.</strong> Нажимаете на кнопку нужной платформы.</p>
+        <p><strong>2.</strong> Оформляете подписку в канале.</p>
+        <p><strong>3.</strong> Получаете доступ к главам и обновлениям. Уведомления приходят автоматически.</p>
+
+        <div class="divider"></div>
+
+        <h3>Что внутри подписки?</h3>
+        <p>Готовые главы, правки к финальной версии, визуальные материалы и короткие заметки из разработки проекта.</p>
+      </div>
+
+      <aside class="muted">
+        <h3 style="margin:.2rem 0 .6rem;">Примечание</h3>
+        <p>Некоторый контент может выходить на платформы с разной задержкой из-за модерации. Рекомендуется подписаться в том канале, который удобнее именно вам.</p>
+        <p class="note">Нажимая на кнопку, вы переходите на сторонний сервис и принимаете его условия использования.</p>
+      </aside>
+    </section>
+
+    <footer>© <span id="y"></span> Ray Kedy • Официальный хаб</footer>
   </main>
-
-  <footer>
-    © <span id="y"></span> Ray Kedy · raykedy.com
-  </footer>
-</div>
-
-<script>
-(function(){
-  const $ = id => document.getElementById(id);
-  const bg = $('bg');
-  const video = $('bgVideo');
-  const fallback = $('bgFallback');
-  const year = $('y');
-  const videoToggle = $('videoToggle');
-  const muteToggle  = $('muteToggle');
-
-  year && (year.textContent = new Date().getFullYear());
-
-  // Показать картинку, если видео не готово быстро/ошибка
-  const enableFallback = () => {
-    bg.classList.add('is-fallback');
-    bg.classList.remove('is-ready');
-  };
-
-  // Запуск видео (autoplay работает только с muted + playsinline)
-  async function primeVideo() {
-    if (!video) return enableFallback();
-    try {
-      // в ряде браузеров play() возвращает промис
-      const p = video.play();
-      if (p && typeof p.then === 'function') { await p; }
-      video.addEventListener('canplay', () => bg.classList.add('is-ready'), { once:true });
-
-      // таймаут, если буферизация затянулась (напр., Firefox)
-      setTimeout(() => {
-        if (!video.readyState || video.readyState < 2) enableFallback();
-      }, 1200);
-    } catch (e) {
-      enableFallback();
-    }
-  }
-
-  // Переключатель: скрыть/показать видео (оставляя фон-картинку)
-  function toggleVideo(){
-    const hidden = video.style.display === 'none';
-    if (hidden) {
-      video.style.display = '';
-      videoToggle.setAttribute('aria-pressed','false');
-      // пробуем снова
-      if (bg.classList.contains('is-fallback')) {
-        bg.classList.remove('is-fallback');
-        primeVideo();
-      }
-    } else {
-      video.style.display = 'none';
-      videoToggle.setAttribute('aria-pressed','true');
-    }
-  }
-
-  // Звук: по умолчанию выключен (muted=true). Если у видео есть аудиодорожка — можно включать.
-  function toggleMute(){
-    const willUnmute = video.muted; // если сейчас мутед, значит включим звук
-    video.muted = !willUnmute;
-    muteToggle.textContent = willUnmute ? 'Звук вкл' : 'Звук выкл';
-    muteToggle.setAttribute('aria-pressed', String(willUnmute));
-    // В некоторых браузерах после снятия mute нужно «пнуть» play():
-    if (!video.paused) { video.play().catch(()=>{}); }
-  }
-
-  videoToggle && videoToggle.addEventListener('click', toggleVideo);
-  muteToggle  && muteToggle.addEventListener('click', toggleMute);
-
-  // Старт
-  primeVideo();
-})();
-</script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
  
