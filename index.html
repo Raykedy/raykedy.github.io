@@ -1,165 +1,183 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>2051: Алгоритм Пробуждение</title>
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    background: #000;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-  }
-  #bgVideo {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    pointer-events: none;
-    background: #000;
-  }
-  .content {
-    position: relative;
-    z-index: 1;
-    color: #fff;
-    text-align: center;
-    top: 40%;
-    padding: 0 16px;
-  }
-  h1 { margin: 0 0 12px; font-size: 3rem; }
-  p  { margin: 0 auto; max-width: 680px; font-size: 1.2rem; opacity: .9; }
+<title>2051: Алгоритм Пробуждение — Рэй Кеди</title>
+<meta name="description" content="Официальная страница книги Рэй Кеди «2051: Алгоритм Пробуждение».">
+<meta property="og:title" content="2051: Алгоритм Пробуждение — Рэй Кеди">
+<meta property="og:description" content="Официальный хаб. Telegram, соцсети, покупка, Web3.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://raykedy.com/">
 
-  .fixed-line-top {
-    position: fixed;
-    top: calc(8px + env(safe-area-inset-top));
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    color: #ffcc66;
-    background: rgba(0,0,0,0.45);
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-align: center;
-    max-width: calc(100% - 24px);
-    font-size: 1.05rem;
-    line-height: 1.3;
-    box-shadow: 0 2px 10px rgba(0,0,0,.35);
+<style>
+  html { min-height:100%; background:#000; }
+  body {
+    margin:0; min-height:100%; background:#000; color:#fff;
+    font-family: Arial, sans-serif; overflow-y:auto;
   }
-  .fixed-line-top div { white-space: normal; }
-  .hint {
-    position: fixed; left: 50%; bottom: 60px; transform: translateX(-50%);
-    color: #bbb; font-size: .95rem; text-align: center;
-    z-index: 3; padding: 8px 14px; background: rgba(0,0,0,.4); border-radius: 8px;
-    pointer-events: none; opacity: 0; transition: opacity .35s ease;
+
+  #bgVideo{
+    position:fixed; inset:0; width:100%; height:100%;
+    object-fit:cover; z-index:0; pointer-events:none; background:#000;
   }
-  .hint.show { opacity: 1; }
-  @media (max-width: 600px) {
-    h1 { font-size: 2.2rem; }
-    .content p { font-size: 1rem; }
-    .fixed-line-top { font-size: .95rem; padding: 6px 10px; }
+
+  .fixed-line-top{
+    position:fixed; top:calc(8px + env(safe-area-inset-top)); left:50%; transform:translateX(-50%);
+    z-index:3; color:#ffcc66; background:rgba(0,0,0,.45);
+    padding:10px 16px; border-radius:12px; text-align:center;
+    max-width:calc(100% - 24px); font-size:1.05rem; line-height:1.3;
+    box-shadow:0 2px 10px rgba(0,0,0,.35);
   }
-  @media (max-width: 380px) {
-    h1 { font-size: 1.9rem; }
-    .fixed-line-top { font-size: .9rem; padding: 6px 8px; }
+  .clickable{
+    cursor:pointer;
+    box-shadow:0 0 0 0 rgba(255,140,0,.7);
+    animation:pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(255,140,0,.7);}
+    70%{ box-shadow:0 0 0 14px rgba(255,140,0,0);}
+    100%{ box-shadow:0 0 0 0 rgba(255,140,0,0);}
+  }
+  .hint{
+    position:fixed; left:50%; bottom:calc(64px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+    color:#ddd; font-size:.95rem; text-align:center; z-index:3;
+    padding:8px 14px; background:rgba(0,0,0,.45); border-radius:8px;
+    opacity:0; transition:opacity .25s ease;
+  }
+  .hint.show{ opacity:1; }
+
+  .page {
+    position:relative; z-index:1; display:flex; flex-direction:column;
+    min-height:100vh; padding: 28vh 16px 12vh; box-sizing:border-box;
+  }
+
+  .hero { text-align:center; margin: 0 auto 28px; max-width: 900px; }
+  .hero h1 { margin:0 0 12px; font-size: 3rem; line-height:1.05; }
+  .hero p  { margin:0 auto; max-width: 680px; font-size:1.2rem; opacity:.9; }
+
+  .cta-wrap { width:min(440px,96%); margin:0 auto; }
+  .cta-list { display:grid; grid-template-columns:1fr; gap:12px; }
+  .cta{
+    display:flex; align-items:center; justify-content:center;
+    min-height:52px; padding:0 16px; border-radius:14px;
+    background:rgba(5,15,20,.45); color:#e9faff; text-decoration:none; font-weight:700;
+    border:1px solid rgba(180,240,255,.35); backdrop-filter: blur(4px);
+    box-shadow: inset 0 0 12px rgba(120,220,255,.18), 0 6px 18px rgba(0,0,0,.35);
+    text-shadow: 0 0 10px rgba(160,240,255,.5);
+    transition: transform .15s ease, filter .25s ease;
+  }
+  .cta:hover{ transform:translateY(-2px); filter:brightness(1.08); }
+  .cta.disabled{ pointer-events:none; opacity:.55; filter:grayscale(.3); }
+
+  @media (max-width: 600px){
+    .page{ padding-top: 26vh; }
+    .hero h1{ font-size:2.2rem; }
+    .hero p { font-size:1.05rem; }
+  }
+  @media (max-width: 380px){
+    .page{ padding-top: 24vh; }
+    .hero h1{ font-size:1.9rem; }
+    .hero p { font-size:.98rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- ВИДЕОФОН -->
-<video id="bgVideo" autoplay muted playsinline loop preload="auto">
-  <source src="https://raykedy.github.io/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp4" type="video/mp4">
+<video id="bgVideo" autoplay muted loop playsinline preload="auto">
+  <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
 </video>
 
-<!-- МУЗЫКА -->
 <audio id="bgMusic" preload="auto" loop>
-  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3" type="audio/mpeg">
+  <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
 </audio>
 
-<!-- Фиксированная надпись -->
-<div class="fixed-line-top">
-  <div>Официальный.</div>
-  <div>хаб раздачи.</div>
-  <div>Скачать книгу</div>
-  <div>можно здесь.</div>
+<div id="topBanner" class="fixed-line-top clickable" role="button" tabindex="0" aria-label="Включить звук и видео">
+  <div>Официальный хаб раздачи.</div>
+  <div>Скачать книгу можно здесь.</div>
 </div>
-
-<!-- Центральный текст -->
-<div class="content">
-  <h1>2051: Алгоритм Пробуждение</h1>
-  <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
-</div>
-
 <div id="hint" class="hint"></div>
+
+<main class="page">
+
+  <section class="hero">
+    <h1>2051: Алгоритм Пробуждение</h1>
+    <p>Погрузись в мир, где границы между разумом и кодом стираются.</p>
+  </section>
+
+  <section class="cta-wrap" aria-label="Площадки книги">
+    <div class="cta-list">
+      <!-- 1. Скачать -->
+      <a class="cta">Скачать</a>
+      <!-- 2. Читать -->
+      <a class="cta">Читать</a>
+      <!-- 3. Mirror -->
+      <a class="cta disabled">Mirror — скоро</a>
+      <!-- 4. Telegram -->
+      <a class="cta" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Telegram</a>
+      <!-- 5. Bastyon -->
+      <a class="cta" href="https://bastyon.com/raykedy" target="_blank" rel="noopener">Bastyon</a>
+      <!-- 6. YouTube -->
+      <a class="cta" href="https://youtube.com/@raykedy?si=zV6cvntxmkS8sNbw" target="_blank" rel="noopener">YouTube</a>
+      <!-- 7. TikTok -->
+      <a class="cta" href="https://www.tiktok.com/@raykedy1" target="_blank" rel="noopener">TikTok</a>
+      <!-- 8. Отправить сообщение -->
+      <a class="cta" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">Отправить сообщение</a>
+    </div>
+  </section>
+
+  <div style="height:12vh;"></div>
+</main>
 
 <script>
 (function () {
-  const video = document.getElementById('bgVideo');
-  const audio = document.getElementById('bgMusic');
-  const hint  = document.getElementById('hint');
-  audio.volume = 0;
+  const video  = document.getElementById('bgVideo');
+  const audio  = document.getElementById('bgMusic');
+  const banner = document.getElementById('topBanner');
+  const hint   = document.getElementById('hint');
 
-  function showHint(msg) {
+  function showHint(msg){
     hint.textContent = msg;
     hint.classList.add('show');
     clearTimeout(showHint._t);
-    showHint._t = setTimeout(() => hint.classList.remove('show'), 5000);
+    showHint._t = setTimeout(()=>hint.classList.remove('show'), 2400);
   }
-  function fadeInAudio(targetVol = 1, step = 0.02, interval = 100) {
-    let vol = audio.volume;
-    const id = setInterval(() => {
-      vol = Math.min(targetVol, vol + step);
-      audio.volume = vol;
-      if (vol >= targetVol) clearInterval(id);
+
+  audio.volume = 0;
+
+  function fadeIn(target=1, step=0.03, interval=100){
+    let v = audio.volume;
+    const id = setInterval(()=>{
+      v = Math.min(target, v + step);
+      audio.volume = v;
+      if (v >= target) clearInterval(id);
     }, interval);
   }
-  function alignAudioToVideo() {
-    if (isFinite(audio.duration) && audio.duration > 0) {
-      const target = video.currentTime % audio.duration;
-      const cur    = audio.currentTime % audio.duration;
-      const drift  = Math.abs(cur - target);
-      if (drift > 0.35) audio.currentTime = target;
+
+  async function startMedia(){
+    try { video.muted = true; await video.play(); } catch(e) {}
+    try { await audio.play(); fadeIn(); } catch(e) {}
+    if (!audio.paused) banner.classList.remove('clickable');
+  }
+
+  startMedia().then(()=> {
+    if (audio.paused) {
+      banner.classList.add('clickable');
+      showHint('Тапни по баннеру, чтобы включить звук');
     }
-  }
-  let driftTimer = null;
-  function startDriftCorrection() {
-    if (!driftTimer) driftTimer = setInterval(alignAudioToVideo, 2000);
-  }
-  function stopDriftCorrection() {
-    if (driftTimer) { clearInterval(driftTimer); driftTimer = null; }
-  }
-  function trySyncStart() {
-    alignAudioToVideo();
-    audio.play().then(() => {
-      fadeInAudio(1, 0.02, 100);
-      startDriftCorrection();
-    }).catch(() => {
-      showHint('Нажми на экран, чтобы включить звук');
-    });
-  }
-  video.addEventListener('loadedmetadata', () => { video.play().catch(()=>{}); });
-  video.addEventListener('play', trySyncStart);
-  video.addEventListener('pause', () => { audio.pause(); stopDriftCorrection(); });
-  video.addEventListener('seeking', alignAudioToVideo);
-  video.addEventListener('seeked',  alignAudioToVideo);
-  video.addEventListener('timeupdate', alignAudioToVideo);
-  window.addEventListener('pointerdown', function userUnlock() {
-    audio.play().then(() => {
-      fadeInAudio(1, 0.02, 100);
-      startDriftCorrection();
-      hint.classList.remove('show');
-      window.removeEventListener('pointerdown', userUnlock, { passive: true });
-    }).catch(() => {
-      showHint('Разреши звук и нажми ещё раз');
-    });
-  }, { passive: true });
+  });
+
+  const userKick = () => { startMedia(); };
+  banner.addEventListener('click', userKick);
+  banner.addEventListener('keydown', (ev)=>{ if(ev.key==='Enter' || ev.key===' '){ ev.preventDefault(); userKick(); }});
+  document.addEventListener('pointerdown', userKick, { once:true });
+  document.addEventListener('touchend',   userKick, { once:true });
+  document.addEventListener('keydown',    userKick, { once:true });
+
+  video.addEventListener('canplay', ()=> { if (video.paused) { video.play().catch(()=>{}); } });
+
 })();
 </script>
-
 </body>
 </html>
 
