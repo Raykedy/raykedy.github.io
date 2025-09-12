@@ -1,16 +1,9 @@
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="format-detection" content="telephone=no" />
   <title>2051: Алгоритм Пробуждение — Читать</title>
-  <meta name="description" content="Официальная страница чтения книги «2051: Алгоритм Пробуждение». Подписка на платные каналы: Telegram и Bastyon." />
-  <meta property="og:title" content="2051: Алгоритм Пробуждение — Читать" />
-  <meta property="og:description" content="Подписка на платные каналы: Telegram и Bastyon." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/assets/cover_og.jpg" />
-  <meta name="theme-color" content="#0ea15a" />
-  <link rel="icon" href="/favicon.ico" />
   <style>
     :root{
       --bg:#0b0f12;
@@ -20,147 +13,96 @@
       --accent:#0ea15a;
       --accent-2:#ff6a00;
       --border:#1b252c;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 18px;
-      --max: 980px;
+      --max: 900px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
-    html{ -webkit-text-size-adjust:100%; } /* ← фикс для Android, чтобы не раздувало шрифты */
+    html,body{height:100%; margin:0; -webkit-text-size-adjust:100%;}
     body{
-      margin:0;
-      background:
-        radial-gradient(1200px 600px at 80% -10%, rgba(14,161,90,.08), transparent 60%),
-        radial-gradient(900px 500px at 10% 110%, rgba(255,106,0,.08), transparent 60%),
-        var(--bg);
+      background: var(--bg);
       color:var(--fg);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-      line-height:1.55; letter-spacing:.2px;
-      display:flex; align-items:center; justify-content:center; padding:32px;
-      text-rendering: optimizeLegibility;
+      font-family: system-ui, Arial, sans-serif;
+      display:flex; align-items:center; justify-content:center;
+      padding:16px;
     }
-    .wrap{ width:100%; max-width:var(--max); }
-    header{
-      display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px;
-    }
-    .brand{ display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--fg); }
-    .logo{
-      width:42px; height:42px; border-radius:50%;
-      background: conic-gradient(from 180deg, var(--accent), var(--accent-2), var(--accent));
-      box-shadow: inset 0 0 18px rgba(255,255,255,.15), 0 6px 18px rgba(14,161,90,.25);
-    }
-    .brand h1{ font-size:18px; margin:0; letter-spacing:.4px; font-weight:700 }
-    .back{ color:var(--muted); text-decoration:none; font-size:14px; border:1px solid var(--border);
-      padding:8px 12px; border-radius:12px; }
+    .wrap{width:100%; max-width:var(--max);}
+    header{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+    .brand{color:var(--fg); text-decoration:none; font-weight:700}
+    .back{color:var(--muted); font-size:14px; text-decoration:none;}
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 60%), var(--card);
+      background: var(--card);
       border:1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: clamp(24px, 3.5vw, 40px);
-    }
-    .hero{
-      display:grid; grid-template-columns: 1fr; gap:18px; margin-bottom:18px;
-      text-align:center; justify-items:center;
+      border-radius:var(--radius);
+      padding:20px;
+      text-align:center;
     }
     .hero h2{
-      font-size: clamp(24px, 4.5vw, 38px);
-      line-height:1.15; margin: 6px 0 8px; font-weight:800;
+      font-size:28px; margin:0 0 12px;
       background: linear-gradient(90deg, var(--accent-2), var(--accent));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+      -webkit-background-clip:text; color:transparent;
     }
-    .hero p{ margin:0; color:var(--muted); font-size: clamp(14px, 3.8vw, 16px) }
-    .buttons{ display:grid; grid-template-columns: 1fr; gap:14px; margin-top:10px; }
-    @media (min-width: 700px){ .buttons{ grid-template-columns: 1fr 1fr; } }
+    .hero p{
+      margin:0 auto 14px;
+      color:var(--muted);
+      max-width:420px; /* строка не будет растягиваться */
+      line-height:1.4;
+    }
+    .buttons{
+      display:flex; flex-direction:column; gap:10px;
+      margin-top:10px;
+    }
+    @media(min-width:600px){
+      .buttons{flex-direction:row; justify-content:center;}
+    }
     .btn{
-      display:flex; align-items:center; justify-content:center; gap:12px;
-      text-decoration:none; color:#0c1013; font-weight:800; letter-spacing:.3px;
-      background:var(--fg); padding:16px 18px; border-radius:16px;
-      box-shadow: 0 6px 16px rgba(0,0,0,.25); transition: transform .12s ease, box-shadow .12s ease;
-      border:1px solid rgba(255,255,255,.05)
+      flex:1;
+      text-decoration:none;
+      padding:14px 18px;
+      border-radius:12px;
+      font-weight:700;
+      color:#000;
+      background:#fff;
+      transition:transform .1s;
     }
-    .btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.32); }
-    .btn:active{ transform: translateY(0) scale(.99) }
-    .btn-telegram{ background: linear-gradient(180deg, #eaf6ff, #d8f0ff); color:#0b2a3d; border-color:#b6dcff; }
-    .btn-bastyon{ background: linear-gradient(180deg, #fff2e7, #ffe6d3); color:#3d1b00; border-color:#ffd1b0; }
-
-    .grid{ display:grid; grid-template-columns: 1fr; gap:18px; margin-top:18px; }
-    @media (min-width: 900px){ .grid{ grid-template-columns: 1.2fr .8fr; } }
-    .muted{ color:var(--muted) }
-    .faq h3{ margin:.2rem 0 .6rem; font-size:18px }
-    .faq p{ margin:.2rem 0 .9rem }
-
-    .note{ margin-top:18px; font-size:13px; color:#a7b8b0; border-top:1px dashed var(--border); padding-top:14px; }
-    footer{ margin-top:22px; color:var(--muted); font-size:12px; text-align:center }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px; border-radius:999px; border:1px solid var(--border);
-      background: rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700; letter-spacing:.3px;
-    }
-    .divider{ height:1px; background:var(--border); margin:16px 0 }
-
-    /* Мобильные правки */
-    @media (max-width: 480px){
-      body{ padding:18px; }
-      .card{ padding:20px 16px; }
-      .hero h2{ font-size:26px; }
-      .hero p{ font-size:14px; }
-      .faq h3{ font-size:16px; text-align:center; }
-      .faq p{ font-size:14px; text-align:center; }
-    }
+    .btn:hover{transform:translateY(-2px);}
+    .btn-telegram{background:#d8f0ff; color:#0b2a3d;}
+    .btn-bastyon{background:#ffe6d3; color:#3d1b00;}
+    .faq{text-align:left; margin-top:20px; font-size:14px;}
+    .faq h3{font-size:16px; margin:.5em 0;}
+    .faq p{margin:.3em 0;}
+    footer{text-align:center; margin-top:16px; font-size:12px; color:var(--muted);}
   </style>
 </head>
 <body>
   <main class="wrap">
     <header>
-      <a class="brand" href="/" aria-label="Вернуться на главную">
-        <div class="logo" aria-hidden="true"></div>
-        <h1>2051: Алгоритм Пробуждение</h1>
-      </a>
+      <a class="brand" href="/">2051: Алгоритм Пробуждение</a>
       <a class="back" href="/">← На главную</a>
     </header>
 
     <section class="card">
       <div class="hero">
-        <div>
-          <span class="chip">Официальное чтение</span>
-          <h2>Читать книгу по подписке</h2>
-          <p>Выберите платформу. После оформления подписки все новые главы и обновления будут доступны в выбранном канале.</p>
-          <div class="buttons">
-            <a class="btn btn-telegram" href="https://t.me/your_channel" rel="noopener" target="_blank">Подписка в Telegram</a>
-            <a class="btn btn-bastyon" href="https://bastyon.com/your_page" rel="noopener" target="_blank">Подписка в Bastyon</a>
-          </div>
+        <h2>Читать книгу по подписке</h2>
+        <p>Выберите платформу. После оформления подписки все новые главы и обновления будут доступны в выбранном канале.</p>
+        <div class="buttons">
+          <a class="btn btn-telegram" href="https://t.me/your_channel" target="_blank">Подписка в Telegram</a>
+          <a class="btn btn-bastyon" href="https://bastyon.com/your_page" target="_blank">Подписка в Bastyon</a>
         </div>
       </div>
 
-      <div class="grid">
-        <div class="faq">
-          <h3>Как это работает?</h3>
-          <p><strong>1.</strong> Нажимаете на кнопку нужной платформы.</p>
-          <p><strong>2.</strong> Оформляете подписку в канале.</p>
-          <p><strong>3.</strong> Получаете доступ к главам и обновлениям. Уведомления приходят автоматически.</p>
+      <div class="faq">
+        <h3>Как это работает?</h3>
+        <p><strong>1.</strong> Нажимаете на кнопку нужной платформы.</p>
+        <p><strong>2.</strong> Оформляете подписку в канале.</p>
+        <p><strong>3.</strong> Получаете доступ к главам и обновлениям. Уведомления приходят автоматически.</p>
 
-          <div class="divider"></div>
-
-          <h3>Что внутри подписки?</h3>
-          <p>Готовые главы, правки к финальной версии, визуальные материалы и короткие заметки из разработки проекта.</p>
-
-          <div class="divider"></div>
-
-          <h3>Если у вас нет Telegram/Bastyon</h3>
-          <p>Выберите удобную платформу. Позже можно сменить канал — доступ сохранится по активной подписке.</p>
-        </div>
-
-        <aside class="muted">
-          <h3 style="margin:.2rem 0 .6rem;">Примечание</h3>
-          <p>Некоторый контент может выходить на платформы с разной задержкой из-за модерации. Рекомендуется подписаться в том канале, который удобнее именно вам.</p>
-          <p class="note">Нажимая на кнопку, вы переходите на сторонний сервис и принимаете его условия использования.</p>
-        </aside>
+        <h3>Что внутри подписки?</h3>
+        <p>Готовые главы, правки к финальной версии, визуальные материалы и короткие заметки из разработки проекта.</p>
       </div>
     </section>
 
     <footer>© <span id="y"></span> Ray Kedy • Официальный хаб</footer>
   </main>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
 </body>
 </html>
