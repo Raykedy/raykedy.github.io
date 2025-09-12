@@ -31,9 +31,10 @@
       color:var(--fg);
       font-family: system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
       line-height:1.55; letter-spacing:.2px;
-      display:flex; justify-content:center; align-items:center; /* ← центрируем блок */
+      display:flex; justify-content:center; align-items:flex-start;
       min-height:100vh;
-      padding:24px; /* небольшой отступ по краям */
+      padding:24px;
+      padding-top:70px; /* фиксируем аккуратный отступ сверху */
       text-rendering:optimizeLegibility;
     }
     .wrap{width:100%; max-width:var(--max); text-align:center;}
@@ -75,7 +76,7 @@
       background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700; letter-spacing:.3px;}
     .divider{height:1px; background:var(--border); margin:16px 0}
     @media (max-width:480px){
-      body{padding:16px;}
+      body{padding:16px; padding-top:60px;} /* на мобилке чуть меньше */
       .card{padding:20px 16px;}
       .hero h2{font-size:28px;}
       .hero p{font-size:15px;}
