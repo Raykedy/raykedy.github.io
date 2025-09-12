@@ -1,5 +1,4 @@
-
- <!doctype html>
+<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
@@ -21,39 +20,36 @@
       --btn:#1e6eff; --btn-hover:#1656c7;
     }
     *{box-sizing:border-box}
-    html,body{height:100%; margin:0; font-family:system-ui,Arial,sans-serif;}
+    html,body{height:100%}
+    html{-webkit-text-size-adjust:100%}
     body{
-      color:var(--fg); line-height:1.55; letter-spacing:.2px;
-      display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding:24px;
+      margin:0; color:var(--fg);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      line-height:1.55; letter-spacing:.2px;
+      display:flex; justify-content:center; align-items:flex-start;
+      min-height:100vh; padding:24px;
     }
 
-    /* ===== ВИДЕО-ФОН ===== */
-    .bg{position:fixed; inset:0; z-index:0; overflow:hidden; background:#000;}
-    .bg video{
-      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      min-width:100%; min-height:100%; object-fit:cover;
-      opacity:0; transition:opacity .8s ease; background:#000;
+    /* === ВИДЕО-ФОН === */
+    #bgVideo{
+      position:fixed; inset:0; width:100%; height:100%;
+      object-fit:cover; z-index:0; pointer-events:none; background:#000;
     }
-    .bg.is-ready video{opacity:1;}
-    .fallback{
-      position:absolute; inset:0; display:none;
-      background:
-        radial-gradient(1200px 600px at 80% -10%, rgba(14,161,90,.10), transparent 60%),
-        radial-gradient(900px 500px at 10% 110%, rgba(255,106,0,.10), transparent 60%),
-        #000;
-    }
-    .bg.is-fallback .fallback{display:block;}
 
+    /* Контент поверх видео */
     .wrap{width:100%; max-width:var(--max); text-align:center; position:relative; z-index:1;}
+
+    /* Полупрозрачная карточка */
     .card{
-      background:rgba(17,23,28,.6); /* полупрозрачная */
+      background:rgba(17,23,28,.45); /* прозрачность 45% */
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      backdrop-filter:blur(10px);
+      backdrop-filter:blur(14px); /* чуть больше размытие */
       padding:clamp(24px,3.5vw,40px);
       margin-top:clamp(-70px, -30px, -20px);
     }
+
     .hero h2{
       font-size:clamp(26px,5vw,40px); line-height:1.15; margin:6px 0 10px; font-weight:800;
       background:linear-gradient(90deg,var(--accent-2),var(--accent));
@@ -77,17 +73,23 @@
     .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--border);
       background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700;}
     .divider{height:1px; background:var(--border); margin:16px 0}
+
+    @media (max-width:480px){
+      body{padding:16px;}
+      .card{padding:20px 16px;}
+      .hero h2{font-size:28px;}
+      .hero p{font-size:15px;}
+      .faq h3{font-size:16px;}
+      .faq p{font-size:14px;}
+    }
   </style>
 </head>
 <body>
 
-  <!-- ВИДЕО-ФОН -->
-  <div class="bg" id="bg">
-    <video id="bgVideo" playsinline webkit-playsinline muted loop autoplay preload="auto">
-      <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4" />
-    </video>
-    <div class="fallback"></div>
-  </div>
+  <!-- Тот же источник, что на главной -->
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
+  </video>
 
   <main class="wrap">
     <section class="card">
@@ -125,50 +127,6 @@
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    (function(){
-      const bg = document.getElementById('bg');
-      const v  = document.getElementById('bgVideo');
-
-      function markReady(){ bg.classList.add('is-ready'); bg.classList.remove('is-fallback'); }
-      function fallback(){ bg.classList.add('is-fallback'); }
-
-      async function kickPlay(){
-        try{
-          v.muted = true; // автоплей-политики
-          const p = v.play();
-          if (p && p.then) await p;
-          // Если доходит до сюда — попробуем пометить готовность
-          if (v.readyState >= 2) markReady();
-        }catch(e){
-          // если промис упал — покажем градиент
-          fallback();
-        }
-      }
-
-      // Любое событие готовности — считаем, что картинка пошла
-      v.addEventListener('loadeddata', markReady, {once:true});
-      v.addEventListener('canplay',     markReady, {once:true});
-      v.addEventListener('timeupdate',  function once(){
-        markReady();
-        v.removeEventListener('timeupdate', once);
-      });
-
-      // 1-я попытка сразу
-      kickPlay();
-
-      // Ретрай через 1.5с, если всё ещё не готово
-      setTimeout(()=>{ if (!bg.classList.contains('is-ready')) kickPlay(); }, 1500);
-
-      // Пнуть видео при первом взаимодействии пользователя — на случай строгих браузеров
-      const userKick = () => { if (!bg.classList.contains('is-ready')) kickPlay(); };
-      document.addEventListener('pointerdown', userKick, { once:true });
-      document.addEventListener('keydown',     userKick, { once:true });
-      document.addEventListener('touchend',    userKick, { once:true });
-
-      // Если через 3.5с так и нет кадра — показываем fallback
-      setTimeout(()=>{ if (!bg.classList.contains('is-ready')) fallback(); }, 3500);
-    })();
   </script>
 </body>
 </html>
