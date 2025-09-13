@@ -6,9 +6,6 @@
   <meta name="format-detection" content="telephone=no" />
   <title>2051: Алгоритм Пробуждение — Скачать</title>
   <meta name="description" content="Официальная страница загрузок книги «2051: Алгоритм Пробуждение». Заглушка: скоро будет доступно." />
-  <meta property="og:title" content="2051: Алгоритм Пробуждение — Скачать" />
-  <meta property="og:description" content="Скоро здесь появятся кнопки магазинов и криптооплаты." />
-  <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0ea15a" />
   <link rel="icon" href="/favicon.ico" />
   <style>
@@ -17,29 +14,21 @@
       --accent:#0ea15a; --accent-2:#ff6a00;
       --border:rgba(255,255,255,.15);
       --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px; --max:800px;
-      --btn:#1e6eff; --btn-hover:#1656c7;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    html{-webkit-text-size-adjust:100%}
     body{
       margin:0; color:var(--fg);
       font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-      line-height:1.55; letter-spacing:.2px;
+      line-height:1.55;
       display:flex; justify-content:center; align-items:flex-start;
       min-height:100vh; padding:24px;
     }
-
-    /* === ВИДЕО-ФОН (тот же, что на "читать") === */
     #bgVideo{
       position:fixed; inset:0; width:100%; height:100%;
       object-fit:cover; z-index:0; pointer-events:none; background:#000;
     }
-
-    /* Контент поверх видео */
     .wrap{width:100%; max-width:var(--max); text-align:center; position:relative; z-index:1;}
-
-    /* Полупрозрачная карточка со свечением */
     .card{
       background:rgba(17,23,28,.45);
       border:1px solid var(--border);
@@ -51,57 +40,28 @@
       backdrop-filter:blur(14px);
       padding:clamp(24px,3.5vw,40px);
       margin-top:clamp(-70px, -30px, -20px);
-      position:relative;
-      overflow:hidden;
     }
-    .card::before{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:inherit;
-      padding:2px;
-      background:linear-gradient(120deg, rgba(14,161,90,.4), rgba(255,106,0,.35));
-      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite:xor; mask-composite:exclude;
-      pointer-events:none;
-    }
-
-    .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--border);
-      background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700;}
     .hero h2{
-      font-size:clamp(26px,5vw,40px); line-height:1.15; margin:6px 0 10px; font-weight:800;
+      font-size:clamp(26px,5vw,40px); line-height:1.15; margin:6px 0 14px; font-weight:800;
       background:linear-gradient(90deg,var(--accent-2),var(--accent));
       -webkit-background-clip:text; background-clip:text; color:transparent;
     }
-    .hero p{margin:0 auto; color:var(--muted); font-size:clamp(15px,4vw,18px); max-width:640px;}
-
+    .hero p{margin:0 auto 18px; color:var(--muted); font-size:clamp(15px,4vw,18px); max-width:640px;}
     .buttons{display:grid; gap:14px; margin-top:14px; width:100%;}
     @media(min-width:700px){.buttons{grid-template-columns:1fr 1fr 1fr;}}
     .btn{
       display:flex; align-items:center; justify-content:center;
       text-decoration:none; background:rgba(255,255,255,.08); color:#dfe8e4; font-weight:800;
       padding:16px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 6px 16px rgba(0,0,0,.25); transition:.12s; width:100%;
+      box-shadow:0 6px 16px rgba(0,0,0,.25); width:100%;
       cursor:not-allowed; pointer-events:none; position:relative;
     }
     .btn::before{content:"⏳"; margin-right:10px; opacity:.9}
-    .btn:hover{transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.32);}
     .btn.accent{background:linear-gradient(135deg, rgba(14,161,90,.22), rgba(255,106,0,.18));}
-
-    .note{margin-top:16px; font-size:13px; color:#a7b8b0; border-top:1px dashed var(--border); padding-top:14px;}
-    .divider{height:1px; background:var(--border); margin:18px 0}
-    footer{margin-top:22px; color:var(--muted); font-size:12px; text-align:center}
-
-    @media (max-width:480px){
-      body{padding:16px;}
-      .card{padding:20px 16px;}
-      .hero h2{font-size:28px;}
-      .hero p{font-size:15px;}
-    }
   </style>
 </head>
 <body>
 
-  <!-- Видео как на главной/читать -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
     <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
   </video>
@@ -109,31 +69,17 @@
   <main class="wrap">
     <section class="card">
       <div class="hero">
-        <span class="chip">Официальные загрузки</span>
         <h2>Скачать книгу</h2>
-        <p>Скоро здесь появятся кнопки для покупки и скачивания через магазины, а также криптооплата. Подпишись, чтобы не пропустить старт.</p>
+        <p>Скоро здесь появятся кнопки для скачивания на разных ресурсах, а также криптодоты. Подпишитесь на Телеграм или Бастион, чтобы не пропустить старт.</p>
 
-        <div class="buttons" aria-disabled="true">
-          <a class="btn accent" title="Скоро доступно">Купить</a>
-          <a class="btn" title="Скоро доступно">Читать онлайн</a>
-          <a class="btn" title="Скоро доступно">Криптооплата</a>
+        <div class="buttons">
+          <a class="btn accent">Купить</a>
+          <a class="btn">Читать онлайн</a>
+          <a class="btn">Криптооплата</a>
         </div>
-
-        <div class="note">Кнопки временно неактивны — интеграции в процессе. Скоро включим магазины и оплату.</div>
-
-        <div class="divider"></div>
-
-        <p style="margin:0;color:#a9bbb3;font-size:14px">
-          Вопросы по доступу? Напиши в <a href="https://t.me/readme2051" target="_blank" rel="noopener" style="color:#d6ffee;text-underline-offset:3px">Telegram</a>.
-        </p>
       </div>
     </section>
-
-    <footer>© <span id="y"></span> Ray Kedy • Официальный хаб</footer>
   </main>
 
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
