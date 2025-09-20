@@ -1,182 +1,112 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Оплата криптовалютой — 2051: Алгоритм Пробуждение</title>
-  <meta name="description" content="Поддержите автора или приобретите книгу «2051: Алгоритм Пробуждение» криптовалютой: BTC, ETH, USDT, PKOIN." />
-  <meta name="color-scheme" content="dark" />
-  <style>
-    :root{
-      --bg:#0c0f14; --panel:#121722; --muted:#9aa2b1; --text:#e8ecf3;
-      --accent:#ff7a00; --accent2:#28c76f; --stroke:rgba(255,255,255,.08);
-      --radius:16px; --shadow:0 6px 24px rgba(0,0,0,.35);
-    }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{
-      margin:0; background:radial-gradient(1200px 600px at 20% 0%, rgba(40,199,111,.08), transparent 70%),
-                         radial-gradient(1200px 600px at 80% 100%, rgba(255,122,0,.08), transparent 70%), var(--bg);
-      color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans";
-      line-height:1.6;
-    }
-    a{color:var(--accent2); text-decoration:none}
-    .wrap{max-width:1100px; margin:0 auto; padding:32px 16px 80px}
-    header{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:20px}
-    h1{margin:0; font-size:clamp(24px,3.5vw,36px)}
-    .subtitle{color:var(--muted); margin-top:4px}
-    .btn{display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border-radius:14px;
-         border:1px solid var(--stroke); background:#0f1420; color:var(--text); cursor:pointer;
-         transition:opacity .15s ease, transform .08s ease}
-    .btn:hover{opacity:.95} .btn:active{transform:translateY(1px)}
-    .btn-primary{background:linear-gradient(180deg, rgba(255,122,0,.22), rgba(255,122,0,.12)); border-color:rgba(255,122,0,.35)}
-    .btn-success{background:linear-gradient(180deg, rgba(40,199,111,.22), rgba(40,199,111,.12)); border-color:rgba(40,199,111,.35)}
-    .panel{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.00));
-           border:1px solid var(--stroke); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
-    .grid{display:grid; gap:16px; grid-template-columns:repeat(12,1fr)}
-    .col-8{grid-column:span 8} .col-4{grid-column:span 4}
-    @media (max-width:980px){.col-8,.col-4{grid-column:1/-1}}
-    .cards{display:grid; gap:16px; grid-template-columns:repeat(2,1fr)}
-    @media (max-width:640px){.cards{grid-template-columns:1fr}}
-    .card{border:1px solid var(--stroke); border-radius:14px; padding:18px; background:#0f1420}
-    .card h3{margin:0 0 10px 0; font-size:18px}
-    .badge{font-size:12px; padding:4px 8px; border:1px solid var(--stroke); border-radius:999px; color:var(--muted)}
-    .row{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
-    .addr{background:#0e1420; border:1px solid var(--stroke); border-radius:12px; padding:10px 12px;
-          font-family:ui-monospace,Menlo,Consolas,monospace; color:#dfe6f3; white-space:nowrap; overflow:auto}
-    .mini{font-size:12px; color:var(--muted)}
-    .hr{height:1px; background:var(--stroke); margin:14px 0}
-    footer{margin-top:28px; color:var(--muted); font-size:13px}
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Оплата криптовалютой — 2051</title>
+<meta name="color-scheme" content="dark"/>
+<style>
+  :root{
+    --bg:#0c0f14; --panel:#121722; --text:#e8ecf3; --muted:#9aa2b1;
+    --stroke:rgba(255,255,255,.08); --accent:#ff7a00; --accent2:#28c76f;
+    --r:14px;
+  }
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.55}
+  a{color:var(--accent2);text-decoration:none}
+  .wrap{max-width:980px;margin:0 auto;padding:28px 14px 60px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  h1{margin:0;font-size:clamp(22px,3.4vw,32px)}
+  .muted{color:var(--muted)}
+  .panel{background:#101622;border:1px solid var(--stroke);border-radius:var(--r);padding:16px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--stroke);
+       background:#0f1420;color:var(--text);cursor:pointer;transition:opacity .15s}
+  .btn:hover{opacity:.92}
+  .btn-primary{background:rgba(255,122,0,.16);border-color:rgba(255,122,0,.35)}
+  .btn-success{background:rgba(40,199,111,.16);border-color:rgba(40,199,111,.35)}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(12,1fr)}
+  .col-8{grid-column:span 8} .col-4{grid-column:span 4}
+  @media(max-width:900px){.col-8,.col-4{grid-column:1/-1}}
+  .cards{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
+  @media(max-width:900px){.cards{grid-template-columns:1fr}}
+  .card{background:#0f1420;border:1px solid var(--stroke);border-radius:12px;padding:14px}
+  .card h3{margin:0 0 8px 0;font-size:18px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .addr{flex:1;background:#0d1320;border:1px solid var(--stroke);border-radius:10px;padding:8px 10px;
+        font-family:ui-monospace,Menlo,Consolas,monospace;white-space:nowrap;overflow:auto;color:#e5ebf5}
+  .mini{font-size:12px;color:var(--muted)}
+  .hr{height:1px;background:var(--stroke);margin:12px 0}
+  footer{margin-top:22px;color:var(--muted);font-size:13px;text-align:center}
 
-    /* Modal */
-    .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(3,6,10,.6); backdrop-filter:blur(8px); padding:20px; z-index:50}
-    .modal.open{display:grid}
-    .modal-card{width:min(560px,96vw); background:#121722; border:1px solid var(--stroke); border-radius:18px; padding:16px}
-    .modal-head{display:flex; align-items:center; justify-content:space-between; gap:12px}
-    .close{border:1px solid var(--stroke); border-radius:10px; padding:6px 10px; color:var(--muted); cursor:pointer}
-    .qr{width:220px; height:220px; border:1px dashed rgba(255,255,255,.15); border-radius:12px;
-        display:grid; place-items:center; color:var(--muted); margin:12px 0}
-    .success{border-color:rgba(40,199,111,.5)!important}
-  </style>
+  /* modal */
+  .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(3,6,10,.6);backdrop-filter:blur(6px);padding:18px;z-index:50}
+  .modal.open{display:grid}
+  .modal-card{width:min(520px,96vw);background:#121722;border:1px solid var(--stroke);border-radius:14px;padding:14px}
+  .modal-head{display:flex;justify-content:space-between;align-items:center}
+  .close{border:1px solid var(--stroke);border-radius:8px;padding:6px 10px;color:var(--muted);cursor:pointer}
+  .qr{width:200px;height:200px;border:1px dashed rgba(255,255,255,.18);border-radius:10px;display:grid;place-items:center;color:var(--muted);margin:10px 0}
+  .success{border-color:rgba(40,199,111,.5)!important}
+</style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <div>
         <h1>Оплата криптовалютой</h1>
-        <div class="subtitle">«2051: Алгоритм Пробуждение». Поддержите автора или приобретите книгу</div>
+        <div class="muted">«2051: Алгоритм Пробуждение». Выберите удобную валюту</div>
       </div>
       <a class="btn" href="./index.html">← На главную</a>
     </header>
 
-    <!-- хиро -->
-    <div class="panel" style="margin-bottom:16px">
-      <div class="row" style="justify-content:space-between">
-        <div class="mini">Страница оформлена. Интеграцию подключим позже.</div>
-        <div class="badge">статус: готово к интеграции</div>
-      </div>
-      <div class="row" style="margin-top:10px">
+    <div class="panel" style="margin-bottom:12px">
+      <div class="row">
         <button class="btn btn-primary" data-open="buy-modal">Купить книгу</button>
-        <button class="btn btn-success" data-open="donate-modal">Поддержать донатом</button>
+        <button class="btn btn-success" data-open="donate-modal">Донат</button>
       </div>
     </div>
 
-    <div class="grid">
-      <section class="col-8">
-        <div class="panel">
-          <h2 style="margin:0 0 12px 0">Выберите валюту</h2>
-          <div class="cards">
-            <!-- BTC -->
-            <div class="card">
-              <div class="row" style="justify-content:space-between">
-                <h3>Bitcoin (BTC)</h3><span class="badge">on-chain</span>
-              </div>
-              <div class="mini">Адрес кошелька</div>
-              <div class="row">
-                <div class="addr" id="addr-btc">вставьте сюда ваш BTC-адрес</div>
-                <button class="btn" data-copy="#addr-btc">Скопировать</button>
-                <button class="btn" data-qr="btc">QR</button>
-              </div>
-              <div class="hr"></div>
-              <div class="row"><button class="btn btn-primary" disabled>Купить</button><button class="btn btn-success" disabled>Донат</button></div>
-              <div class="mini">Пока кнопки выключены — включим после интеграции.</div>
-            </div>
-
-            <!-- ETH -->
-            <div class="card">
-              <div class="row" style="justify-content:space-between">
-                <h3>Ethereum (ETH)</h3><span class="badge">ERC-20</span>
-              </div>
-              <div class="mini">Адрес кошелька</div>
-              <div class="row">
-                <div class="addr" id="addr-eth">вставьте сюда ваш ETH-адрес (0x…)</div>
-                <button class="btn" data-copy="#addr-eth">Скопировать</button>
-                <button class="btn" data-qr="eth">QR</button>
-              </div>
-            </div>
-
-            <!-- USDT -->
-            <div class="card">
-              <div class="row" style="justify-content:space-between">
-                <h3>USDT</h3><span class="badge">TRC-20 / ERC-20</span>
-              </div>
-              <div class="mini">Адрес (TRC-20)</div>
-              <div class="row">
-                <div class="addr" id="addr-usdt-trc">вставьте сюда TRC-20 адрес (T…)</div>
-                <button class="btn" data-copy="#addr-usdt-trc">Скопировать</button>
-                <button class="btn" data-qr="usdt-trc">QR</button>
-              </div>
-              <div class="mini" style="margin-top:10px">Адрес (ERC-20)</div>
-              <div class="row">
-                <div class="addr" id="addr-usdt-erc">вставьте сюда ERC-20 адрес (0x…)</div>
-                <button class="btn" data-copy="#addr-usdt-erc">Скопировать</button>
-                <button class="btn" data-qr="usdt-erc">QR</button>
-              </div>
-            </div>
-
-            <!-- PKOIN -->
-            <div class="card">
-              <div class="row" style="justify-content:space-between">
-                <h3>PKOIN</h3><span class="badge">Bastyon</span>
-              </div>
-              <div class="mini">Адрес кошелька</div>
-              <div class="row">
-                <div class="addr" id="addr-pkoin">вставьте сюда ваш PKOIN-адрес</div>
-                <button class="btn" data-copy="#addr-pkoin">Скопировать</button>
-                <button class="btn" data-qr="pkoin">QR</button>
-              </div>
-              <div class="mini">Можно будет добавить ссылку на платный пост в Bastyon.</div>
-            </div>
+    <section class="panel">
+      <h2 style="margin:0 0 10px 0;font-size:20px">Адреса для оплаты</h2>
+      <div class="cards">
+        <!-- BTC -->
+        <div class="card">
+          <h3>Bitcoin (BTC)</h3>
+          <div class="row">
+            <div class="addr" id="addr-btc">вставьте сюда ваш BTC-адрес</div>
+            <button class="btn" data-copy="#addr-btc">Скопировать</button>
+            <button class="btn" data-qr="btc">QR</button>
           </div>
         </div>
-
-        <div class="panel" style="margin-top:16px">
-          <h2 style="margin:0 0 10px 0">Как это будет работать</h2>
-          <ol style="margin:0; padding-left:18px">
-            <li>Пользователь выбирает валюту и отправляет платеж на указанный адрес или через виджет (появится позже).</li>
-            <li>После подтверждения оплаты система выдаёт файл/ссылку на e-mail.</li>
-            <li>Мы не храним приватные ключи. Платежи идут напрямую по сети или через проверенного провайдера.</li>
-          </ol>
-          <div class="hr"></div>
-          <div class="mini">Вопросы: <a href="mailto:contact@raykedy.com">contact@raykedy.com</a></div>
+        <!-- ETH -->
+        <div class="card">
+          <h3>Ethereum (ETH)</h3>
+          <div class="row">
+            <div class="addr" id="addr-eth">вставьте сюда ваш ETH-адрес (0x…)</div>
+            <button class="btn" data-copy="#addr-eth">Скопировать</button>
+            <button class="btn" data-qr="eth">QR</button>
+          </div>
         </div>
-      </section>
-
-      <aside class="col-4">
-        <div class="panel">
-          <h3 style="margin:0 0 10px 0">Быстрые действия</h3>
-          <div class="row"><button class="btn" data-open="donate-modal">Сделать донат</button></div>
-          <div class="row"><button class="btn" data-open="buy-modal">Купить книгу</button></div>
-          <div class="hr"></div>
-          <div class="mini">Статус</div>
-          <div class="row" style="gap:6px"><span class="badge" title="оформление готово">Оформление: OK</span><span class="badge" title="подключим позже">Интеграция: позже</span></div>
+        <!-- USDT -->
+        <div class="card">
+          <h3>USDT</h3>
+          <div class="mini">TRC-20</div>
+          <div class="row">
+            <div class="addr" id="addr-usdt-trc">вставьте TRC-20 адрес (T…)</div>
+            <button class="btn" data-copy="#addr-usdt-trc">Скопировать</button>
+            <button class="btn" data-qr="usdt-trc">QR</button>
+          </div>
+          <div class="mini" style="margin-top:8px">ERC-20</div>
+          <div class="row">
+            <div class="addr" id="addr-usdt-erc">вставьте ERC-20 адрес (0x…)</div>
+            <button class="btn" data-copy="#addr-usdt-erc">Скопировать</button>
+            <button class="btn" data-qr="usdt-erc">QR</button>
+          </div>
         </div>
-        <div class="panel" style="margin-top:16px">
-          <h3 style="margin:0 0 8px 0">FAQ</h3>
-          <p class="mini"><b>USDT сети:</b> TRC-20 и ERC-20 (в TRC обычно комиссии ниже).</p>
-          <p class="mini"><b>Когда придёт доступ?</b> Сразу после подтверждения сети и автоматической отправки письма (после подключения).</p>
-        </div>
-      </aside>
-    </div>
+      </div>
+      <div class="hr"></div>
+      <p class="mini">После интеграции платежной системы кнопки «Купить» и «Донат» будут работать автоматически.</p>
+    </section>
 
     <footer>© 2051: Алгоритм Пробуждение — Ray Kedy</footer>
   </div>
@@ -185,13 +115,13 @@
   <div class="modal" id="buy-modal"><div class="modal-card">
     <div class="modal-head"><b>Покупка книги</b><button class="close" data-close>Закрыть</button></div>
     <div class="hr"></div>
-    <p class="mini">Здесь позже появится виджет оплаты. Пока используйте адреса в карточках валют.</p>
+    <p class="muted">Здесь позже появится окно оплаты. Пока используйте адреса выше.</p>
   </div></div>
 
   <div class="modal" id="donate-modal"><div class="modal-card">
-    <div class="modal-head"><b>Донат автору</b><button class="close" data-close>Закрыть</button></div>
+    <div class="modal-head"><b>Донат</b><button class="close" data-close>Закрыть</button></div>
     <div class="hr"></div>
-    <p class="mini">Спасибо за поддержку! Отправьте любую сумму на один из адресов выше. Сообщение можно оставить в поле «Memo/Note» вашего кошелька.</p>
+    <p class="muted">Спасибо за поддержку! Отправьте любую сумму на один из адресов выше.</p>
   </div></div>
 
   <div class="modal" id="qr-modal"><div class="modal-card">
@@ -201,46 +131,40 @@
     <div class="addr" id="qr-addr">—</div>
   </div></div>
 
-  <script>
-    const $ = (s, r=document)=>r.querySelector(s);
-    const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
+<script>
+  const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  // модалки
+  $$('[data-open]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.open)?.classList.add('open')));
+  $$('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('.modal')?.classList.remove('open')));
+  $$('.modal').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
 
-    // модалки
-    $$('[data-open]').forEach(b=>b.addEventListener('click',()=>{ $('#'+b.dataset.open)?.classList.add('open'); }));
-    $$('[data-close]').forEach(b=>b.addEventListener('click',()=>{ b.closest('.modal')?.classList.remove('open'); }));
-    $$('.modal').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
-
-    // копирование адресов
-    $$('[data-copy]').forEach(btn=>{
-      btn.addEventListener('click', async ()=>{
-        const sel = btn.getAttribute('data-copy'); const el = $(sel);
-        if(!el) return;
-        try{
-          await navigator.clipboard.writeText(el.textContent.trim());
-          btn.classList.add('success'); btn.textContent='Скопировано ✓';
-          setTimeout(()=>{ btn.classList.remove('success'); btn.textContent='Скопировать'; },1400);
-        }catch(e){}
-      });
+  // копирование
+  $$('[data-copy]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const el = $(btn.getAttribute('data-copy')); if(!el) return;
+      try{ await navigator.clipboard.writeText(el.textContent.trim());
+        btn.classList.add('success'); btn.textContent='Скопировано ✓';
+        setTimeout(()=>{ btn.classList.remove('success'); btn.textContent='Скопировать'; },1200);
+      }catch(e){}
     });
+  });
 
-    // псевдо-QR (заглушка)
-    const map = { btc:'#addr-btc', eth:'#addr-eth', 'usdt-trc':'#addr-usdt-trc', 'usdt-erc':'#addr-usdt-erc', pkoin:'#addr-pkoin' };
-    $$('[data-qr]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const addrEl = $(map[btn.dataset.qr]);
-        const addr = addrEl ? addrEl.textContent.trim() : '';
-        $('#qr-addr').textContent = addr || 'Адрес пуст';
-        $('#qr-box').textContent = addr ? 'QR появится после подключения генератора' : 'Сначала вставьте адрес';
-        $('#qr-modal').classList.add('open');
-      });
+  // QR (пока заглушка)
+  const map={btc:'#addr-btc',eth:'#addr-eth','usdt-trc':'#addr-usdt-trc','usdt-erc':'#addr-usdt-erc'};
+  $$('[data-qr]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const el=$(map[btn.dataset.qr]); const addr=el?el.textContent.trim():'';
+      $('#qr-addr').textContent = addr || 'Адрес пуст';
+      $('#qr-box').textContent = addr ? 'QR добавим при интеграции' : 'Сначала вставьте адрес';
+      $('#qr-modal').classList.add('open');
     });
+  });
 
-    // === ВСТАВЬ СВОИ АДРЕСА НИЖЕ (и удали подсказки в текстах) ===
-    // document.getElementById('addr-btc').textContent = 'bc1q...';
-    // document.getElementById('addr-eth').textContent = '0x...';
-    // document.getElementById('addr-usdt-trc').textContent = 'T...';
-    // document.getElementById('addr-usdt-erc').textContent = '0x...';
-    // document.getElementById('addr-pkoin').textContent = 'PK...';
-  </script>
+  // ВСТАВЬ СВОИ АДРЕСА НИЖЕ:
+  // document.getElementById('addr-btc').textContent = 'bc1q...';
+  // document.getElementById('addr-eth').textContent = '0x...';
+  // document.getElementById('addr-usdt-trc').textContent = 'T...';
+  // document.getElementById('addr-usdt-erc').textContent = '0x...';
+</script>
 </body>
 </html>
