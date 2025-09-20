@@ -1,9 +1,10 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Оплата криптовалютой — 2051</title>
+<title>Скачать книгу за криптодонат — 2051</title>
 <meta name="color-scheme" content="dark"/>
 <style>
   :root{
@@ -20,11 +21,13 @@
   h1{margin:0;font-size:clamp(22px,3.4vw,32px)}
   .muted{color:var(--muted)}
   .panel{background:#101622;border:1px solid var(--stroke);border-radius:var(--r);padding:16px}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--stroke);
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;border:1px solid var(--stroke);
        background:#0f1420;color:var(--text);cursor:pointer;transition:opacity .15s}
   .btn:hover{opacity:.92}
   .btn-primary{background:rgba(255,122,0,.16);border-color:rgba(255,122,0,.35)}
   .btn-success{background:rgba(40,199,111,.16);border-color:rgba(40,199,111,.35)}
+  .btn-ghost{background:transparent}
+  .top-buttons{display:flex;gap:10px;flex-wrap:wrap}
   .grid{display:grid;gap:12px;grid-template-columns:repeat(12,1fr)}
   .col-8{grid-column:span 8} .col-4{grid-column:span 4}
   @media(max-width:900px){.col-8,.col-4{grid-column:1/-1}}
@@ -53,21 +56,26 @@
   <div class="wrap">
     <header>
       <div>
-        <h1>Оплата криптовалютой</h1>
+        <h1>Скачать книгу за криптодонат</h1>
         <div class="muted">«2051: Алгоритм Пробуждение». Выберите удобную валюту</div>
       </div>
-      <a class="btn" href="./index.html">← На главную</a>
+      <a class="btn btn-ghost" href="./index.html">← На главную</a>
     </header>
 
+    <!-- верхний блок как на главной: две основные кнопки -->
     <div class="panel" style="margin-bottom:12px">
-      <div class="row">
-        <button class="btn btn-primary" data-open="buy-modal">Купить книгу</button>
-        <button class="btn btn-success" data-open="donate-modal">Донат</button>
+      <div class="top-buttons">
+        <button class="btn btn-primary" data-open="download-modal">Скачать за донат</button>
+        <button class="btn btn-success" data-open="donate-modal">Поддержать проект</button>
+      </div>
+      <div class="hr"></div>
+      <div class="mini">
+        Все донаты идут на развитие проекта: создание аудиокниги и перевод книги на английский язык.
       </div>
     </div>
 
     <section class="panel">
-      <h2 style="margin:0 0 10px 0;font-size:20px">Адреса для оплаты</h2>
+      <h2 style="margin:0 0 10px 0;font-size:20px">Адреса для доната</h2>
       <div class="cards">
         <!-- BTC -->
         <div class="card">
@@ -104,24 +112,29 @@
           </div>
         </div>
       </div>
+
       <div class="hr"></div>
-      <p class="mini">После интеграции платежной системы кнопки «Купить» и «Донат» будут работать автоматически.</p>
+      <p class="mini">
+        После подключения автоматизации кнопка «Скачать за донат» откроет окно с выбором суммы и валюты.
+        Сейчас вы можете отправить донат на адрес и написать нам на почту — мы вышлем ссылку на скачивание.
+      </p>
+      <p class="mini">Контакт: <a href="mailto:contact@raykedy.com">contact@raykedy.com</a></p>
     </section>
 
     <footer>© 2051: Алгоритм Пробуждение — Ray Kedy</footer>
   </div>
 
   <!-- Модалки -->
-  <div class="modal" id="buy-modal"><div class="modal-card">
-    <div class="modal-head"><b>Покупка книги</b><button class="close" data-close>Закрыть</button></div>
+  <div class="modal" id="download-modal"><div class="modal-card">
+    <div class="modal-head"><b>Скачать за донат</b><button class="close" data-close>Закрыть</button></div>
     <div class="hr"></div>
-    <p class="muted">Здесь позже появится окно оплаты. Пока используйте адреса выше.</p>
+    <p class="muted">Выберите валюту в блоке выше, отправьте донат и напишите нам на e-mail. После подключения автоматической системы здесь появится окно с быстрым выбором суммы и моментальной выдачей ссылки.</p>
   </div></div>
 
   <div class="modal" id="donate-modal"><div class="modal-card">
-    <div class="modal-head"><b>Донат</b><button class="close" data-close>Закрыть</button></div>
+    <div class="modal-head"><b>Поддержать проект</b><button class="close" data-close>Закрыть</button></div>
     <div class="hr"></div>
-    <p class="muted">Спасибо за поддержку! Отправьте любую сумму на один из адресов выше.</p>
+    <p class="muted">Спасибо за поддержку! Все донаты идут на развитие проекта: создание аудиокниги и перевод книги на английский язык.</p>
   </div></div>
 
   <div class="modal" id="qr-modal"><div class="modal-card">
@@ -149,7 +162,7 @@
     });
   });
 
-  // QR (пока заглушка)
+  // QR (заглушка)
   const map={btc:'#addr-btc',eth:'#addr-eth','usdt-trc':'#addr-usdt-trc','usdt-erc':'#addr-usdt-erc'};
   $$('[data-qr]').forEach(btn=>{
     btn.addEventListener('click',()=>{
