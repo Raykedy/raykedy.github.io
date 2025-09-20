@@ -12,204 +12,99 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);
-       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.55}
+       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.55;text-align:center}
 
-  a{color:#28c76f;text-decoration:none}
-  .wrap{max-width:980px;margin:0 auto;padding:28px 14px 60px}
-  header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-  h1{margin:0;font-size:clamp(22px,3.4vw,32px)}
+  .wrap{max-width:680px;margin:0 auto;padding:28px 14px 60px}
+  h1{margin:0 0 10px;font-size:clamp(22px,3.4vw,32px)}
   .muted{color:var(--muted)}
-  .panel{background:#101622;border:1px solid var(--stroke);border-radius:14px;padding:16px;margin-bottom:16px}
+  .panel{background:#101622;border:1px solid var(--stroke);border-radius:14px;padding:20px;margin:16px 0}
 
-  /* кнопки как на главной */
-  .pill-stack { display: grid; gap: 14px; max-width: 540px; margin: 0 auto; }
-  .pill-btn {
-    display:flex;align-items:center;justify-content:center;
-    padding:16px 20px;border-radius:24px;
-    border:1px solid var(--stroke);
-    background:rgba(13,19,32,.55);backdrop-filter:blur(6px);
-    font-weight:700;font-size:18px;color:#e8ecf3;
-    cursor:pointer;text-decoration:none;
-  }
-  .pill-primary { background: rgba(255,122,0,.22); border-color: rgba(255,122,0,.35); }
-  .pill-success { background: rgba(40,199,111,.22); border-color: rgba(40,199,111,.35); }
+  /* кнопки */
+  .pill-stack{display:grid;gap:14px;margin:0 auto;max-width:380px}
+  .pill-btn{padding:16px 20px;border-radius:24px;border:1px solid var(--stroke);
+    font-weight:700;font-size:18px;color:#fff;cursor:pointer}
+  .pill-primary{background:#a0522d;border-color:#a0522d}
+  .pill-success{background:#006400;border-color:#006400}
 
-  /* поле email */
-  .email-wrap { max-width:540px; margin:12px auto 0; display:grid; gap:10px; }
-  .email-input {
-    width:100%;padding:14px 16px;border-radius:16px;
-    border:1px solid var(--stroke);background:#0f1420;color:#e8ecf3;
-    font-size:16px;
-  }
-  .email-help { font-size:12px; color:#9aa2b1; text-align:center }
+  /* email */
+  .email-wrap{max-width:380px;margin:14px auto 0;display:grid;gap:10px}
+  .email-input{padding:14px 16px;border-radius:16px;border:1px solid var(--stroke);
+    background:#0f1420;color:#e8ecf3;font-size:16px;text-align:center}
+  .email-help{font-size:13px;color:#9aa2b1}
 
-  /* сетка валют */
-  .cards{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
-  @media(max-width:900px){.cards{grid-template-columns:1fr}}
-  .card{background:#0f1420;border:1px solid var(--stroke);border-radius:12px;padding:14px}
-  .card h3{margin:0 0 8px 0;font-size:18px}
-  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .addr{flex:1;background:#0d1320;border:1px solid var(--stroke);border-radius:10px;
+  /* карточки валют */
+  .cards{display:grid;gap:16px;margin-top:20px}
+  .card{background:#0f1420;border:1px solid var(--stroke);border-radius:12px;padding:16px}
+  .card h3{margin:0 0 10px;font-size:18px}
+  .row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+  .addr{background:#0d1320;border:1px solid var(--stroke);border-radius:10px;
         padding:8px 10px;font-family:ui-monospace,Menlo,Consolas,monospace;
-        white-space:nowrap;overflow:auto;color:#e5ebf5}
-  .mini{font-size:12px;color:var(--muted)}
-  .btn{padding:8px 12px;border-radius:10px;border:1px solid var(--stroke);background:#0f1420;color:#e8ecf3;cursor:pointer}
-  .btn:hover{opacity:.92}
+        white-space:nowrap;overflow:auto;color:#e5ebf5;max-width:90%}
+  .btn{padding:8px 12px;border-radius:10px;border:1px solid var(--stroke);
+    background:#0f1420;color:#e8ecf3;cursor:pointer}
+  .btn:hover{opacity:.9}
   .success{border-color:rgba(40,199,111,.5)!important}
-  .hr{height:1px;background:var(--stroke);margin:12px 0}
-  footer{margin-top:22px;color:var(--muted);font-size:13px;text-align:center}
-
-  /* модалки */
-  .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(3,6,10,.6);backdrop-filter:blur(6px);padding:18px;z-index:50}
-  .modal.open{display:grid}
-  .modal-card{width:min(520px,96vw);background:#121722;border:1px solid var(--stroke);border-radius:14px;padding:14px}
-  .modal-head{display:flex;justify-content:space-between;align-items:center}
-  .close{border:1px solid var(--stroke);border-radius:8px;padding:6px 10px;color:#9aa2b1;cursor:pointer}
-  .qr{width:200px;height:200px;border:1px dashed rgba(255,255,255,.18);border-radius:10px;display:grid;place-items:center;color:#9aa2b1;margin:10px 0}
+  footer{margin-top:30px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <div>
-        <h1>Скачать книгу за криптодонат</h1>
-        <div class="muted">«2051: Алгоритм Пробуждение»</div>
-      </div>
-      <a class="btn" href="./index.html">← На главную</a>
-    </header>
+    <h1>Скачать книгу за криптодонат</h1>
+    <div class="muted">«2051: Алгоритм Пробуждение»</div>
 
-    <!-- верхний блок -->
     <div class="panel">
       <div class="pill-stack">
-        <button class="pill-btn pill-primary" data-open="download-modal">Скачать книгу за донат</button>
-        <button class="pill-btn pill-success" data-open="donate-modal">Поддержать проект</button>
+        <button class="pill-btn pill-primary">Скачать книгу за донат</button>
+        <button class="pill-btn pill-success">Поддержать проект</button>
       </div>
-
       <div class="email-wrap">
         <input id="buyer-email" class="email-input" type="email" inputmode="email"
-               placeholder="Ваш e-mail (сюда придёт ссылка на книгу)" />
+               placeholder="Ваш e-mail (сюда придёт ссылка)" />
         <div class="email-help">
           Все донаты идут на развитие проекта: создание аудиокниги и перевод книги на английский язык.
         </div>
       </div>
     </div>
 
-    <!-- адреса -->
-    <section class="panel">
-      <h2 style="margin:0 0 10px 0;font-size:20px">Адреса для доната</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Bitcoin (BTC)</h3>
-          <div class="row">
-            <div class="addr" id="addr-btc">вставьте сюда ваш BTC-адрес</div>
-            <button class="btn" data-copy="#addr-btc">Скопировать</button>
-            <button class="btn" data-qr="btc">QR</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Ethereum (ETH)</h3>
-          <div class="row">
-            <div class="addr" id="addr-eth">вставьте сюда ваш ETH-адрес (0x…)</div>
-            <button class="btn" data-copy="#addr-eth">Скопировать</button>
-            <button class="btn" data-qr="eth">QR</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3>USDT</h3>
-          <div class="mini">TRC-20</div>
-          <div class="row">
-            <div class="addr" id="addr-usdt-trc">вставьте TRC-20 адрес (T…)</div>
-            <button class="btn" data-copy="#addr-usdt-trc">Скопировать</button>
-            <button class="btn" data-qr="usdt-trc">QR</button>
-          </div>
-          <div class="mini" style="margin-top:8px">ERC-20</div>
-          <div class="row">
-            <div class="addr" id="addr-usdt-erc">вставьте ERC-20 адрес (0x…)</div>
-            <button class="btn" data-copy="#addr-usdt-erc">Скопировать</button>
-            <button class="btn" data-qr="usdt-erc">QR</button>
-          </div>
+    <h2>Адреса для доната</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Bitcoin (BTC)</h3>
+        <div class="row">
+          <div class="addr" id="addr-btc">вставьте сюда ваш BTC-адрес</div>
+          <button class="btn" data-copy="#addr-btc">Скопировать</button>
         </div>
       </div>
-    </section>
+      <div class="card">
+        <h3>Ethereum (ETH)</h3>
+        <div class="row">
+          <div class="addr" id="addr-eth">вставьте сюда ваш ETH-адрес (0x…)</div>
+          <button class="btn" data-copy="#addr-eth">Скопировать</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>USDT (TRC-20)</h3>
+        <div class="row">
+          <div class="addr" id="addr-usdt-trc">вставьте TRC-20 адрес (T…)</div>
+          <button class="btn" data-copy="#addr-usdt-trc">Скопировать</button>
+        </div>
+      </div>
+    </div>
 
     <footer>© 2051: Алгоритм Пробуждение — Ray Kedy</footer>
   </div>
 
-  <!-- модалки -->
-  <div class="modal" id="download-modal"><div class="modal-card">
-    <div class="modal-head"><b>Скачать за донат</b><button class="close" data-close>Закрыть</button></div>
-    <div class="hr"></div>
-    <p class="muted">Отправьте донат на любой из адресов выше и укажите e-mail. После подключения автоматической системы сюда добавим моментальную выдачу книги.</p>
-  </div></div>
-
-  <div class="modal" id="donate-modal"><div class="modal-card">
-    <div class="modal-head"><b>Поддержать проект</b><button class="close" data-close>Закрыть</button></div>
-    <div class="hr"></div>
-    <p class="muted">Спасибо за поддержку! Все донаты идут на развитие проекта: создание аудиокниги и перевод книги на английский язык.</p>
-  </div></div>
-
-  <div class="modal" id="qr-modal"><div class="modal-card">
-    <div class="modal-head"><b>QR адрес</b><button class="close" data-close>Закрыть</button></div>
-    <div class="qr" id="qr-box">QR подключим позже</div>
-    <div class="mini">Адрес:</div>
-    <div class="addr" id="qr-addr">—</div>
-  </div></div>
-
 <script>
-  const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-
-  // модалки
-  $$('[data-open]').forEach(b=>b.addEventListener('click',()=>{
-    // проверка email при скачивании
-    if (b.dataset.open==="download-modal"){
-      const email=getEmail(); if(!email) return;
-    }
-    $('#'+b.dataset.open)?.classList.add('open');
-  }));
-  $$('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('.modal')?.classList.remove('open')));
-  $$('.modal').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
-
-  // копирование
+  const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
   $$('[data-copy]').forEach(btn=>{
-    btn.addEventListener('click', async ()=>{
-      const el = $(btn.getAttribute('data-copy')); if(!el) return;
-      try{ await navigator.clipboard.writeText(el.textContent.trim());
-        btn.classList.add('success'); btn.textContent='Скопировано ✓';
-        setTimeout(()=>{ btn.classList.remove('success'); btn.textContent='Скопировать'; },1200);
+    btn.addEventListener('click',async()=>{
+      const el=$(btn.getAttribute('data-copy'));if(!el)return;
+      try{await navigator.clipboard.writeText(el.textContent.trim());
+        btn.classList.add('success');btn.textContent='Скопировано ✓';
+        setTimeout(()=>{btn.classList.remove('success');btn.textContent='Скопировать';},1200);
       }catch(e){}
     });
   });
-
-  // QR (заглушка)
-  const map={btc:'#addr-btc',eth:'#addr-eth','usdt-trc':'#addr-usdt-trc','usdt-erc':'#addr-usdt-erc'};
-  $$('[data-qr]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const el=$(map[btn.dataset.qr]); const addr=el?el.textContent.trim():'';
-      $('#qr-addr').textContent = addr || 'Адрес пуст';
-      $('#qr-box').textContent = addr ? 'QR добавим при интеграции' : 'Сначала вставьте адрес';
-      $('#qr-modal').classList.add('open');
-    });
-  });
-
-  // e-mail
-  (function restoreEmail(){
-    const saved=localStorage.getItem('buyerEmail');
-    if(saved){const el=$('#buyer-email');if(el)el.value=saved;}
-  })();
-  function getEmail(){
-    const el=$('#buyer-email'); if(!el) return '';
-    const v=(el.value||'').trim();
-    const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    if(!ok){alert('Введите корректный e-mail — туда придёт ссылка на книгу.');return '';}
-    localStorage.setItem('buyerEmail',v);
-    return v;
-  }
-
-  // ВСТАВЬ СВОИ АДРЕСА НИЖЕ:
-  // document.getElementById('addr-btc').textContent = 'bc1q...';
-  // document.getElementById('addr-eth').textContent = '0x...';
-  // document.getElementById('addr-usdt-trc').textContent = 'T...';
-  // document.getElementById('addr-usdt-erc').textContent = '0x...';
 </script>
 </body>
 </html>
