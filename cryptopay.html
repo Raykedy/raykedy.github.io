@@ -35,7 +35,7 @@
   .email-help{font-size:13px;color:#9aa2b1}
 
   /* выбор формата */
-  .format-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:10px auto 0}
+  .format-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:420px;margin:10px auto 0}
   .format-btn{padding:12px 14px;border-radius:16px;border:1px solid var(--stroke);background:#0f1420;color:#e8ecf3;cursor:pointer}
   .format-btn[aria-pressed="true"]{background:var(--sel); outline:2px solid rgba(255,255,255,.08)}
 
@@ -80,7 +80,6 @@
       <div class="format-grid" role="tablist" aria-label="Формат книги">
         <button class="format-btn" data-format="PDF"  aria-pressed="true">PDF</button>
         <button class="format-btn" data-format="EPUB" aria-pressed="false">EPUB</button>
-        <button class="format-btn" data-format="MOBI" aria-pressed="false">MOBI</button>
       </div>
       <div class="email-help" id="format-note" style="margin-top:8px">Вы выбрали: PDF</div>
     </div>
@@ -151,7 +150,7 @@
   function getFormat(){
     const active = $('.format-btn[aria-pressed="true"]');
     return active ? active.dataset.format : 'PDF';
-    }
+  }
 
   // Поведение верхних кнопок (пока только валидация + подсказка)
   $('#btn-download').addEventListener('click', ()=>{
@@ -161,7 +160,6 @@
   });
   $('#btn-price').addEventListener('click', ()=>{
     const email = getEmail(); if(!email) return;
-    // Кнопка просто показывает сумму. На этапе интеграции откроем окно доната на 3.99 USDT.
     alert('Сумма: 3.99 USDT');
   });
 
