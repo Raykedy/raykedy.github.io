@@ -8,50 +8,47 @@
 <style>
   :root{
     --bg:#0c0f14; --panel:#121722; --text:#e8ecf3; --muted:#9aa2b1; --stroke:rgba(255,255,255,.12);
-    --pill1:#a0522d; /* кнопка "скачать" */
-    --pill2:#006400; /* кнопка 3.99 USDT */
-    --sel:#1b2738;
+    --pill1:#a0522d; /* "Скачать книгу за донат" */
+    --pill2:#006400; /* "3.99 USDT" */
+    --sel:#1b2738;   /* активный формат */
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);
-       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.55;text-align:center}
-  .wrap{max-width:720px;margin:0 auto;padding:28px 14px 60px}
-  h1{margin:0 0 10px;font-size:clamp(22px,3.4vw,32px)}
-  h2{margin:8px 0 0}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; line-height:1.55; text-align:center;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:28px 14px 60px}
+  h1{margin:0 0 10px; font-size:clamp(22px,3.4vw,32px)}
   .muted{color:var(--muted)}
-  .panel{background:#101622;border:1px solid var(--stroke);border-radius:14px;padding:20px;margin:16px 0}
+  .panel{background:#101622; border:1px solid var(--stroke); border-radius:14px; padding:20px; margin:16px 0}
 
   /* большие пилюльные кнопки */
-  .pill-stack{display:grid;gap:14px;margin:0 auto;max-width:420px}
-  .pill-btn{padding:16px 20px;border-radius:24px;border:1px solid var(--stroke);
-    font-weight:700;font-size:18px;color:#fff;cursor:pointer}
-  .pill-primary{background:var(--pill1);border-color:var(--pill1)}
-  .pill-price{background:var(--pill2);border-color:var(--pill2)}
+  .pill-stack{display:grid; gap:14px; margin:0 auto; max-width:420px}
+  .pill-btn{
+    padding:16px 20px; border-radius:24px; border:1px solid var(--stroke);
+    font-weight:700; font-size:18px; color:#fff; cursor:pointer;
+  }
+  .pill-primary{background:var(--pill1); border-color:var(--pill1)}
+  .pill-price{background:var(--pill2); border-color:var(--pill2)}
 
   /* поле email */
-  .email-wrap{max-width:420px;margin:14px auto 0;display:grid;gap:10px}
-  .email-input{padding:14px 16px;border-radius:16px;border:1px solid var(--stroke);
-    background:#0f1420;color:#e8ecf3;font-size:16px;text-align:center}
-  .email-help{font-size:13px;color:#9aa2b1}
+  .email-wrap{max-width:420px; margin:14px auto 0; display:grid; gap:10px}
+  .email-input{
+    padding:14px 16px; border-radius:16px; border:1px solid var(--stroke);
+    background:#0f1420; color:#e8ecf3; font-size:16px; text-align:center;
+  }
+  .email-help{font-size:13px; color:#9aa2b1}
 
   /* выбор формата */
-  .format-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:420px;margin:10px auto 0}
-  .format-btn{padding:12px 14px;border-radius:16px;border:1px solid var(--stroke);background:#0f1420;color:#e8ecf3;cursor:pointer}
+  .format-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; max-width:420px; margin:10px auto 0}
+  .format-btn{
+    padding:12px 14px; border-radius:16px; border:1px solid var(--stroke);
+    background:#0f1420; color:#e8ecf3; cursor:pointer;
+  }
   .format-btn[aria-pressed="true"]{background:var(--sel); outline:2px solid rgba(255,255,255,.08)}
 
-  /* карточки валют (в колонку) */
-  .cards{display:grid;gap:16px;margin-top:16px}
-  .card{background:#0f1420;border:1px solid var(--stroke);border-radius:12px;padding:16px}
-  .card h3{margin:0 0 10px;font-size:18px}
-  .row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-  .addr{background:#0d1320;border:1px solid var(--stroke);border-radius:10px;
-        padding:8px 10px;font-family:ui-monospace,Menlo,Consolas,monospace;
-        white-space:nowrap;overflow:auto;color:#e5ebf5;max-width:90%}
-  .btn{padding:8px 12px;border-radius:10px;border:1px solid var(--stroke);
-    background:#0f1420;color:#e8ecf3;cursor:pointer}
-  .btn:hover{opacity:.92}
-  .success{border-color:rgba(40,199,111,.5)!important}
-  footer{margin-top:30px;color:var(--muted);font-size:13px}
+  footer{margin-top:30px; color:var(--muted); font-size:13px}
+  .link-back{display:inline-block; margin-top:6px; color:#28c76f; text-decoration:none}
 </style>
 </head>
 <body>
@@ -84,61 +81,31 @@
       <div class="email-help" id="format-note" style="margin-top:8px">Вы выбрали: PDF</div>
     </div>
 
-    <!-- адреса -->
-    <h2>Адреса для доната</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Bitcoin (BTC)</h3>
-        <div class="row">
-          <div class="addr" id="addr-btc">вставьте сюда ваш BTC-адрес</div>
-          <button class="btn" data-copy="#addr-btc">Скопировать</button>
-        </div>
-      </div>
-      <div class="card">
-        <h3>Ethereum (ETH)</h3>
-        <div class="row">
-          <div class="addr" id="addr-eth">вставьте сюда ваш ETH-адрес (0x…)</div>
-          <button class="btn" data-copy="#addr-eth">Скопировать</button>
-        </div>
-      </div>
-      <div class="card">
-        <h3>USDT (TRC-20)</h3>
-        <div class="row">
-          <div class="addr" id="addr-usdt-trc">вставьте TRC-20 адрес (T…)</div>
-          <button class="btn" data-copy="#addr-usdt-trc">Скопировать</button>
-        </div>
-      </div>
-    </div>
-
-    <footer>© 2051: Алгоритм Пробуждение — Ray Kedy</footer>
+    <footer>
+      © 2051: Алгоритм Пробуждение — Ray Kedy
+      <br><a class="link-back" href="./index.html">← На главную</a>
+    </footer>
   </div>
 
 <script>
+  // Утилиты
   const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 
-  // Копирование адресов
-  $$('[data-copy]').forEach(btn=>{
-    btn.addEventListener('click', async ()=>{
-      const el = $(btn.getAttribute('data-copy')); if(!el) return;
-      try{
-        await navigator.clipboard.writeText((el.textContent||'').trim());
-        btn.classList.add('success'); const prev=btn.textContent; btn.textContent='Скопировано ✓';
-        setTimeout(()=>{ btn.classList.remove('success'); btn.textContent=prev; }, 1200);
-      }catch(e){}
-    });
-  });
-
   // E-mail: восстановить / проверить
-  (function restoreEmail(){ const saved=localStorage.getItem('buyerEmail'); if(saved) $('#buyer-email').value=saved; })();
+  (function restoreEmail(){
+    const saved=localStorage.getItem('buyerEmail');
+    if(saved) { const el=$('#buyer-email'); if(el) el.value=saved; }
+  })();
   function getEmail(){
-    const v=($('#buyer-email').value||'').trim();
+    const el=$('#buyer-email'); if(!el) return '';
+    const v=(el.value||'').trim();
     const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     if(!ok){ alert('Введите корректный e-mail — на него придёт ссылка.'); return ''; }
     localStorage.setItem('buyerEmail', v);
     return v;
   }
 
-  // Выбор формата
+  // Выбор формата (PDF/EPUB)
   const note = $('#format-note');
   $$('.format-btn').forEach(b=>{
     b.addEventListener('click', ()=>{
@@ -152,21 +119,27 @@
     return active ? active.dataset.format : 'PDF';
   }
 
-  // Поведение верхних кнопок (пока только валидация + подсказка)
-  $('#btn-download').addEventListener('click', ()=>{
+  // Заглушка: создание инвойса (когда подключим NOWPayments — здесь будет вызов бэкенда)
+  async function startInvoice() {
     const email = getEmail(); if(!email) return;
     const format = getFormat();
-    alert(`Ок! Е-mail: ${email}\nФормат: ${format}\nДальше подключим авто-выдачу ссылки после доната.`);
-  });
+    // TODO: заменить на реальный вызов вашего воркера:
+    // const r = await fetch('/api/create-invoice', {method:'POST', headers:{'Content-Type':'application/json'},
+    //   body: JSON.stringify({ amount: 3.99, currency:'USDT', email, format }) });
+    // const data = await r.json();
+    // if (data?.url) window.open(data.url, '_blank'); else alert('Не удалось создать ссылку, попробуйте позже.');
+
+    alert(`Ок! E-mail: ${email}\nФормат: ${format}\nДальше подключим авто-выдачу ссылки после доната.`);
+  }
+
+  // Кнопки
+  $('#btn-download').addEventListener('click', startInvoice);
   $('#btn-price').addEventListener('click', ()=>{
     const email = getEmail(); if(!email) return;
-    alert('Сумма: 3.99 USDT');
+    // Эта кнопка просто фиксирует сумму 3.99 USDT (без слов "цена")
+    // При интеграции можно сразу открывать окно доната на указанную сумму.
+    alert('3.99 USDT');
   });
-
-  // === ВСТАВЬ СВОИ АДРЕСА НИЖЕ ===
-  // document.getElementById('addr-btc').textContent = 'bc1q...';
-  // document.getElementById('addr-eth').textContent = '0x...';
-  // document.getElementById('addr-usdt-trc').textContent = 'T...';
 </script>
 </body>
 </html>
