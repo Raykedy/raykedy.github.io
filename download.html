@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
   <title>2051: Алгоритм Пробуждение — Скачать</title>
-  <meta name="description" content="Официальная страница загрузок книги «2051: Алгоритм Пробуждение». Заглушка: скоро будет доступно." />
+  <meta name="description" content="Официальная страница загрузок книги «2051: Алгоритм Пробуждение»." />
   <meta name="theme-color" content="#0ea15a" />
   <link rel="icon" href="/favicon.ico" />
   <style>
@@ -13,7 +13,8 @@
       --fg:#e7f2ec; --muted:#9fb4aa;
       --accent:#0ea15a; --accent-2:#ff6a00;
       --border:rgba(255,255,255,.15);
-      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px; --max:800px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px; --max:800px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -30,7 +31,7 @@
     }
     .wrap{width:100%; max-width:var(--max); text-align:center; position:relative; z-index:1;}
     .card{
-      background:rgba(17,23,28,.30); /* прозрачнее */
+      background:rgba(17,23,28,.30);
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:
@@ -50,17 +51,31 @@
       -webkit-background-clip:text; background-clip:text; color:transparent;
     }
     .hero p{
-      margin:0 auto;
+      margin:0 auto 24px;
       color:var(--muted);
       font-size:clamp(15px,4vw,18px);
       max-width:640px;
     }
-    @media (max-width:480px){
-      body{padding:16px;}
-      .card{padding:20px 16px;}
-      .hero h2{font-size:28px;}
-      .hero p{font-size:15px;}
+
+    /* магазины */
+    .stores{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:20px;
     }
+    @media(max-width:500px){.stores{grid-template-columns:1fr}}
+    .store-btn{
+      display:flex; align-items:center; gap:10px; justify-content:center;
+      text-decoration:none; font-weight:600; font-size:15px;
+      padding:12px 16px; border-radius:14px;
+      background:rgba(17,23,28,.65);
+      border:1px solid var(--border);
+      color:var(--fg);
+      transition:all .15s ease;
+    }
+    .store-btn:hover{filter:brightness(1.08); transform:translateY(-2px)}
+    .store-btn img{height:22px; width:auto; display:block}
   </style>
 </head>
 <body>
@@ -73,7 +88,34 @@
     <section class="card">
       <div class="hero">
         <h2>Скачать книгу</h2>
-        <p>Скоро здесь появятся кнопки для скачивания на разных ресурсах, а также за криптодонаты. Подпишитесь на каналы в Телеграм или Бастион, чтобы не пропустить старт.</p>
+        <p>Выберите удобный магазин для покупки книги.</p>
+      </div>
+
+      <div class="stores">
+        <a class="store-btn" href="https://www.kobo.com/" target="_blank" rel="noopener">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Rakuten_kobo_logo.svg" alt="">
+          <span>Rakuten Kobo</span>
+        </a>
+        <a class="store-btn" href="https://books.apple.com/" target="_blank" rel="noopener">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="">
+          <span>Apple Books</span>
+        </a>
+        <a class="store-btn" href="https://www.tolino.de/" target="_blank" rel="noopener">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Tolino-Logo.svg" alt="">
+          <span>Tolino</span>
+        </a>
+        <a class="store-btn" href="https://www.vivlio.com/" target="_blank" rel="noopener">
+          <img src="https://www.vivlio.com/favicon.ico" alt="">
+          <span>Vivlio</span>
+        </a>
+        <a class="store-btn" href="https://www.smashwords.com/" target="_blank" rel="noopener">
+          <img src="https://www.smashwords.com/images/logo.png" alt="">
+          <span>Smashwords</span>
+        </a>
+        <a class="store-btn" href="https://fable.co/" target="_blank" rel="noopener">
+          <img src="https://fable.co/favicon.ico" alt="">
+          <span>Fable</span>
+        </a>
       </div>
     </section>
   </main>
