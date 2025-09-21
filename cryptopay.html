@@ -22,7 +22,7 @@
   .muted{color:var(--muted)}
   .panel{background:#101622; border:1px solid var(--stroke); border-radius:14px; padding:20px; margin:16px 0}
 
-  /* большие пилюльные кнопки */
+  /* кнопки */
   .pill-stack{display:grid; gap:14px; margin:0 auto; max-width:420px}
   .pill-btn{
     padding:16px 20px; border-radius:24px; border:1px solid var(--stroke);
@@ -31,7 +31,7 @@
   .pill-primary{background:var(--pill1); border-color:var(--pill1)}
   .pill-price{background:var(--pill2); border-color:var(--pill2)}
 
-  /* поле email */
+  /* e-mail */
   .email-wrap{max-width:420px; margin:14px auto 0; display:grid; gap:10px}
   .email-input{
     padding:14px 16px; border-radius:16px; border:1px solid var(--stroke);
@@ -56,7 +56,7 @@
     <h1>Скачать книгу за криптодонат</h1>
     <div class="muted">«2051: Алгоритм Пробуждение»</div>
 
-    <!-- верхний блок -->
+    <!-- блок с кнопками и e-mail -->
     <div class="panel">
       <div class="pill-stack">
         <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <!-- выбор формата -->
+    <!-- блок выбора формата -->
     <div class="panel">
       <h3 style="margin:0 0 8px">Выберите формат книги</h3>
       <div class="format-grid" role="tablist" aria-label="Формат книги">
@@ -88,58 +88,73 @@
   </div>
 
 <script>
-  // Утилиты
-  const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  // Быстрый выбор элементов
+  const $=(s,r=document)=>r.querySelector(s);
+  const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 
-  // E-mail: восстановить / проверить
-  (function restoreEmail(){
-    const saved=localStorage.getItem('buyerEmail');
-    if(saved) { const el=$('#buyer-email'); if(el) el.value=saved; }
-  })();
+  // Проверка e-mail
   function getEmail(){
-    const el=$('#buyer-email'); if(!el) return '';
-    const v=(el.value||'').trim();
+    const v=($('#buyer-email').value||'').trim();
     const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    if(!ok){ alert('Введите корректный e-mail — на него придёт ссылка.'); return ''; }
-    localStorage.setItem('buyerEmail', v);
+    if(!ok){ alert('Введите корректный e-mail'); return ''; }
+    localStorage.setItem('buyerEmail', v); // сохраним для удобства
     return v;
   }
 
   // Выбор формата (PDF/EPUB)
-  const note = $('#format-note');
-  $$('.format-btn').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      $$('.format-btn').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true');
-      note.textContent = 'Вы выбрали: ' + b.dataset.format;
-    });
-  });
   function getFormat(){
-    const active = $('.format-btn[aria-pressed="true"]');
-    return active ? active.dataset.format : 'PDF';
+    const a=document.querySelector('.format-btn[aria-pressed="true"]');
+    return a ? a.dataset.format : 'PDF';
   }
 
-  // Заглушка: создание инвойса (когда подключим NOWPayments — здесь будет вызов бэкенда)
-  async function startInvoice() {
+  // Создание инвойса через API NOWPayments (через воркер)
+  async function startInvoice(){
     const email = getEmail(); if(!email) return;
     const format = getFormat();
-    // TODO: заменить на реальный вызов вашего воркера:
-    // const r = await fetch('/api/create-invoice', {method:'POST', headers:{'Content-Type':'application/json'},
-    //   body: JSON.stringify({ amount: 3.99, currency:'USDT', email, format }) });
-    // const data = await r.json();
-    // if (data?.url) window.open(data.url, '_blank'); else alert('Не удалось создать ссылку, попробуйте позже.');
 
-    alert(`Ок! E-mail: ${email}\nФормат: ${format}\nДальше подключим авто-выдачу ссылки после доната.`);
+    const btn = document.getElementById('btn-download');
+    const prev = btn.textContent;
+    btn.disabled=true;
+    btn.textContent='Готовим ссылку…';
+
+    try{
+      const res = await fetch('/api/create-invoice', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          amount: 3.99,
+          currency:'USDT',
+          network:'TRC20',
+          email,
+          format
+        })
+      });
+      const data = await res.json();
+      if (data && data.url){
+        // открываем платёжную страницу NOWPayments
+        window.open(data.url, '_blank');
+      } else {
+        alert('Не удалось создать ссылку. Проверь подключение.');
+      }
+    }catch(e){
+      alert('Ошибка соединения. Попробуй ещё раз.');
+    }finally{
+      btn.disabled=false;
+      btn.textContent=prev;
+    }
   }
 
-  // Кнопки
-  $('#btn-download').addEventListener('click', startInvoice);
-  $('#btn-price').addEventListener('click', ()=>{
-    const email = getEmail(); if(!email) return;
-    // Эта кнопка просто фиксирует сумму 3.99 USDT (без слов "цена")
-    // При интеграции можно сразу открывать окно доната на указанную сумму.
-    alert('3.99 USDT');
-  });
+  // Навесим обработчики
+  document.getElementById('btn-download').addEventListener('click', startInvoice);
+  document.getElementById('btn-price').addEventListener('click', startInvoice);
+
+  // Переключение кнопок выбора формата
+  $$('.format-btn').forEach(b=>b.addEventListener('click',()=>{
+    $$('.format-btn').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    const note=document.getElementById('format-note');
+    if(note) note.textContent='Вы выбрали: '+b.dataset.format;
+  }));
 </script>
 </body>
 </html>
