@@ -6,92 +6,71 @@
   <title>Скачать книгу за криптодонат</title>
   <meta name="color-scheme" content="dark">
   <style>
-    :root {
-      --bg:#0b0f14;
-      --panel:#121824;
-      --text:#e6f0ff;
-      --muted:#a9b7d1;
-      --stroke:#1c2533;
-      --accent:#ffa600;
+    :root{
+      --bg:#0b0f14; --panel:#121824; --text:#e6f0ff;
+      --muted:#a9b7d1; --stroke:#1c2533; --accent:#ffa600;
+      --good:#00c46f;
     }
-    html,body{height:100%;margin:0;padding:0;box-sizing:border-box;}
-    *, *:before, *:after {box-sizing:inherit;}
-    body {
-      background:var(--bg);
-      color:var(--text);
+    html,body{height:100%;margin:0}
+    *,*:before,*:after{box-sizing:border-box}
+    body{
+      background:var(--bg); color:var(--text);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       overflow-x:hidden;
     }
+    /* Фон: видео + двойная вуаль (универсально затемняет на любом экране) */
     .video{
-      position:fixed;inset:0;z-index:-2;
-      object-fit:cover;width:100%;height:100%;
-      filter:brightness(.38) saturate(1.05);
+      position:fixed; inset:0; z-index:-2;
+      object-fit:cover; width:100%; height:100%;
+      filter:brightness(.35) saturate(1.05) blur(.2px);
     }
     .overlay{
-      position:fixed;inset:0;z-index:-1;
-      background:radial-gradient(1200px 600px at 50% 20%, rgba(255,106,0,.18), transparent 60%);
+      position:fixed; inset:0; z-index:-1;
+      /* сплошное затемнение + мягкая подсветка по центру */
+      background:
+        linear-gradient(0deg, rgba(11,15,20,.72), rgba(11,15,20,.72)),
+        radial-gradient(1200px 600px at 50% 30%, rgba(255,106,0,.18), transparent 60%);
     }
-    .wrap{
-      min-height:100%;
-      display:grid;
-      place-items:center;
-      padding:16px;
-    }
+
+    .wrap{min-height:100%; display:grid; place-items:center; padding:16px}
     .card{
-      width:100%;
-      max-width:420px;
+      width:100%; max-width:420px;
       background:color-mix(in srgb, var(--panel) 92%, transparent);
-      border:1px solid var(--stroke);
-      border-radius:18px;
+      border:1px solid var(--stroke); border-radius:18px;
       padding:24px 20px;
       box-shadow:0 20px 60px rgba(0,0,0,.45);
       backdrop-filter:blur(6px);
       text-align:center;
     }
-    h1{margin:0 0 1rem;font-size:1.4rem;}
-    p{margin:0.5rem 0;color:var(--muted);font-size:0.95rem;}
+    .logo{color:var(--muted); font-weight:600; margin-bottom:.4rem; opacity:.95}
+    h1{margin:.2rem 0 1rem; font-size:1.6rem; line-height:1.15}
+    p{margin:.5rem 0; color:var(--muted); font-size:.95rem}
+
     .pill-btn{
-      display:block;
-      width:100%;
-      margin:10px 0;
-      padding:14px 16px;
-      border-radius:14px;
-      border:1px solid var(--stroke);
-      font-size:16px;
-      font-weight:600;
-      cursor:pointer;
+      display:block; width:100%; margin:10px 0; padding:14px 16px;
+      border-radius:14px; border:1px solid var(--stroke);
+      font-size:16px; font-weight:700; cursor:pointer;
     }
-    .pill-primary{background:var(--accent);color:#000;cursor:pointer;}
-    .pill-price{
-      background:#00c46f;
-      color:#000;
-      cursor:default;
-      opacity:0.9;
-    }
+    .pill-primary{background:var(--accent); color:#000}
+    .pill-price{background:var(--good); color:#000; cursor:default; opacity:.95}
+
     .email-input{
-      width:100%;
-      margin:14px 0;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid var(--stroke);
-      font-size:14px;
-      text-align:center;
+      width:100%; margin:14px 0; padding:12px 14px;
+      border-radius:12px; border:1px solid var(--stroke);
+      font-size:14px; text-align:center; background:#3a3f49; color:var(--text);
     }
+    .email-input::placeholder{color:#c9d2e4; opacity:.8}
+
     .static-btn{
-      width:100%;
-      margin-top:14px;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid var(--stroke);
-      font-size:14px;
-      text-align:center;
-      background:#2a2f3a;
-      color:#777;
-      cursor:default;
-      opacity:0.7;
+      width:100%; margin-top:14px; padding:12px 14px;
+      border-radius:12px; border:1px solid var(--stroke);
+      font-size:14px; text-align:center; background:#2a2f3a; color:#777;
+      cursor:default; opacity:.7;
     }
-    footer{margin-top:20px;font-size:13px;color:var(--muted);}
-    .link-back{color:#82c7f6;text-decoration:none;}
+
+    footer{margin-top:20px; font-size:13px; color:var(--muted)}
+    .nowrap{white-space:nowrap}
+    .link-back{color:#82c7f6; text-decoration:none}
   </style>
 </head>
 <body>
@@ -103,7 +82,7 @@
 
   <main class="wrap">
     <section class="card">
-      <div class="logo small">Ray Kedy • 2051</div>
+      <div class="logo">Ray Kedy • 2051</div>
       <h1>Скачать книгу за криптодонат</h1>
       <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
 
@@ -119,53 +98,44 @@
       <div class="static-btn">EPUB</div>
 
       <footer>
-        © 2051: Алгоритм Пробуждение — Ray Kedy<br>
-        <a class="link-back" href="./index.html">← На главную</a>
+        © 2051: Алгоритм Пробуждение — <span class="nowrap">Ray Kedy</span><br>
+        <a class="link-back" href="./index.html">На главную</a>
       </footer>
     </section>
   </main>
 
   <script>
     function getEmail(){
-      const v=document.getElementById('buyer-email').value.trim();
+      const v = document.getElementById('buyer-email').value.trim();
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){
-        alert("Введите корректный e-mail");
-        return null;
+        alert('Введите корректный e-mail'); return null;
       }
       return v;
     }
     async function startInvoice(){
-      const email=getEmail(); if(!email) return;
-      const btn=document.getElementById("btn-download");
-      const prev=btn.textContent;
-      btn.disabled=true; btn.textContent="Генерация ссылки...";
-
+      const email = getEmail(); if(!email) return;
+      const btn = document.getElementById('btn-download');
+      const prev = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Генерация ссылки...';
       try{
-        const res=await fetch("/api/create-invoice",{
-          method:"POST",
-          headers:{"content-type":"application/json"},
+        const res = await fetch('/api/create-invoice',{
+          method:'POST',
+          headers:{'content-type':'application/json'},
           body:JSON.stringify({
-            amount:3.99,
-            currency:"USDT",
-            network:"TRC20",
-            email,
-            format:"epub"
+            amount:3.99, currency:'USDT', network:'TRC20',
+            email, format:'epub'
           })
         });
-        const data=await res.json();
-        if(data && data.url){
-          window.open(data.url,"_blank");
-        }else{
-          alert("Не удалось создать ссылку. Проверь подключение.");
-        }
+        const data = await res.json();
+        if(data && data.url){ window.open(data.url,'_blank'); }
+        else{ alert('Не удалось создать ссылку. Проверь подключение.'); }
       }catch(e){
-        alert("Ошибка соединения. Попробуй ещё раз.");
+        alert('Ошибка соединения. Попробуйте ещё раз.');
       }finally{
-        btn.disabled=false;
-        btn.textContent=prev;
+        btn.disabled = false; btn.textContent = prev;
       }
     }
-    document.getElementById("btn-download").addEventListener("click",startInvoice);
+    document.getElementById('btn-download').addEventListener('click', startInvoice);
   </script>
 </body>
 </html>
