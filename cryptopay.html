@@ -1,203 +1,155 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Скачать книгу за криптодонат — Ray Kedy</title>
-<meta name="color-scheme" content="dark" />
-<style>
-  :root{
-    --bg:#0b0f14;      /* фоновой базовый цвет */
-    --panel:#121824;   /* цвет карточки */
-    --text:#e6f0ff;
-    --muted:#9ab7d1;
-    --stroke:#1c2533;
-    --accent:#ffc065;
-    --green:#25d366;
-    --sel:#1f3b53;
-  }
-
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    overflow:hidden;
-  }
-
-  /* ВИДЕОФОН, как на cancel/success */
-  .video{
-    position:fixed; inset:0; z-index:-2; object-fit:cover; width:100%; height:100%;
-    filter:brightness(.38) saturate(1.05);
-  }
-  .overlay{
-    position:fixed; inset:0; z-index:-1;
-    background:radial-gradient(1200px 600px at 50% 20%, rgba(255,106,0,.18), transparent 60%),
-               linear-gradient(180deg, transparent, rgba(0,0,0,.35) 100%);
-  }
-
-  /* обёртка и карточка — копия сетки из cancel.html */
-  .wrap{
-    min-height:100%; display:grid; place-items:center; padding:24px;
-  }
-  .card{
-    width:min(680px, 92vw);
-    background:color-mix(in srgb, var(--panel) 92%, transparent);
-    border:1px solid var(--stroke);
-    border-radius:18px; padding:28px 24px;
-    box-shadow:0 20px 60px rgba(0,0,0,.45);
-    backdrop-filter: blur(6px);
-    text-align:center;
-  }
-
-  h1{margin:0 0 .6rem; font-size:clamp(22px,3.6vw,34px)}
-  p.subtitle{margin:.2rem 0 1rem; color:var(--muted); line-height:1.55}
-
-  /* кнопки */
-  .pill{
-    display:block; width:100%; margin:0 auto;
-    font-weight:700; border-radius:14px;
-    padding:12px 14px; cursor:pointer;
-    border:1px solid var(--stroke); transition:.2s transform,.2s background;
-  }
-  .pill:active{transform:translateY(1px)}
-  .pill-primary{ background:var(--accent); color:#1b1b1b; }
-  .pill-price  { background:var(--green); color:#062815; margin-top:10px; }
-
-  /* поле email */
-  .email-wrap{ max-width:420px; margin:14px auto 8px; display:grid; gap:8px; }
-  .email-input{
-    width:100%; border-radius:14px; padding:12px 14px;
-    background:#0f141c; color:#fff; border:1px solid var(--stroke); font-size:15px;
-  }
-  .email-help{ font-size:12px; color:var(--muted) }
-
-  /* формат (оставляем только EPUB) */
-  .panel{
-    margin-top:14px; padding:14px; border-radius:14px;
-    border:1px solid var(--stroke); background:rgba(0,0,0,.18);
-  }
-  .panel h3{ margin:0 0 10px; font-size:16px }
-  .format-grid{ display:grid; grid-template-columns:1fr; gap:10px; max-width:420px; margin:0 auto }
-  .format-btn{
-    padding:12px 14px; border-radius:14px; border:1px solid var(--stroke);
-    background:#0f2b44; color:#e6f0ff; cursor:pointer;
-  }
-  .format-btn[aria-pressed="true"]{ background:var(--sel); outline:2px solid rgba(255,255,255,.25) }
-
-  footer{margin-top:18px; color:var(--muted); font-size:13px}
-  .link-back{display:inline-block; margin-top:8px; color:#82c7f6; text-decoration:none}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Скачать книгу за криптодонат</title>
+  <meta name="color-scheme" content="dark">
+  <style>
+    :root {
+      --bg:#0b0f14;
+      --panel:#121824;
+      --text:#e6f0ff;
+      --muted:#a9b7d1;
+      --stroke:#1c2533;
+      --accent:#ffa600;
+    }
+    html,body{height:100%;}
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      overflow:hidden;
+    }
+    .video{
+      position:fixed;inset:0;z-index:-2;
+      object-fit:cover;width:100%;height:100%;
+      filter:brightness(.38) saturate(1.05);
+    }
+    .overlay{
+      position:fixed;inset:0;z-index:-1;
+      background:radial-gradient(1200px 600px at 50% 20%, rgba(255,106,0,.18), transparent 60%);
+    }
+    .wrap{
+      min-height:100%;
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+    .card{
+      width:min(680px,92vw);
+      background:color-mix(in srgb, var(--panel) 92%, transparent);
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      padding:28px 24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      backdrop-filter:blur(6px);
+      text-align:center;
+    }
+    h1{margin:0 0 1rem;font-size:1.6rem;}
+    p{margin:0.5rem 0;color:var(--muted);}
+    .pill-btn{
+      display:block;
+      margin:12px auto;
+      padding:14px 20px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      font-size:16px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .pill-primary{background:var(--accent);color:#000;}
+    .pill-price{background:#00c46f;color:#000;}
+    .email-input{
+      width:100%;max-width:420px;
+      margin:14px auto;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      font-size:15px;
+      text-align:center;
+    }
+    footer{margin-top:30px;font-size:13px;color:var(--muted);}
+    .link-back{color:#82c7f6;text-decoration:none;}
+  </style>
 </head>
 <body>
+  <!-- Фон -->
+  <video class="video" autoplay muted playsinline loop poster="обложка.jpg">
+    <source src="vdhub555.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
 
-<!-- видеофон + затемнение, как на cancel.html -->
-<video class="video" autoplay muted playsinline loop poster="обложка.jpg">
-  <source src="vdhub555.mp4" type="video/mp4" />
-</video>
-<div class="overlay"></div>
+  <main class="wrap">
+    <section class="card">
+      <div class="logo small">Ray Kedy • 2051</div>
+      <h1>Скачать книгу за криптодонат</h1>
+      <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
 
-<main class="wrap">
-  <section class="card">
-    <div class="logo small">Ray Kedy • 2051</div>
-    <h1>Скачать книгу за криптодонат</h1>
-    <p class="subtitle">«2051: Алгоритм Пробуждение» — Ray Kedy</p>
+      <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
+      <button class="pill-btn pill-price" id="btn-price">3.99 USDT</button>
 
-    <button class="pill pill-primary" id="btn-download">Скачать книгу за донат</button>
-    <button class="pill pill-price"   id="btn-price">3.99 USDT</button>
+      <input id="buyer-email" class="email-input" type="email"
+             placeholder="Введите ваш e-mail, на который придёт книга"
+             autocomplete="off" inputmode="email">
 
-    <div class="email-wrap" aria-live="polite">
-      <input id="buyer-email" class="email-input" type="email" inputmode="email" autocomplete="email"
-             placeholder="Ваш e-mail для получения книги" />
-      <div class="email-help">Донаты идут на озвучку и перевод книги на английский.</div>
-    </div>
-
-    <div class="panel" aria-label="Формат книги">
-      <h3>Формат книги</h3>
-      <div class="format-grid" role="tablist" aria-label="Формат книги">
-        <button class="format-btn" data-format="EPUB" aria-pressed="true">EPUB</button>
+      <div style="margin-top:20px;">
+        <button class="pill-btn" data-format="EPUB" aria-pressed="true">EPUB</button>
       </div>
-    </div>
 
-    <footer>
-      © 2051: Алгоритм Пробуждение — Ray Kedy
-      <br><a class="link-back" href="./index.html">→ На главную</a>
-    </footer>
-  </section>
-</main>
+      <footer>
+        © 2051: Алгоритм Пробуждение — Ray Kedy<br>
+        <a class="link-back" href="./index.html">← На главную</a>
+      </footer>
+    </section>
+  </main>
 
-<script>
-  // helpers
-  const $  = (s,root=document)=>root.querySelector(s);
-  const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
-
-  function getEmail(){
-    const v = $('#buyer-email').value.trim();
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    if(!ok){ alert('Введите корректный e-mail'); return ""; }
-    localStorage.setItem('buyerEmail', v);
-    return v;
-  }
-
-  // восстанавливаем e-mail, если уже вводили
-  (function restore(){
-    const prev = localStorage.getItem('buyerEmail');
-    if (prev) $('#buyer-email').value = prev;
-  })();
-
-  function getFormat(){
-    const a = document.querySelector('.format-btn[aria-pressed="true"]');
-    return a ? a.dataset.format : 'EPUB';
-  }
-
-  async function startInvoice(){
-    const email = getEmail(); if(!email) return;
-    const format = getFormat();
-
-    const btn  = $('#btn-download');
-    const prev = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Готовим ссылку…';
-
-    try{
-      const res = await fetch('/api/create-invoice', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({
-          amount: 3.99,
-          currency: 'USD',
-          network: 'TRC20',
-          email,
-          format
-        })
-      });
-      const data = await res.json().catch(()=>null);
-
-      if (data && data.url){
-        window.open(data.url, '_blank');
-      } else {
-        alert('Не удалось создать ссылку. Попробуйте ещё раз.');
-        console.log('create-invoice error:', data);
+  <script>
+    function getEmail(){
+      const v=document.getElementById('buyer-email').value.trim();
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){
+        alert("Введите корректный e-mail");
+        return null;
       }
-    }catch(err){
-      alert('Ошибка соединения. Попробуйте ещё раз.');
-      console.error(err);
-    }finally{
-      btn.disabled = false;
-      btn.textContent = prev;
+      return v;
     }
-  }
+    function getFormat(){
+      return "epub";
+    }
+    async function startInvoice(){
+      const email=getEmail(); if(!email) return;
+      const btn=document.getElementById("btn-download");
+      const prev=btn.textContent;
+      btn.disabled=true; btn.textContent="Генерация ссылки...";
 
-  $('#btn-download').addEventListener('click', startInvoice);
-  $('#btn-price').addEventListener('click', startInvoice);
-
-  // на будущее (если вернёшь больше форматов)
-  $$('.format-btn').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      $$('.format-btn').forEach(x=>x.setAttribute('aria-pressed','false'));
-      b.setAttribute('aria-pressed','true');
-    });
-  });
-</script>
+      try{
+        const res=await fetch("/api/create-invoice",{
+          method:"POST",
+          headers:{"content-type":"application/json"},
+          body:JSON.stringify({
+            amount:3.99,
+            currency:"USDT",
+            network:"TRC20",
+            email,
+            format:getFormat()
+          })
+        });
+        const data=await res.json();
+        if(data && data.url){
+          window.open(data.url,"_blank");
+        }else{
+          alert("Не удалось создать ссылку. Проверь подключение.");
+        }
+      }catch(e){
+        alert("Ошибка соединения. Попробуй ещё раз.");
+      }finally{
+        btn.disabled=false;
+        btn.textContent=prev;
+      }
+    }
+    document.getElementById("btn-download").addEventListener("click",startInvoice);
+    document.getElementById("btn-price").addEventListener("click",startInvoice);
+  </script>
 </body>
 </html>
