@@ -58,11 +58,16 @@
       border-radius:14px;
       border:1px solid var(--stroke);
       font-size:16px;
-      cursor:pointer;
       font-weight:600;
+      cursor:pointer;
     }
-    .pill-primary{background:var(--accent);color:#000;}
-    .pill-price{background:#00c46f;color:#000;}
+    .pill-primary{background:var(--accent);color:#000;cursor:pointer;}
+    .pill-price{
+      background:#00c46f;
+      color:#000;
+      cursor:default;
+      opacity:0.9;
+    }
     .email-input{
       width:100%;
       margin:14px 0;
@@ -71,6 +76,19 @@
       border:1px solid var(--stroke);
       font-size:14px;
       text-align:center;
+    }
+    .static-btn{
+      width:100%;
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--stroke);
+      font-size:14px;
+      text-align:center;
+      background:#2a2f3a;
+      color:#777;
+      cursor:default;
+      opacity:0.7;
     }
     footer{margin-top:20px;font-size:13px;color:var(--muted);}
     .link-back{color:#82c7f6;text-decoration:none;}
@@ -90,7 +108,7 @@
       <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
 
       <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
-      <button class="pill-btn pill-price" id="btn-price">3.99 USDT</button>
+      <div class="pill-btn pill-price">3.99 USDT</div>
 
       <input id="buyer-email" class="email-input" type="email"
              placeholder="Ваш e-mail, на который придёт книга"
@@ -98,9 +116,7 @@
 
       <p>Донаты идут на создание аудиокниги и перевод книги на английский язык.</p>
 
-      <div style="margin-top:16px;">
-        <button class="pill-btn" data-format="EPUB" aria-pressed="true" disabled>EPUB</button>
-      </div>
+      <div class="static-btn">EPUB</div>
 
       <footer>
         © 2051: Алгоритм Пробуждение — Ray Kedy<br>
@@ -150,7 +166,6 @@
       }
     }
     document.getElementById("btn-download").addEventListener("click",startInvoice);
-    document.getElementById("btn-price").addEventListener("click",startInvoice);
   </script>
 </body>
 </html>
