@@ -14,13 +14,13 @@
       --stroke:#1c2533;
       --accent:#ffa600;
     }
-    html,body{height:100%;}
+    html,body{height:100%;margin:0;padding:0;box-sizing:border-box;}
+    *, *:before, *:after {box-sizing:inherit;}
     body {
-      margin:0;
       background:var(--bg);
       color:var(--text);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      overflow:hidden;
+      overflow-x:hidden;
     }
     .video{
       position:fixed;inset:0;z-index:-2;
@@ -35,24 +35,26 @@
       min-height:100%;
       display:grid;
       place-items:center;
-      padding:24px;
+      padding:16px;
     }
     .card{
-      width:min(680px,92vw);
+      width:100%;
+      max-width:420px;
       background:color-mix(in srgb, var(--panel) 92%, transparent);
       border:1px solid var(--stroke);
       border-radius:18px;
-      padding:28px 24px;
+      padding:24px 20px;
       box-shadow:0 20px 60px rgba(0,0,0,.45);
       backdrop-filter:blur(6px);
       text-align:center;
     }
-    h1{margin:0 0 1rem;font-size:1.6rem;}
-    p{margin:0.5rem 0;color:var(--muted);}
+    h1{margin:0 0 1rem;font-size:1.4rem;}
+    p{margin:0.5rem 0;color:var(--muted);font-size:0.95rem;}
     .pill-btn{
       display:block;
-      margin:12px auto;
-      padding:14px 20px;
+      width:100%;
+      margin:10px 0;
+      padding:14px 16px;
       border-radius:14px;
       border:1px solid var(--stroke);
       font-size:16px;
@@ -62,15 +64,15 @@
     .pill-primary{background:var(--accent);color:#000;}
     .pill-price{background:#00c46f;color:#000;}
     .email-input{
-      width:100%;max-width:420px;
-      margin:14px auto;
-      padding:12px 16px;
+      width:100%;
+      margin:14px 0;
+      padding:12px 14px;
       border-radius:12px;
       border:1px solid var(--stroke);
-      font-size:15px;
+      font-size:14px;
       text-align:center;
     }
-    footer{margin-top:30px;font-size:13px;color:var(--muted);}
+    footer{margin-top:20px;font-size:13px;color:var(--muted);}
     .link-back{color:#82c7f6;text-decoration:none;}
   </style>
 </head>
@@ -91,11 +93,13 @@
       <button class="pill-btn pill-price" id="btn-price">3.99 USDT</button>
 
       <input id="buyer-email" class="email-input" type="email"
-             placeholder="Введите ваш e-mail, на который придёт книга"
+             placeholder="Ваш e-mail, на который придёт книга"
              autocomplete="off" inputmode="email">
 
-      <div style="margin-top:20px;">
-        <button class="pill-btn" data-format="EPUB" aria-pressed="true">EPUB</button>
+      <p>Донаты идут на создание аудиокниги и перевод книги на английский язык.</p>
+
+      <div style="margin-top:16px;">
+        <button class="pill-btn" data-format="EPUB" aria-pressed="true" disabled>EPUB</button>
       </div>
 
       <footer>
@@ -114,9 +118,6 @@
       }
       return v;
     }
-    function getFormat(){
-      return "epub";
-    }
     async function startInvoice(){
       const email=getEmail(); if(!email) return;
       const btn=document.getElementById("btn-download");
@@ -132,7 +133,7 @@
             currency:"USDT",
             network:"TRC20",
             email,
-            format:getFormat()
+            format:"epub"
           })
         });
         const data=await res.json();
