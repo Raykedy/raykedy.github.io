@@ -102,7 +102,7 @@
       .then(d => {
         if (d && d.signedUrl) {
           dl.href = d.signedUrl;
-          statusEl.textContent = 'Ссылка активна 72 часа.';
+          statusEl.textContent = 'Ссылка активна 1 час.';
         } else {
           statusEl.textContent = 'Ссылка временно недоступна. Попробуйте обновить страницу.';
           statusEl.classList.add('err');
