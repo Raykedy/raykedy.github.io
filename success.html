@@ -6,64 +6,32 @@
   <title>Оплата успешна — 2051: Алгоритм Пробуждение</title>
   <meta name="color-scheme" content="dark">
   <style>
-    .wrap {
-      min-height:100%;
-      display:grid;
-      place-items:center;
-      padding:24px;
+    html, body { height:100%; } /* критично, чтобы фон занял весь экран */
+    body {
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: url("https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucess.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color:#fff;
     }
+    .wrap {min-height:100%; display:grid; place-items:center; padding:24px;}
     .card {
       width:min(680px, 92vw);
       background:rgba(0,0,0,0.65);
-      border-radius:18px;
-      padding:28px 24px;
+      border-radius:18px; padding:28px 24px;
       box-shadow:0 20px 60px rgba(0,0,0,.45);
       text-align:center;
     }
-    h1 {
-      margin:.2rem 0 0.6rem;
-      font-size:clamp(22px,3.6vw,34px);
-    }
-    p {
-      margin:.2rem 0 1rem;
-      color:#d0d6e3;
-      line-height:1.55;
-    }
-    .btn {
-      display:inline-block;
-      padding:16px 28px;
-      border-radius:14px;
-      text-decoration:none;
-      color:#fff;
-      font-weight:700;
-      background:#ff6a00;
-      transition:.2s transform, .2s background;
-    }
-    .btn:hover {
-      transform:translateY(-2px);
-      background:#e65d00;
-    }
-    .ok {color:#00ffa2}
-    footer {
-      margin-top:14px;
-      font-size:.85rem;
-      color:#bbb;
-      opacity:.85;
-    }
-    .logo {
-      font-weight:700;
-      letter-spacing:.02em;
-      margin-bottom:8px;
-    }
+    h1{margin:.2rem 0 0.6rem; font-size:clamp(22px,3.6vw,34px)}
+    p{margin:.2rem 0 1rem; color:#d0d6e3; line-height:1.55}
+    .btn{display:inline-block; padding:16px 28px; border-radius:14px; text-decoration:none; color:#fff; font-weight:700; background:#ff6a00; transition:.2s transform,.2s background;}
+    .btn:hover{transform:translateY(-2px); background:#e65d00}
+    .ok{color:#00ffa2}
+    footer{margin-top:14px; font-size:.85rem; color:#bbb; opacity:.85}
+    .logo{font-weight:700; letter-spacing:.02em; margin-bottom:8px;}
   </style>
 </head>
-<body style="
-  margin:0;
-  font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background: url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucess.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color:#fff;
-">
+<body>
   <main class="wrap">
     <section class="card">
       <div class="logo small">Ray Kedy • 2051</div>
@@ -72,9 +40,7 @@
 
       <a id="resendLink" class="btn" href="#">📩 Выслать книгу на e-mail</a>
 
-      <footer>
-        Если письмо не приходит — проверьте «Спам».
-      </footer>
+      <footer>Если письмо не приходит — проверьте «Спам».</footer>
     </section>
   </main>
 
