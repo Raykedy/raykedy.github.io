@@ -25,7 +25,12 @@
     }
     h1{margin:.2rem 0 .6rem; font-size:clamp(22px,3.6vw,34px)}
     p{margin:.2rem 0 1rem; color:#d0d6e3; line-height:1.55}
-    .btn{display:inline-block; padding:16px 28px; border-radius:14px; text-decoration:none; color:#fff; font-weight:700; background:#ff6a00; transition:.2s transform,.2s background;}
+    .btn{
+      display:inline-block; padding:16px 28px; border-radius:14px;
+      text-decoration:none; color:#fff; font-weight:700;
+      background:#ff6a00; transition:.2s transform,.2s background;
+      border:0; cursor:pointer;
+    }
     .btn:hover{transform:translateY(-2px); background:#e65d00}
     .ok{color:#00ffa2}
     footer{margin-top:14px; font-size:.85rem; color:#bbb; opacity:.85}
@@ -76,7 +81,8 @@
     <h1>Спасибо! Оплата получена <span class="ok">✅</span></h1>
     <p>Нажмите кнопку ниже, чтобы получить e-книгу на ваш e-mail.</p>
 
-    <a id="resendLink" class="btn" href="#">📩 Выслать книгу на e-mail</a>
+    <!-- КНОПКА вместо ссылки, чтобы не было переходов по # -->
+    <button id="resendLink" type="button" class="btn">📩 Выслать книгу на e-mail</button>
 
     <footer>Если письмо не приходит — проверьте «Спам».</footer>
   </section>
@@ -89,8 +95,8 @@
         <input id="emailInput" class="input" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
       </div>
       <div class="actions">
-        <button id="sendBtn" class="btn-sec btn-primary">Отправить</button>
-        <button id="closeBtn" class="btn-sec btn-gray">Отмена</button>
+        <button id="sendBtn"  type="button" class="btn-sec btn-primary">Отправить</button>
+        <button id="closeBtn" type="button" class="btn-sec btn-gray">Отмена</button>
       </div>
     </div>
   </div>
@@ -99,6 +105,9 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
+    // если в URL был хвост "#", уберём (некоторые рефералы так добавляют)
+    if (location.hash === '#') history.replaceState(null,'',location.pathname + location.search);
+
     const qs = new URLSearchParams(location.search);
     const orderId = qs.get('order') || '';
 
@@ -126,11 +135,12 @@
       toastEl._t = setTimeout(()=> toastEl.classList.remove('show'), 2600);
     }
 
-    resend.addEventListener('click', e => { e.preventDefault(); openModal(); });
-    closeBtn.addEventListener('click', closeModal);
+    resend.addEventListener('click', (e)=>{ e.preventDefault(); openModal(); });
+    closeBtn.addEventListener('click', (e)=>{ e.preventDefault(); closeModal(); });
     modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
 
-    async function sendEmail(){
+    async function sendEmail(e){
+      e && e.preventDefault(); // гасим любые дефолтные действия
       const email = input.value.trim();
       if(!email) return toast('Введите e-mail', 'error');
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast('Некорректный e-mail', 'error');
@@ -139,7 +149,8 @@
         await fetch('/api/resend', {
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({ orderId, email })
+          body:JSON.stringify({ orderId, email }),
+          redirect:'manual' // на всякий случай игнорируем 3xx
         });
         closeModal();
         toast('Готово! Проверьте почту (и папку «Спам»).','success');
@@ -149,7 +160,7 @@
     }
 
     sendBtn.addEventListener('click', sendEmail);
-    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendEmail(); });
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendEmail(e); });
   </script>
 </body>
 </html>
