@@ -3,120 +3,98 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Успех — 2051: Алгоритм Пробуждение</title>
+<title>Оплата успешна — 2051</title>
 <meta name="color-scheme" content="dark light" />
 <style>
   :root{
     --bg-image-url: url("./assets/bg/9f0.jpg");
-    --card-max-w: 720px;
     --radius: 18px;
     --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --brand-orange: #ff7a00;
+    --brand-green:  #29e070;
+    --card-max-w: 720px;
   }
 
-  * { box-sizing: border-box; }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; line-height:1.55; }
+  body{ position:relative; color:#e9eef5; background:#0a0f14; overflow-x:hidden; }
 
-  html, body {
-    height: 100%;
-    margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
-    line-height: 1.5;
-  }
-
-  body {
-    position: relative;
-    color: #e9eef5;
-    background: #0a0f14;
-    overflow-x: hidden;
-  }
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+  /* Фон */
+  body::before{
+    content:""; position:fixed; inset:0;
     background-image:
       linear-gradient(rgba(5,10,15,.55), rgba(5,10,15,.75)),
       var(--bg-image-url);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    filter: saturate(1.05) contrast(1.02);
-    z-index: -2;
+    background-size:cover; background-position:center; background-attachment:fixed;
+    filter:saturate(1.05) contrast(1.02);
+    z-index:-2;
   }
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
+  body::after{
+    content:""; position:fixed; inset:0;
     background: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
-    background-size: 3px 3px;
-    z-index: -1;
-    pointer-events: none;
+    background-size:3px 3px; pointer-events:none; z-index:-1;
   }
 
-  .wrap {
-    min-height: 100svh;            /* исправление для Android */
-    display: grid;
-    place-items: center;
-    padding: 32px 16px;
+  /* Центровка на Android */
+  .wrap{ min-height:100svh; display:grid; place-items:center; padding:32px 16px; }
+  .card{
+    width:100%; max-width:var(--card-max-w);
+    margin-inline:auto; background:rgba(10,14,20,.66);
+    backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.08);
+    border-radius:var(--radius); box-shadow:var(--shadow); overflow:clip;
   }
 
-  .card {
-    width: 100%;
-    max-width: var(--card-max-w);
-    margin-inline: auto;           /* центр по горизонтали */
-    background: rgba(10,14,20,.66);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: clip;
+  .card__bar{ height:5px; background:linear-gradient(90deg,var(--brand-orange),var(--brand-green)); }
+  .card__inner{ padding:24px; padding-top:20px; }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:8px; padding:10px 14px;
+    background:rgba(41,224,112,.12); border:1px solid rgba(41,224,112,.35);
+    border-radius:999px; color:#bff7d6; font-size:14px; margin-bottom:14px;
+  }
+  .pill svg{ width:18px; height:18px; }
+
+  .brand{ color:#c8d2df; font-weight:600; margin:0 0 8px 0; letter-spacing:.2px; }
+  .title{ margin:0 0 8px 0; font-size:clamp(22px,2.8vw,32px); font-weight:800; }
+  .subtitle{ margin:0 0 16px 0; color:#c8d2df; }
+
+  .note{
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+    border-radius:14px; padding:12px 14px; color:#cbd6e4; margin:16px 0 18px;
+    font-size:14px;
   }
 
-  .card__bar { height: 5px; background: linear-gradient(90deg, #ff7a00, #29e070); }
-  .card__inner { padding: 24px; padding-top: 20px; }
-
-  .title { margin: 0 0 8px 0; font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; letter-spacing: .3px; }
-  .subtitle { margin: 0 0 20px 0; font-size: 15px; color: #c8d2df; }
-
-  .ok {
-    display: inline-flex; gap: 10px; align-items: center;
-    padding: 10px 14px; background: rgba(41,224,112,.12);
-    border: 1px solid rgba(41,224,112,.35); color: #bff7d6;
-    border-radius: 12px; font-size: 14px; margin-bottom: 18px;
+  .actions{ display:flex; flex-wrap:wrap; gap:10px; }
+  .btn{
+    appearance:none; border:0; cursor:pointer; user-select:none;
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 18px; border-radius:14px; font-weight:800; font-size:16px;
+    transition:transform .06s ease, box-shadow .2s ease, opacity .2s ease; text-decoration:none;
   }
-  .ok svg { width: 18px; height: 18px; flex: 0 0 18px; }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
 
-  .meta { display: grid; gap: 10px; margin: 14px 0 22px 0; }
-  .meta__row { display: grid; grid-template-columns: 140px 1fr; gap: 10px; align-items: start; font-size: 14px; }
-  .meta__label { color: #9fb1c4; }
-  .meta__value { color: #e9eef5; word-break: break-word; }
-
-  .note {
-    font-size: 13.5px; color: #c8d2df;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin-bottom: 18px;
+  .btn-primary{
+    color:#0b0f14;
+    background:linear-gradient(90deg,#ff7a00,#ffd17a);
+    box-shadow:0 10px 18px rgba(255,122,0,.25);
+  }
+  .btn-ghost{
+    color:#e9eef5; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
+    font-weight:700;
   }
 
-  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-  .btn {
-    appearance: none; border: 0; cursor: pointer;
-    padding: 12px 16px; border-radius: 12px; font-weight: 600; font-size: 15px;
-    text-decoration: none; display: inline-flex; align-items: center; gap: 10px;
-    transition: transform .06s ease, opacity .2s ease, box-shadow .2s ease;
+  .emailbox{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .emailbox input{
+    flex:1 1 260px; min-width:220px; padding:12px 14px; border-radius:12px;
+    border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.08);
+    color:#e9eef5; outline:none;
   }
-  .btn:hover { transform: translateY(-1px); }
-  .btn:active { transform: translateY(0); }
+  .emailbox input::placeholder{ color:#a7b8cb; }
 
-  .btn-primary { color: #0b0f14; background: linear-gradient(90deg, #ff7a00, #ffd17a); box-shadow: 0 8px 16px rgba(255,122,0,.25); }
-  .btn-secondary { color: #0b0f14; background: linear-gradient(90deg, #29e070, #9df7c8); box-shadow: 0 8px 16px rgba(41,224,112,.22); }
-  .btn-ghost { color: #e9eef5; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); }
+  .footer{ text-align:center; font-size:12.5px; color:#a7b8cb; padding:16px 0 6px; }
 
-  .footer { text-align: center; font-size: 12.5px; color: #a7b8cb; padding: 14px 0 6px; }
-
-  @media (max-width: 460px){
-    .meta__row { grid-template-columns: 1fr; }
-  }
+  @media (max-width:460px){ .emailbox{ flex-direction:column; } }
 </style>
 </head>
 <body>
@@ -124,36 +102,32 @@
     <article class="card" role="status" aria-live="polite">
       <div class="card__bar"></div>
       <div class="card__inner">
-        <div class="ok" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
+        <div class="pill">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="10" stroke="currentColor" opacity=".35"/>
             <path d="M7 12.5l3.2 3.2L17.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           Оплата подтверждена
         </div>
 
-        <h1 class="title">Спасибо! Ваша книга готова к скачиванию</h1>
-        <p class="subtitle">Ссылка на книгу также отправлена на указанный e-mail.</p>
+        <p class="brand">Ray Kedy • 2051</p>
+        <h1 class="title">Спасибо! Оплата получена ✅</h1>
+        <p class="subtitle">Нажмите кнопку ниже, чтобы получить e-книгу на ваш e-mail.</p>
 
-        <div class="meta" id="orderMeta" hidden>
-          <div class="meta__row">
-            <div class="meta__label">Номер заказа</div>
-            <div class="meta__value" id="orderIdValue">—</div>
-          </div>
-          <div class="meta__row">
-            <div class="meta__label">E-mail</div>
-            <div class="meta__value" id="emailValue">—</div>
-          </div>
+        <div class="note">Если письмо не приходит — проверьте «Спам».</div>
+
+        <!-- Кнопка отправки письма -->
+        <div class="actions" style="margin-bottom:10px;">
+          <button id="sendBtn" class="btn btn-primary">
+            <span aria-hidden="true">📩</span> Выслать книгу на e-mail
+          </button>
+          <a class="btn btn-ghost" href="/">На главную</a>
         </div>
 
-        <div class="note">
-          Если ссылка не открывается в приложении (например, Telegram/Instagram), нажмите «Скачать» и выберите «Открыть в браузере».
-        </div>
-
-        <div class="actions">
-          <a class="btn btn-primary" id="downloadBtn" href="#" download>Скачать</a>
-          <a class="btn btn-secondary" id="homeBtn" href="/">На главную</a>
-          <a class="btn btn-ghost" id="donateBtn" href="/crypto">Поддержать криптой</a>
+        <!-- Поле e-mail (покажется, если email не пришёл в query) -->
+        <div id="emailBox" class="emailbox" hidden>
+          <input id="emailInput" type="email" inputmode="email" autocomplete="email" placeholder="Ваш e-mail для получения книги">
+          <button id="sendBtnInline" class="btn btn-ghost" type="button">Отправить</button>
         </div>
 
         <div class="footer">2051: Алгоритм Пробуждение — Ray Kedy</div>
@@ -162,30 +136,66 @@
   </div>
 
 <script>
-  const params = new URLSearchParams(location.search);
-  const orderId = params.get("orderId") || "";
-  const email   = params.get("email")   || "";
-  const dl      = params.get("download")|| "";
+(() => {
+  // === эндпоинт воркера (как был у нас ранее) ===
+  const SEND_ENDPOINT = "/api/send-download";
 
-  const metaEl = document.getElementById("orderMeta");
-  const orderEl = document.getElementById("orderIdValue");
-  const emailEl = document.getElementById("emailValue");
+  // Параметры из URL
+  const p = new URLSearchParams(location.search);
+  const orderId = p.get("orderId") || "";
+  const emailQ  = p.get("email")   || "";
+  const download= p.get("download")|| ""; // можно оставить пустым — воркер сам подставит
 
-  if (orderId || email) {
-    orderEl.textContent = orderId || "—";
-    emailEl.textContent = email   || "—";
-    metaEl.hidden = false;
+  const sendBtn = document.getElementById("sendBtn");
+  const emailBox = document.getElementById("emailBox");
+  const emailInput = document.getElementById("emailInput");
+  const sendBtnInline = document.getElementById("sendBtnInline");
+
+  if (!emailQ) emailBox.hidden = false; // если email не передали — спросим
+
+  const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+  async function send(toEmail){
+    if (!isEmail(toEmail)) { toast("Неверный e-mail"); return; }
+
+    setLoading(true);
+    try{
+      const res = await fetch(SEND_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ orderId, email: toEmail, download })
+      });
+      if (!res.ok) throw new Error("send_failed");
+      toast("Письмо отправлено ✔");
+    } catch(e){
+      console.error(e); toast("Ошибка отправки");
+    } finally {
+      setLoading(false);
+    }
   }
 
-  const downloadBtn = document.getElementById("downloadBtn");
-  const homeBtn     = document.getElementById("homeBtn");
-  const donateBtn   = document.getElementById("donateBtn");
-
-  if (dl) {
-    downloadBtn.href = dl;
-  } else {
-    downloadBtn.removeAttribute("download");
+  function setLoading(x){
+    sendBtn.disabled = !!x;
+    sendBtn.textContent = x ? "Отправляем…" : "Выслать книгу на e-mail";
   }
+
+  function toast(text){
+    sendBtn.textContent = text;
+    setTimeout(()=> sendBtn.textContent = "Выслать книгу на e-mail", 1700);
+  }
+
+  sendBtn.addEventListener("click", () => {
+    const target = emailQ || (emailInput && emailInput.value.trim());
+    if (!target) { toast("Введите e-mail"); return; }
+    send(target);
+  });
+
+  sendBtnInline.addEventListener("click", () => {
+    const v = (emailInput && emailInput.value.trim()) || "";
+    if (!v) { sendBtnInline.textContent = "Введите e-mail"; setTimeout(()=>sendBtnInline.textContent="Отправить",1200); return; }
+    send(v);
+  });
+})();
 </script>
 </body>
 </html>
