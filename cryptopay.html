@@ -7,41 +7,34 @@
   <meta name="color-scheme" content="dark">
   <style>
     :root{
-      --bg:#0b0f14; --panel:#121824; --text:#e6f0ff;
+      --panel:#121824; --text:#e6f0ff;
       --muted:#a9b7d1; --stroke:#1c2533; --accent:#ffa600;
       --good:#00c46f;
     }
-    html,body{height:100%;margin:0}
-    *,*:before,*:after{box-sizing:border-box}
-    body{
-      background:var(--bg); color:var(--text);
+    html,body{
+      height:100%; margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      overflow-x:hidden;
     }
-    /* Фон: видео + двойная вуаль (универсально затемняет на любом экране) */
-    .video{
-      position:fixed; inset:0; z-index:-2;
-      object-fit:cover; width:100%; height:100%;
-      filter:brightness(.35) saturate(1.05) blur(.2px);
-    }
-    .overlay{
-      position:fixed; inset:0; z-index:-1;
-      /* сплошное затемнение + мягкая подсветка по центру */
-      background:
-        linear-gradient(0deg, rgba(11,15,20,.72), rgba(11,15,20,.72)),
-        radial-gradient(1200px 600px at 50% 30%, rgba(255,106,0,.18), transparent 60%);
+    body{
+      background: url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color:var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding:16px;
     }
 
-    .wrap{min-height:100%; display:grid; place-items:center; padding:16px}
     .card{
       width:100%; max-width:420px;
-      background:color-mix(in srgb, var(--panel) 92%, transparent);
+      background:rgba(18,24,36,0.9);
       border:1px solid var(--stroke); border-radius:18px;
       padding:24px 20px;
       box-shadow:0 20px 60px rgba(0,0,0,.45);
       backdrop-filter:blur(6px);
       text-align:center;
     }
+
     .logo{color:var(--muted); font-weight:600; margin-bottom:.4rem; opacity:.95}
     h1{margin:.2rem 0 1rem; font-size:1.6rem; line-height:1.15}
     p{margin:.5rem 0; color:var(--muted); font-size:.95rem}
@@ -74,35 +67,27 @@
   </style>
 </head>
 <body>
-  <!-- Фон -->
-  <video class="video" autoplay muted playsinline loop poster="обложка.jpg">
-    <source src="vdhub555.mp4" type="video/mp4">
-  </video>
-  <div class="overlay"></div>
+  <section class="card">
+    <div class="logo">Ray Kedy • 2051</div>
+    <h1>Скачать книгу за криптодонат</h1>
+    <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
 
-  <main class="wrap">
-    <section class="card">
-      <div class="logo">Ray Kedy • 2051</div>
-      <h1>Скачать книгу за криптодонат</h1>
-      <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
+    <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
+    <div class="pill-btn pill-price">3.99 USDT</div>
 
-      <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
-      <div class="pill-btn pill-price">3.99 USDT</div>
+    <input id="buyer-email" class="email-input" type="email"
+           placeholder="Ваш e-mail, на который придёт книга"
+           autocomplete="off" inputmode="email">
 
-      <input id="buyer-email" class="email-input" type="email"
-             placeholder="Ваш e-mail, на который придёт книга"
-             autocomplete="off" inputmode="email">
+    <p>Донаты идут на создание аудиокниги и перевод книги на английский язык.</p>
 
-      <p>Донаты идут на создание аудиокниги и перевод книги на английский язык.</p>
+    <div class="static-btn">EPUB</div>
 
-      <div class="static-btn">EPUB</div>
-
-      <footer>
-        © 2051: Алгоритм Пробуждение — <span class="nowrap">Ray Kedy</span><br>
-        <a class="link-back" href="./index.html">На главную</a>
-      </footer>
-    </section>
-  </main>
+    <footer>
+      © 2051: Алгоритм Пробуждение — <span class="nowrap">Ray Kedy</span><br>
+      <a class="link-back" href="./index.html">На главную</a>
+    </footer>
+  </section>
 
   <script>
     function getEmail(){
@@ -128,7 +113,7 @@
         });
         const data = await res.json();
         if(data && data.url){ window.open(data.url,'_blank'); }
-        else{ alert('Не удалось создать ссылку. Проверь подключение.'); }
+        else{ alert('Не удалось создать ссылку.'); }
       }catch(e){
         alert('Ошибка соединения. Попробуйте ещё раз.');
       }finally{
