@@ -12,9 +12,7 @@
       background: url("https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg") no-repeat center center fixed;
       background-size: cover;
       color:#fff;
-
-      /* стабильный центр на всех Android */
-      display:flex; justify-content:center; align-items:center;
+      display:flex; justify-content:center; align-items:center; /* стабильный центр */
       padding:24px;
     }
 
@@ -38,8 +36,7 @@
       position:fixed; inset:0; display:none;
       align-items:center; justify-content:center;
       background:rgba(0,0,0,.7); backdrop-filter:blur(2px);
-      z-index:1000;
-      padding:20px;
+      z-index:1000; padding:20px;
     }
     .modal.open{display:flex;}
     .modal-box{
@@ -53,22 +50,33 @@
     .field{width:100%; margin:10px 0 14px}
     .input{
       width:100%; padding:12px 14px; border-radius:12px;
-      border:1px solid #3a3f4b; background:#171a21; color:#fff;
-      outline:none;
+      border:1px solid #3a3f4b; background:#171a21; color:#fff; outline:none;
     }
     .actions{display:flex; gap:10px; justify-content:center}
     .btn-sec{padding:12px 18px; border-radius:12px; border:none; cursor:pointer; color:#fff}
     .btn-primary{background:#ff6a00;}
     .btn-gray{background:#444;}
+
+    /* ===== Toast ===== */
+    .toast{
+      position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+      background:rgba(15,17,21,.95); color:#fff; padding:14px 18px;
+      border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.45);
+      opacity:0; pointer-events:none; transition:.25s opacity,.25s transform; z-index:1100;
+      font-size:14px; border:1px solid transparent;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+    .toast.success{border-color:#00c38a}
+    .toast.error{border-color:#ff4d4f}
   </style>
 </head>
 <body>
   <section class="card">
     <div class="logo small">Ray Kedy • 2051</div>
     <h1>Спасибо! Оплата получена <span class="ok">✅</span></h1>
-    <p>Нажмите кнопку ниже, чтобы получить ссылку скачивания e-книги на ваш e-mail. Ссылка активна 1 час.</p>
+    <p>Нажмите кнопку ниже, чтобы получить e-книгу на ваш e-mail.</p>
 
-    <a id="resendLink" class="btn" href="#">📩 Выслать книгу </a>
+    <a id="resendLink" class="btn" href="#">📩 Выслать книгу на e-mail</a>
 
     <footer>Если письмо не приходит — проверьте «Спам».</footer>
   </section>
@@ -87,24 +95,35 @@
     </div>
   </div>
 
+  <!-- ТОСТ-УВЕДОМЛЕНИЕ -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
   <script>
     const qs = new URLSearchParams(location.search);
     const orderId = qs.get('order') || '';
-    const resend  = document.getElementById('resendLink');
-    const modal   = document.getElementById('emailModal');
-    const input   = document.getElementById('emailInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const closeBtn= document.getElementById('closeBtn');
+
+    const resend   = document.getElementById('resendLink');
+    const modal    = document.getElementById('emailModal');
+    const input    = document.getElementById('emailInput');
+    const sendBtn  = document.getElementById('sendBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const toastEl  = document.getElementById('toast');
 
     function openModal(){
       modal.classList.add('open');
       input.value='';
       setTimeout(()=>input.focus(), 0);
-      document.body.style.overflow='hidden'; /* без прокрутки под модалкой */
+      document.body.style.overflow='hidden';
     }
     function closeModal(){
       modal.classList.remove('open');
       document.body.style.overflow='';
+    }
+    function toast(message, type='success'){
+      toastEl.textContent = message;
+      toastEl.className = `toast ${type} show`;
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(()=> toastEl.classList.remove('show'), 2600);
     }
 
     resend.addEventListener('click', e => { e.preventDefault(); openModal(); });
@@ -113,9 +132,8 @@
 
     async function sendEmail(){
       const email = input.value.trim();
-      if(!email) return alert('Введите e-mail');
-      // простая проверка
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Некорректный e-mail');
+      if(!email) return toast('Введите e-mail', 'error');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast('Некорректный e-mail', 'error');
 
       try{
         await fetch('/api/resend', {
@@ -123,10 +141,10 @@
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({ orderId, email })
         });
-        alert('Готово! Проверьте почту (и папку «Спам»).');
         closeModal();
+        toast('Готово! Проверьте почту (и папку «Спам»).','success');
       }catch{
-        alert('Не удалось отправить письмо. Попробуйте ещё раз.');
+        toast('Не удалось отправить письмо. Попробуйте ещё раз.','error');
       }
     }
 
