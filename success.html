@@ -1,201 +1,69 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Оплата успешна — 2051</title>
-<meta name="color-scheme" content="dark light" />
-<style>
-  :root{
-    --bg-image-url: url("./assets/bg/9f0.jpg");
-    --radius: 18px;
-    --shadow: 0 10px 30px rgba(0,0,0,.35);
-    --brand-orange: #ff7a00;
-    --brand-green:  #29e070;
-    --card-max-w: 720px;
-  }
-
-  *{ box-sizing:border-box; }
-  html,body{ height:100%; margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; line-height:1.55; }
-  body{ position:relative; color:#e9eef5; background:#0a0f14; overflow-x:hidden; }
-
-  /* Фон */
-  body::before{
-    content:""; position:fixed; inset:0;
-    background-image:
-      linear-gradient(rgba(5,10,15,.55), rgba(5,10,15,.75)),
-      var(--bg-image-url);
-    background-size:cover; background-position:center; background-attachment:fixed;
-    filter:saturate(1.05) contrast(1.02);
-    z-index:-2;
-  }
-  body::after{
-    content:""; position:fixed; inset:0;
-    background: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
-    background-size:3px 3px; pointer-events:none; z-index:-1;
-  }
-
-  /* Центровка на Android */
-  .wrap{ min-height:100svh; display:grid; place-items:center; padding:32px 16px; }
-  .card{
-    width:100%; max-width:var(--card-max-w);
-    margin-inline:auto; background:rgba(10,14,20,.66);
-    backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.08);
-    border-radius:var(--radius); box-shadow:var(--shadow); overflow:clip;
-  }
-
-  .card__bar{ height:5px; background:linear-gradient(90deg,var(--brand-orange),var(--brand-green)); }
-  .card__inner{ padding:24px; padding-top:20px; }
-
-  .pill{
-    display:inline-flex; align-items:center; gap:8px; padding:10px 14px;
-    background:rgba(41,224,112,.12); border:1px solid rgba(41,224,112,.35);
-    border-radius:999px; color:#bff7d6; font-size:14px; margin-bottom:14px;
-  }
-  .pill svg{ width:18px; height:18px; }
-
-  .brand{ color:#c8d2df; font-weight:600; margin:0 0 8px 0; letter-spacing:.2px; }
-  .title{ margin:0 0 8px 0; font-size:clamp(22px,2.8vw,32px); font-weight:800; }
-  .subtitle{ margin:0 0 16px 0; color:#c8d2df; }
-
-  .note{
-    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-    border-radius:14px; padding:12px 14px; color:#cbd6e4; margin:16px 0 18px;
-    font-size:14px;
-  }
-
-  .actions{ display:flex; flex-wrap:wrap; gap:10px; }
-  .btn{
-    appearance:none; border:0; cursor:pointer; user-select:none;
-    display:inline-flex; align-items:center; gap:10px;
-    padding:14px 18px; border-radius:14px; font-weight:800; font-size:16px;
-    transition:transform .06s ease, box-shadow .2s ease, opacity .2s ease; text-decoration:none;
-  }
-  .btn:hover{ transform:translateY(-1px); }
-  .btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
-
-  .btn-primary{
-    color:#0b0f14;
-    background:linear-gradient(90deg,#ff7a00,#ffd17a);
-    box-shadow:0 10px 18px rgba(255,122,0,.25);
-  }
-  .btn-ghost{
-    color:#e9eef5; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);
-    font-weight:700;
-  }
-
-  .emailbox{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-  .emailbox input{
-    flex:1 1 260px; min-width:220px; padding:12px 14px; border-radius:12px;
-    border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.08);
-    color:#e9eef5; outline:none;
-  }
-  .emailbox input::placeholder{ color:#a7b8cb; }
-
-  .footer{ text-align:center; font-size:12.5px; color:#a7b8cb; padding:16px 0 6px; }
-
-  @media (max-width:460px){ .emailbox{ flex-direction:column; } }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Оплата успешна — 2051: Алгоритм Пробуждение</title>
+  <meta name="color-scheme" content="dark">
+  <style>
+    html, body { height:100%; } /* критично, чтобы фон занял весь экран */
+    body {
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: url("https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucess.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color:#fff;
+    }
+    .wrap {min-height:100%; display:grid; place-items:center; padding:24px;}
+    .card {
+      width:min(680px, 92vw);
+      background:rgba(0,0,0,0.65);
+      border-radius:18px; padding:28px 24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      text-align:center;
+    }
+    h1{margin:.2rem 0 0.6rem; font-size:clamp(22px,3.6vw,34px)}
+    p{margin:.2rem 0 1rem; color:#d0d6e3; line-height:1.55}
+    .btn{display:inline-block; padding:16px 28px; border-radius:14px; text-decoration:none; color:#fff; font-weight:700; background:#ff6a00; transition:.2s transform,.2s background;}
+    .btn:hover{transform:translateY(-2px); background:#e65d00}
+    .ok{color:#00ffa2}
+    footer{margin-top:14px; font-size:.85rem; color:#bbb; opacity:.85}
+    .logo{font-weight:700; letter-spacing:.02em; margin-bottom:8px;}
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <article class="card" role="status" aria-live="polite">
-      <div class="card__bar"></div>
-      <div class="card__inner">
-        <div class="pill">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" opacity=".35"/>
-            <path d="M7 12.5l3.2 3.2L17.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Оплата подтверждена
-        </div>
+  <main class="wrap">
+    <section class="card">
+      <div class="logo small">Ray Kedy • 2051</div>
+      <h1>Спасибо! Оплата получена <span class="ok">✅</span></h1>
+      <p>Нажмите кнопку ниже, чтобы получить e-книгу на ваш e-mail.</p>
 
-        <p class="brand">Ray Kedy • 2051</p>
-        <h1 class="title">Спасибо! Оплата получена ✅</h1>
-        <p class="subtitle">Нажмите кнопку ниже, чтобы получить e-книгу на ваш e-mail.</p>
+      <a id="resendLink" class="btn" href="#">📩 Выслать книгу на e-mail</a>
 
-        <div class="note">Если письмо не приходит — проверьте «Спам».</div>
+      <footer>Если письмо не приходит — проверьте «Спам».</footer>
+    </section>
+  </main>
 
-        <!-- Кнопка отправки письма -->
-        <div class="actions" style="margin-bottom:10px;">
-          <button id="sendBtn" class="btn btn-primary">
-            <span aria-hidden="true">📩</span> Выслать книгу на e-mail
-          </button>
-          <a class="btn btn-ghost" href="/">На главную</a>
-        </div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    const order = q.get('order') || '';
+    const resend = document.getElementById('resendLink');
 
-        <!-- Поле e-mail (покажется, если email не пришёл в query) -->
-        <div id="emailBox" class="emailbox" hidden>
-          <input id="emailInput" type="email" inputmode="email" autocomplete="email" placeholder="Ваш e-mail для получения книги">
-          <button id="sendBtnInline" class="btn btn-ghost" type="button">Отправить</button>
-        </div>
-
-        <div class="footer">2051: Алгоритм Пробуждение — Ray Kedy</div>
-      </div>
-    </article>
-  </div>
-
-<script>
-(() => {
-  // === эндпоинт воркера (как был у нас ранее) ===
-  const SEND_ENDPOINT = "/api/send-download";
-
-  // Параметры из URL
-  const p = new URLSearchParams(location.search);
-  const orderId = p.get("orderId") || "";
-  const emailQ  = p.get("email")   || "";
-  const download= p.get("download")|| ""; // можно оставить пустым — воркер сам подставит
-
-  const sendBtn = document.getElementById("sendBtn");
-  const emailBox = document.getElementById("emailBox");
-  const emailInput = document.getElementById("emailInput");
-  const sendBtnInline = document.getElementById("sendBtnInline");
-
-  if (!emailQ) emailBox.hidden = false; // если email не передали — спросим
-
-  const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-
-  async function send(toEmail){
-    if (!isEmail(toEmail)) { toast("Неверный e-mail"); return; }
-
-    setLoading(true);
-    try{
-      const res = await fetch(SEND_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify({ orderId, email: toEmail, download })
-      });
-      if (!res.ok) throw new Error("send_failed");
-      toast("Письмо отправлено ✔");
-    } catch(e){
-      console.error(e); toast("Ошибка отправки");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function setLoading(x){
-    sendBtn.disabled = !!x;
-    sendBtn.textContent = x ? "Отправляем…" : "Выслать книгу на e-mail";
-  }
-
-  function toast(text){
-    sendBtn.textContent = text;
-    setTimeout(()=> sendBtn.textContent = "Выслать книгу на e-mail", 1700);
-  }
-
-  sendBtn.addEventListener("click", () => {
-    const target = emailQ || (emailInput && emailInput.value.trim());
-    if (!target) { toast("Введите e-mail"); return; }
-    send(target);
-  });
-
-  sendBtnInline.addEventListener("click", () => {
-    const v = (emailInput && emailInput.value.trim()) || "";
-    if (!v) { sendBtnInline.textContent = "Введите e-mail"; setTimeout(()=>sendBtnInline.textContent="Отправить",1200); return; }
-    send(v);
-  });
-})();
-</script>
+    resend.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = prompt('Введите ваш e-mail для отправки книги:');
+      if (!email) return;
+      try {
+        await fetch('/api/resend', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ orderId: order, email })
+        });
+        alert('Готово! Проверьте почту (и папку Спам).');
+      } catch {
+        alert('Не удалось отправить письмо. Попробуйте ещё раз.');
+      }
+    });
+  </script>
 </body>
 </html>
