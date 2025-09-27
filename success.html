@@ -3,97 +3,200 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Оплата успешна — 2051</title>
+<title>Успех — 2051: Алгоритм Пробуждение</title>
 <meta name="color-scheme" content="dark light" />
 <style>
   :root{
-    --bg-image-url: url("./assets/bg/9f0.jpg"); /* поменяй путь если нужно */
+    /* === ВАЖНО: укажи путь к фоновой картинке ===
+       1) Относительный путь (если success.html лежит рядом с папкой assets):
+          --bg-image-url: url("./assets/bg/9f0.jpg");
+       2) Абсолютный путь (GitHub Pages):
+          --bg-image-url: url("https://raykedy.github.io/assets/bg/9f0.jpg");
+    */
+    --bg-image-url: url("./assets/bg/9f0.jpg");
+    --card-max-w: 720px;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
   }
 
-  *{ box-sizing:border-box; }
-  html,body{ height:100%; margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; line-height:1.55; }
-  body{ position:relative; color:#e9eef5; background:#0a0f14; overflow-x:hidden; }
+  * { box-sizing: border-box; }
 
-  /* === ФОН по центру === */
-  body::before{
-    content:"";
-    position:fixed; inset:0;
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    line-height: 1.5;
+  }
+
+  /* Фон: картинка + лёгкий градиент для читаемости */
+  body {
+    position: relative;
+    color: #e9eef5;
+    background: #0a0f14;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
     background-image:
       linear-gradient(rgba(5,10,15,.55), rgba(5,10,15,.75)),
       var(--bg-image-url);
-    background-repeat:no-repeat;
-    background-size:cover;
-    background-position:center center !important;
-    background-attachment:fixed;
-    filter:saturate(1.05) contrast(1.02);
-    z-index:-2;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: saturate(1.05) contrast(1.02);
+    z-index: -2;
   }
-  body::after{
-    content:"";
-    position:fixed; inset:0;
+  /* Тонкая сетка точек/шум (микро-акцент) */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
     background: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
-    background-size:3px 3px;
-    z-index:-1; pointer-events:none;
+    background-size: 3px 3px;
+    z-index: -1;
+    pointer-events: none;
   }
 
-  @media (max-width: 1024px){
-    body::before{
-      background-position:center center !important;
-      background-size:cover;
-    }
-  }
-  @media (max-aspect-ratio: 9/16){
-    body::before{ background-position:50% 44% !important; }
+  .wrap {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 32px 16px;
   }
 
-  .wrap{ min-height:100svh; display:grid; place-items:center; padding:32px 16px; }
-  .card{
-    width:100%; max-width:720px; margin-inline:auto;
-    background:rgba(10,14,20,.66); backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.08); border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,.35); overflow:clip;
-  }
-  .card__bar{ height:5px; background:linear-gradient(90deg,#ff7a00,#29e070); }
-  .card__inner{ padding:24px; }
-
-  .ok{
-    display:inline-flex; gap:10px; align-items:center;
-    padding:10px 14px; background:rgba(41,224,112,.12);
-    border:1px solid rgba(41,224,112,.35); color:#bff7d6;
-    border-radius:12px; font-size:14px; margin-bottom:18px;
-  }
-  .ok svg{ width:18px; height:18px; }
-
-  h1.title{ margin:0 0 8px 0; font-size:clamp(22px,2.8vw,32px); font-weight:800; }
-  .subtitle{ margin:0 0 18px 0; color:#c8d2df; }
-
-  .note{
-    font-size:13.5px; color:#c8d2df; background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08); border-radius:12px;
-    padding:12px 14px; margin:18px 0;
+  .card {
+    width: 100%;
+    max-width: var(--card-max-w);
+    background: rgba(10,14,20,.66);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: clip;
   }
 
-  .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
-  .btn{
-    appearance:none; border:0; cursor:pointer;
-    padding:12px 16px; border-radius:12px; font-weight:700; font-size:15px;
-    text-decoration:none; display:inline-flex; align-items:center; gap:10px;
-    transition:transform .06s ease, opacity .2s ease, box-shadow .2s ease;
+  .card__bar {
+    height: 5px;
+    background: linear-gradient(90deg, #ff7a00, #29e070);
   }
-  .btn:hover{ transform:translateY(-1px); }
-  .btn-primary{ color:#0b0f14; background:linear-gradient(90deg,#ff7a00,#ffd17a); }
-  .btn-secondary{ color:#0b0f14; background:linear-gradient(90deg,#29e070,#9df7c8); }
-  .btn-ghost{ color:#e9eef5; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); }
 
-  .footer{ text-align:center; font-size:12.5px; color:#a7b8cb; padding:14px 0 6px; }
+  .card__inner {
+    padding: 24px;
+    padding-top: 20px;
+  }
+
+  .title {
+    margin: 0 0 8px 0;
+    font-size: clamp(22px, 2.6vw, 30px);
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+
+  .subtitle {
+    margin: 0 0 20px 0;
+    font-size: 15px;
+    color: #c8d2df;
+  }
+
+  .ok {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(41,224,112,.12);
+    border: 1px solid rgba(41,224,112,.35);
+    color: #bff7d6;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  .ok svg { width: 18px; height: 18px; flex: 0 0 18px;}
+
+  .meta {
+    display: grid;
+    gap: 10px;
+    margin: 14px 0 22px 0;
+  }
+  .meta__row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 10px;
+    align-items: start;
+    font-size: 14px;
+  }
+  .meta__label { color: #9fb1c4; }
+  .meta__value { color: #e9eef5; word-break: break-word; }
+
+  .note {
+    font-size: 13.5px;
+    color: #c8d2df;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .btn {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform .06s ease, opacity .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-primary {
+    color: #0b0f14;
+    background: linear-gradient(90deg, #ff7a00, #ffd17a);
+    box-shadow: 0 8px 16px rgba(255,122,0,.25);
+  }
+  .btn-secondary {
+    color: #0b0f14;
+    background: linear-gradient(90deg, #29e070, #9df7c8);
+    box-shadow: 0 8px 16px rgba(41,224,112,.22);
+  }
+  .btn-ghost {
+    color: #e9eef5;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 12.5px;
+    color: #a7b8cb;
+    padding: 14px 0 6px;
+  }
+
+  @media (max-width: 460px){
+    .meta__row { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
   <div class="wrap">
-    <article class="card">
+    <article class="card" role="status" aria-live="polite">
       <div class="card__bar"></div>
       <div class="card__inner">
-        <div class="ok">
+        <div class="ok" aria-hidden="true">
+          <!-- иконка-галочка -->
           <svg viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="10" stroke="currentColor" opacity=".35"/>
             <path d="M7 12.5l3.2 3.2L17.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -101,15 +204,28 @@
           Оплата подтверждена
         </div>
 
-        <h1 class="title">Спасибо! Оплата получена ✅</h1>
+        <h1 class="title">Спасибо! Ваша книга готова к скачиванию</h1>
         <p class="subtitle">Ссылка на книгу также отправлена на указанный e-mail.</p>
 
-        <div class="note">Если ссылка не открывается в приложении, нажмите «Скачать» и выберите «Открыть в браузере».</div>
+        <div class="meta" id="orderMeta" hidden>
+          <div class="meta__row">
+            <div class="meta__label">Номер заказа</div>
+            <div class="meta__value" id="orderIdValue">—</div>
+          </div>
+          <div class="meta__row">
+            <div class="meta__label">E-mail</div>
+            <div class="meta__value" id="emailValue">—</div>
+          </div>
+        </div>
+
+        <div class="note">
+          Если ссылка не открывается в приложении (например, Telegram/Instagram), нажмите «Скачать» и выберите «Открыть в браузере».
+        </div>
 
         <div class="actions">
-          <a class="btn btn-primary" id="downloadBtn" href="#">Скачать</a>
-          <a class="btn btn-secondary" href="/">На главную</a>
-          <a class="btn btn-ghost" href="/crypto">Поддержать криптой</a>
+          <a class="btn btn-primary" id="downloadBtn" href="#" download>Скачать</a>
+          <a class="btn btn-secondary" id="homeBtn" href="/">На главную</a>
+          <a class="btn btn-ghost" id="donateBtn" href="/crypto">Поддержать криптой</a>
         </div>
 
         <div class="footer">2051: Алгоритм Пробуждение — Ray Kedy</div>
@@ -118,16 +234,49 @@
   </div>
 
 <script>
-  // подставляем download из query, если передан
+  // Читаем ?orderId=123&email=you%40mail.com&download=https%3A%2F%2F...
   const params = new URLSearchParams(location.search);
-  const dl = params.get("download") || "";
-  if (dl) document.getElementById("downloadBtn").href = dl;
+
+  const orderId = params.get("orderId") || "";
+  const email   = params.get("email")   || "";
+  const dl      = params.get("download")|| ""; // Прямая ссылка на файл
+
+  // Показать мету, если есть что показать
+  const metaEl = document.getElementById("orderMeta");
+  const orderEl = document.getElementById("orderIdValue");
+  const emailEl = document.getElementById("emailValue");
+
+  if (orderId || email) {
+    orderEl.textContent = orderId || "—";
+    emailEl.textContent = email   || "—";
+    metaEl.hidden = false;
+  }
+
+  // Кнопки
+  const downloadBtn = document.getElementById("downloadBtn");
+  const homeBtn     = document.getElementById("homeBtn");
+  const donateBtn   = document.getElementById("donateBtn");
+
+  // Подставь абсолютные пути, если у тебя поддомен/подпапка (GitHub Pages):
+  // homeBtn.href   = "https://raykedy.github.io/";
+  // donateBtn.href = "https://raykedy.github.io/crypto";
+
+  if (dl) {
+    downloadBtn.href = dl;
+  } else {
+    // Фолбэк: если не передали ?download=..., можно задать путь вручную:
+    // downloadBtn.href = "/downloads/book.epub";
+    downloadBtn.removeAttribute("download"); // пусть просто открывает
+  }
+
+  // Подстраховка: если страница открыта внутри webview, попросим открыть в браузере
+  downloadBtn.addEventListener("click", (e) => {
+    if (!downloadBtn.href) return;
+    // Ничего особенного не делаем, но можно добавить трекинг или уведомление
+  });
 </script>
 </body>
 </html>
-⚡ Всё: фон центрирован, кнопка «Скачать» работает так же как у тебя было (активна только если в URL есть ?download=...).
-
-Хочешь, я сделаю так, чтобы «Скачать» была активна всегда, даже без параметра?
 
 
 
