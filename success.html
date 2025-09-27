@@ -7,34 +7,59 @@
   <meta name="color-scheme" content="dark">
   <style>
     html, body { height:100%; margin:0; }
-    body {
+    body{
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background: url("https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg") no-repeat center center fixed;
       background-size: cover;
       color:#fff;
 
-      display:flex;
-      justify-content:center; /* по центру по горизонтали */
-      align-items:center;     /* по центру по вертикали */
+      /* стабильный центр на всех Android */
+      display:flex; justify-content:center; align-items:center;
+      padding:24px;
     }
 
-    .card {
-      max-width:680px;
-      width:92%;
+    .card{
+      width:min(680px,92vw);
       background:rgba(0,0,0,0.65);
-      border-radius:18px;
-      padding:28px 24px;
+      border-radius:18px; padding:28px 24px;
       box-shadow:0 20px 60px rgba(0,0,0,.45);
       text-align:center;
     }
-
-    h1{margin:.2rem 0 0.6rem; font-size:clamp(22px,3.6vw,34px)}
+    h1{margin:.2rem 0 .6rem; font-size:clamp(22px,3.6vw,34px)}
     p{margin:.2rem 0 1rem; color:#d0d6e3; line-height:1.55}
     .btn{display:inline-block; padding:16px 28px; border-radius:14px; text-decoration:none; color:#fff; font-weight:700; background:#ff6a00; transition:.2s transform,.2s background;}
     .btn:hover{transform:translateY(-2px); background:#e65d00}
     .ok{color:#00ffa2}
     footer{margin-top:14px; font-size:.85rem; color:#bbb; opacity:.85}
     .logo{font-weight:700; letter-spacing:.02em; margin-bottom:8px;}
+
+    /* ===== Модалка e-mail ===== */
+    .modal{
+      position:fixed; inset:0; display:none;
+      align-items:center; justify-content:center;
+      background:rgba(0,0,0,.7); backdrop-filter:blur(2px);
+      z-index:1000;
+      padding:20px;
+    }
+    .modal.open{display:flex;}
+    .modal-box{
+      width:min(420px,94vw);
+      background:#0f1115; color:#fff;
+      border-radius:16px; padding:22px;
+      box-shadow:0 20px 60px rgba(0,0,0,.55);
+      text-align:center;
+    }
+    .modal h2{margin:0 0 12px; font-size:20px}
+    .field{width:100%; margin:10px 0 14px}
+    .input{
+      width:100%; padding:12px 14px; border-radius:12px;
+      border:1px solid #3a3f4b; background:#171a21; color:#fff;
+      outline:none;
+    }
+    .actions{display:flex; gap:10px; justify-content:center}
+    .btn-sec{padding:12px 18px; border-radius:12px; border:none; cursor:pointer; color:#fff}
+    .btn-primary{background:#ff6a00;}
+    .btn-gray{background:#444;}
   </style>
 </head>
 <body>
@@ -48,26 +73,65 @@
     <footer>Если письмо не приходит — проверьте «Спам».</footer>
   </section>
 
-  <script>
-    const q = new URLSearchParams(location.search);
-    const order = q.get('order') || '';
-    const resend = document.getElementById('resendLink');
+  <!-- МОДАЛЬНОЕ ОКНО -->
+  <div id="emailModal" class="modal" aria-hidden="true">
+    <div class="modal-box">
+      <h2>Введите ваш e-mail</h2>
+      <div class="field">
+        <input id="emailInput" class="input" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+      </div>
+      <div class="actions">
+        <button id="sendBtn" class="btn-sec btn-primary">Отправить</button>
+        <button id="closeBtn" class="btn-sec btn-gray">Отмена</button>
+      </div>
+    </div>
+  </div>
 
-    resend.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const email = prompt('Введите ваш e-mail для отправки книги:');
-      if (!email) return;
-      try {
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const orderId = qs.get('order') || '';
+    const resend  = document.getElementById('resendLink');
+    const modal   = document.getElementById('emailModal');
+    const input   = document.getElementById('emailInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const closeBtn= document.getElementById('closeBtn');
+
+    function openModal(){
+      modal.classList.add('open');
+      input.value='';
+      setTimeout(()=>input.focus(), 0);
+      document.body.style.overflow='hidden'; /* без прокрутки под модалкой */
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      document.body.style.overflow='';
+    }
+
+    resend.addEventListener('click', e => { e.preventDefault(); openModal(); });
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+    async function sendEmail(){
+      const email = input.value.trim();
+      if(!email) return alert('Введите e-mail');
+      // простая проверка
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Некорректный e-mail');
+
+      try{
         await fetch('/api/resend', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ orderId: order, email })
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({ orderId, email })
         });
-        alert('Готово! Проверьте почту (и папку Спам).');
-      } catch {
+        alert('Готово! Проверьте почту (и папку «Спам»).');
+        closeModal();
+      }catch{
         alert('Не удалось отправить письмо. Попробуйте ещё раз.');
       }
-    });
+    }
+
+    sendBtn.addEventListener('click', sendEmail);
+    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendEmail(); });
   </script>
 </body>
 </html>
