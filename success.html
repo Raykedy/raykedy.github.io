@@ -12,7 +12,7 @@
       background: url("https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg") no-repeat center center fixed;
       background-size: cover;
       color:#fff;
-      display:flex; justify-content:center; align-items:center; /* стабильный центр */
+      display:flex; justify-content:center; align-items:center;
       padding:24px;
     }
 
@@ -24,7 +24,20 @@
       text-align:center;
     }
     h1{margin:.2rem 0 .6rem; font-size:clamp(22px,3.6vw,34px)}
-    p{margin:.2rem 0 1rem; color:#d0d6e3; line-height:1.55}
+    .info {
+      margin: 1rem auto 1.5rem;
+      max-width: 520px;
+      line-height: 1.6;
+      font-size: 1.05rem;
+      color: #e2e8f0;
+      text-align: center;
+    }
+    .info span {
+      display: block;
+      margin-top: 0.4rem;
+      font-weight: 600;
+      color: #00ffa2;
+    }
     .btn{
       display:inline-block; padding:16px 28px; border-radius:14px;
       text-decoration:none; color:#fff; font-weight:700;
@@ -79,9 +92,12 @@
   <section class="card">
     <div class="logo small">Ray Kedy • 2051</div>
     <h1>Спасибо! Оплата получена <span class="ok">✅</span></h1>
-    <p>Нажмите кнопку ниже, чтобы получить ссылку скачивания e-книги на ваш e-mail. Ссылка активна 1 час.</p>
 
-    <!-- КНОПКА вместо ссылки, чтобы не было переходов по # -->
+    <p class="info">
+      Нажмите кнопку ниже, чтобы получить ссылку скачивания e-книги на ваш e-mail.
+      <span>Ссылка активна 1 час.</span>
+    </p>
+
     <button id="resendLink" type="button" class="btn">📩 Выслать книгу на e-mail</button>
 
     <footer>Если письмо не приходит — проверьте «Спам».</footer>
@@ -105,7 +121,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // если в URL был хвост "#", уберём (некоторые рефералы так добавляют)
     if (location.hash === '#') history.replaceState(null,'',location.pathname + location.search);
 
     const qs = new URLSearchParams(location.search);
@@ -140,7 +155,7 @@
     modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
 
     async function sendEmail(e){
-      e && e.preventDefault(); // гасим любые дефолтные действия
+      e && e.preventDefault();
       const email = input.value.trim();
       if(!email) return toast('Введите e-mail', 'error');
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast('Некорректный e-mail', 'error');
@@ -150,7 +165,7 @@
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({ orderId, email }),
-          redirect:'manual' // на всякий случай игнорируем 3xx
+          redirect:'manual'
         });
         closeModal();
         toast('Готово! Проверьте почту (и папку «Спам»).','success');
