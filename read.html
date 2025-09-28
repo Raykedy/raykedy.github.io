@@ -11,6 +11,7 @@
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0ea15a" />
   <link rel="icon" href="/favicon.ico" />
+
   <style>
     :root{
       --fg:#e7f2ec; --muted:#9fb4aa;
@@ -45,8 +46,8 @@
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:
-        0 0 20px rgba(14,161,90,.25),  /* мягкое зелёное свечение */
-        0 0 40px rgba(255,106,0,.15),  /* лёгкий оранжевый ореол */
+        0 0 20px rgba(14,161,90,.25),
+        0 0 40px rgba(255,106,0,.15),
         var(--shadow);
       backdrop-filter:blur(14px);
       padding:clamp(24px,3.5vw,40px);
@@ -54,7 +55,6 @@
       position:relative;
       overflow:hidden;
     }
-    /* Тонкий градиент по краям */
     .card::before{
       content:"";
       position:absolute; inset:0;
@@ -62,8 +62,7 @@
       padding:2px;
       background:linear-gradient(120deg, rgba(14,161,90,.4), rgba(255,106,0,.35));
       -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite:xor;
-      mask-composite:exclude;
+      -webkit-mask-composite:xor; mask-composite:exclude;
       pointer-events:none;
     }
 
@@ -90,7 +89,6 @@
     .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--border);
       background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700;}
     .divider{height:1px; background:var(--border); margin:16px 0}
-
     @media (max-width:480px){
       body{padding:16px;}
       .card{padding:20px 16px;}
@@ -101,11 +99,15 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Видео как на главной -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-    <source src="https://raykedy.github.io/%D1%84%D0%BE%D0%BD%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.mp4?v=4" type="video/mp4">
+    <!-- Для Android/Chrome -->
+    <source src="https://raykedy.github.io/fastvideobackground_faststart.webm" type="video/webm">
+    <!-- Для Safari/iOS -->
+    <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
   </video>
 
   <main class="wrap">
