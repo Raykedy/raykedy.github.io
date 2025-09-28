@@ -1,65 +1,51 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Telegram — Ray Kedy</title>
+
+  <!-- Разрешаем только картинку-фон с GitHub. Скрипты полностью запрещены. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src https://raw.githubusercontent.com data:; style-src 'unsafe-inline';
+                 script-src 'none'; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'">
+
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: #fff;
-      text-align: center;
+    html,body{height:100%}
+    body{
+      margin:0; font-family: Arial, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      display:flex; align-items:center; justify-content:center; text-align:center; color:#fff;
+      background: #000 url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg') no-repeat center/cover fixed;
+      padding:24px;
     }
-    .card {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 40px 30px;
-      border-radius: 14px;
+    .card{
+      background: rgba(0,0,0,.6);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      padding:36px 28px; max-width:680px; width:100%;
     }
-    h1 {
-      margin: 0 0 15px;
-      font-size: 26px;
+    h1{margin:0 0 10px; font-size:26px}
+    p{margin:0 0 20px; color:#d6dee6}
+    .buttons{display:flex; flex-direction:column; gap:12px; align-items:center}
+    a.button{
+      display:inline-block; min-width:260px;
+      padding:14px 20px; border-radius:10px; text-decoration:none; font-weight:700;
+      background:#0088cc; color:#fff; transition:filter .15s ease;
     }
-    p {
-      margin: 0 0 20px;
-      font-size: 16px;
-      color: #ddd;
-    }
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    a.button {
-      display: inline-block;
-      background: #0088cc;
-      color: #fff;
-      padding: 15px 28px;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: background 0.3s ease;
-    }
-    a.button:hover {
-      background: #0077b5;
+    a.button:hover{ filter:brightness(1.08) }
+    .ghost{
+      background: transparent; border:1px solid rgba(255,255,255,.22); font-weight:600;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Связаться в Telegram</h1>
+  <main class="card" role="main" aria-labelledby="t">
+    <h1 id="t">Связаться в Telegram</h1>
     <p>Выберите удобный способ:</p>
     <div class="buttons">
       <a class="button" href="tg://resolve?domain=Ray_Kedy">Открыть в приложении Telegram</a>
-      <a class="button" href="https://t.me/Ray_Kedy" target="_blank">Открыть в браузере (t.me)</a>
+      <a class="button ghost" href="https://t.me/Ray_Kedy">Открыть в браузере (t.me)</a>
     </div>
-  </div>
+  </main>
 </body>
 </html>
