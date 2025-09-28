@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Скачать e-книгу через Telegram</title>
+  <meta name="description" content="Оплатите отправку сообщения звёздами в Telegram и получите файл e-книги и приглашение в закрытый канал." />
+  <style>
+    :root{
+      --bg-dark: rgba(0,0,0,0.65);
+      --txt: #fff;
+      --muted:#cbd5e1;
+      --accent:#0088cc; /* Telegram */
+      --accent-hover:#0a77b1;
+      --radius:16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", Helvetica, sans-serif;
+      color:var(--txt);
+      background: #000 url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display:flex; align-items:center; justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:100%; max-width:720px;
+      background:var(--bg-dark);
+      backdrop-filter: blur(6px);
+      border-radius:var(--radius);
+      padding:32px 28px;
+      box-shadow:var(--shadow);
+      text-align:center;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(22px, 3vw, 32px);
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size: clamp(14px, 2.1vw, 16px);
+      margin-bottom:18px;
+    }
+    ol{
+      text-align: left;
+      margin: 0 auto 18px;
+      padding-left: 20px;
+      max-width: 56ch;
+      line-height:1.6;
+      color:var(--muted);
+      font-size: 15px;
+    }
+    .btns{
+      display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:8px;
+    }
+    a.button{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:14px 18px;
+      min-width: 220px;
+      border-radius:12px;
+      text-decoration:none; font-weight:700;
+      color:#fff; background:var(--accent);
+      transition: transform .08s ease, background .2s ease, box-shadow .2s ease;
+      box-shadow:0 6px 14px rgba(0,136,204,.35);
+    }
+    a.button:hover{ background:var(--accent-hover); transform: translateY(-1px); }
+    a.button:active{ transform: translateY(0); }
+    .ghost{
+      background: transparent;
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:none; font-weight:600;
+    }
+    .ghost:hover{ background: rgba(255,255,255,.06); }
+    .note{
+      margin-top:16px; color:var(--muted); font-size:13px; line-height:1.55;
+    }
+    .divider{
+      margin:18px auto; width:100%; max-width:420px; height:1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+    }
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      background: rgba(255,255,255,.07);
+      padding:2px 6px; border-radius:6px;
+    }
+    .qr{
+      margin:14px 0 0;
+      display:flex; justify-content:center;
+    }
+    .qr img{
+      width:120px; height:120px; border-radius:10px; background:#fff;
+      padding:6px; box-shadow:0 4px 12px rgba(0,0,0,.35);
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <h1 id="title">Загрузка e-книги через Telegram</h1>
+    <p class="subtitle">Оплатите отправку сообщения звёздами в Telegram — в ответ получите файл книги и приглашение в закрытый канал.</p>
+
+    <ol>
+      <li>Нажмите кнопку ниже и откройте наш профиль в Telegram.</li>
+      <li>Оплатите <span class="mono">сообщение звёздами</span> и отправьте любое слово “<span class="mono">Книга</span>”.</li>
+      <li>В ответ бот пришлёт файл e-книги (EPUB/PDF) + ссылку на закрытый канал с новыми главами.</li>
+    </ol>
+
+    <div class="btns" aria-label="Кнопки перехода в Telegram">
+      <!-- Открыть сразу в приложении Telegram -->
+      <a class="button" href="tg://resolve?domain=YOUR_TG_USERNAME" rel="noopener">
+        <!-- Inline Telegram icon -->
+        <svg width="20" height="20" viewBox="0 0 240 240" aria-hidden="true">
+          <path d="M120 0a120 120 0 1 0 0 240 120 120 0 0 0 0-240zm57 73-19 93c-1 6-5 7-10 5l-29-21-14 14c-2 2-4 3-7 3l3-31 56-51c2-2-1-3-3-2l-69 43-30-9c-7-2-7-7 1-10l120-46c6-2 12 2 10 10z" fill="#fff"/>
+        </svg>
+        Открыть в приложении Telegram
+      </a>
+
+      <!-- Открыть в браузере (t.me) -->
+      <a class="button ghost" href="https://t.me/YOUR_TG_USERNAME" target="_blank" rel="noopener">
+        Открыть в браузере (t.me)
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="note">
+      Совет: если кнопка не срабатывает, скопируйте и откройте в приложении: <span class="mono">@YOUR_TG_USERNAME</span>
+    </p>
+
+    <!-- (Необязательно) QR на профиль t.me, можно удалить блок -->
+    <div class="qr" aria-hidden="true">
+      <!-- Для простоты тут заглушка-QR из Google Charts. Можешь заменить на собственный PNG. -->
+      <img alt="QR-код профиля Telegram"
+           src="https://chart.googleapis.com/chart?cht=qr&chs=160x160&chld=L|0&chl=https%3A%2F%2Ft.me%2FYOUR_TG_USERNAME" />
+    </div>
+
+    <p class="note">
+      Поддерживаются платежи звёздами внутри Telegram. Возвраты за звёзды регулируются правилами Telegram. 
+      По вопросам — напишите в ЛС после оплаты.
+    </p>
+  </main>
+</body>
+</html>
