@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Скачать книгу за криптодонат</title>
   <meta name="color-scheme" content="dark">
+
   <style>
     :root{
       --panel:#121824; --text:#e6f0ff;
@@ -16,13 +17,17 @@
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     }
     body{
-      background: url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg') no-repeat center center fixed;
-      background-size: cover;
       color:var(--text);
       display: flex;
       justify-content: center;
       align-items: center;
       padding:16px;
+    }
+
+    /* Видео-фон */
+    #bgVideo{
+      position:fixed; inset:0; width:100%; height:100%;
+      object-fit:cover; z-index:0; pointer-events:none; background:#000;
     }
 
     .card{
@@ -33,6 +38,8 @@
       box-shadow:0 20px 60px rgba(0,0,0,.45);
       backdrop-filter:blur(6px);
       text-align:center;
+      position:relative;
+      z-index:1;
     }
 
     .logo{color:var(--muted); font-weight:600; margin-bottom:.4rem; opacity:.95}
@@ -77,7 +84,17 @@
     .link-back{color:#82c7f6; text-decoration:none}
   </style>
 </head>
+
 <body>
+
+  <!-- Видео-фон -->
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <!-- Для Android/Chrome -->
+    <source src="https://raykedy.github.io/fastvideobackground_faststart.webm" type="video/webm">
+    <!-- Для Safari/iOS -->
+    <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
+  </video>
+
   <section class="card">
     <div class="logo">Ray Kedy • 2051</div>
     <h1>Скачать книгу за криптодонат</h1>
@@ -133,5 +150,6 @@
     }
     document.getElementById('btn-download').addEventListener('click', startInvoice);
   </script>
+
 </body>
 </html>
