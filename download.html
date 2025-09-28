@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -8,6 +9,7 @@
   <meta name="description" content="Официальная страница загрузок книги «2051: Алгоритм Пробуждение»." />
   <meta name="theme-color" content="#0ea15a" />
   <link rel="icon" href="/favicon.ico" />
+
   <style>
     :root{
       --fg:#e7f2ec; --muted:#9fb4aa;
@@ -56,7 +58,6 @@
       font-size:clamp(15px,4vw,18px);
       max-width:640px;
     }
-
     /* магазины */
     .stores{
       display:grid;
@@ -76,8 +77,10 @@
     }
     .store-btn:hover{filter:brightness(1.08); transform:translateY(-2px)}
     .store-btn img{height:22px; width:auto; display:block}
+    .store-btn svg{height:22px; width:22px; display:block; fill:#fff;}
   </style>
 </head>
+
 <body>
 
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
@@ -88,26 +91,38 @@
     <section class="card">
       <div class="hero">
         <h2>Скачать книгу</h2>
-        <p>Выберите удобный магазин для покупки книги.</p>
+        <p>Выберите удобный магазин или Telegram для получения книги.</p>
       </div>
 
       <div class="stores">
+        <!-- Telegram кнопка -->
+        <a class="store-btn" href="telegram.html">
+          <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+            <path d="M120 0a120 120 0 1 0 0 240 120 120 0 0 0 0-240zM177 73l-19 93c-1 6-5 7-10 5l-29-21-14 14c-2 2-4 3-7 3l3-31 56-51c2-2-1-3-3-2l-69 43-30-9c-7-2-7-7 1-10l120-46c6-2 12 2 10 10z"/>
+          </svg>
+          <span>Telegram</span>
+        </a>
+
         <a class="store-btn" href="https://www.kobo.com/ww/en/ebook/gYBiLbnPUjSFZtdGaayoIg?sId=f6747617-813e-4761-838d-9e0504f0beae&ssId=JB2Xd3RjEwyxE48Mep8KQ" target="_blank" rel="noopener">
           <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Rakuten_kobo_logo.svg" alt="">
           <span>Rakuten Kobo</span>
         </a>
+
         <a class="store-btn" href="https://books.apple.com/us/book/2051-%D0%B0%D0%BB%D0%B3%D0%BE%D1%80%D0%B8%D1%82%D0%BC-%D0%BF%D1%80%D0%BE%D0%B1%D1%83%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5/id6752739706" target="_blank" rel="noopener">
           <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="">
           <span>Apple Books</span>
         </a>
+
         <a class="store-btn" href="https://shop.vivlio.com/product/9798232271909_9798232271909_10020/2051" target="_blank" rel="noopener">
           <img src="https://www.vivlio.com/favicon.ico" alt="">
           <span>Vivlio</span>
         </a>
+
         <a class="store-btn" href="https://www.smashwords.com/books/view/1858693" target="_blank" rel="noopener">
           <img src="https://www.smashwords.com/images/logo.png" alt="">
           <span>Smashwords</span>
         </a>
+
         <a class="store-btn" href="https://fable.co/book/x-9798232271909" target="_blank" rel="noopener">
           <img src="https://fable.co/favicon.ico" alt="">
           <span>Fable</span>
