@@ -44,12 +44,15 @@
       line-height:1.6;
     }
     li::marker {
-      content: "✦ "; /* Звёздочки */
+      content: "⭐ ";
       color: #FFD700;
       font-size: 16px;
     }
     a.btn{
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
       margin-top: 10px;
       padding: 14px 26px;
       border-radius: 10px;
@@ -57,10 +60,15 @@
       font-weight:700;
       font-size: 17px;
       color:#fff;
-      background:#0088cc; /* Telegram */
+      background:#0088cc;
       transition:filter .15s ease;
     }
     a.btn:hover { filter: brightness(1.08); }
+    .btn svg{
+      width:20px;
+      height:20px;
+      fill:#fff;
+    }
   </style>
 </head>
 <body>
@@ -72,7 +80,13 @@
       <li>Отправьте любое сообщение с оплатой через <b>звёзды Telegram</b></li>
       <li>В ответ вы получите файл книги и ссылку на закрытый канал</li>
     </ol>
-    <a class="btn" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">Отправить сообщение</a>
+    <a class="btn" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">
+      <!-- Иконка Telegram -->
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+        <path d="M120 0a120 120 0 1 0 0 240 120 120 0 0 0 0-240zm57 73-19 93c-1 6-5 7-10 5l-29-21-14 14c-2 2-4 3-7 3l3-31 56-51c2-2-1-3-3-2l-69 43-30-9c-7-2-7-7 1-10l120-46c6-2 12 2 10 10z"/>
+      </svg>
+      Отправить сообщение
+    </a>
   </main>
 </body>
 </html>
