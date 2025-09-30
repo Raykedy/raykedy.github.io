@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -20,27 +21,25 @@
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;background:var(--pri);border:0;cursor:pointer;font-weight:600}
     .btn:hover{background:var(--pri2)}
     .note{margin-top:10px;color:#9ab; font-size:14px}
-    .err{margin-top:10px;color:#f66}
+    .err{margin-top:10px;color:#f66;white-space:pre-wrap}
   </style>
 
   <script>
-    // Авто-поиск адреса API воркера
+    // ЖЁСТКО укажи адрес воркера (если знаешь). ИЛИ оставь как есть и добавь ?api=... в URL.
+    const FIXED_API = ''; // например: 'https://rk-pay.workers.dev'  (или оставь пустым)
     (function(){
       const q = new URLSearchParams(location.search);
-      const override = q.get('api');
+      const override = q.get('api');        // приоритетно: ?api=https://...workers.dev
       const candidates = [];
       if (override) candidates.push(override.replace(/\/$/, ''));
-      if (window.API_BASE) candidates.push(String(window.API_BASE).replace(/\/$/, ''));
-      candidates.push(location.origin); // если настроишь Route /api → Worker
-      candidates.push('https://raykedy.workers.dev');
+      if (FIXED_API) candidates.push(FIXED_API.replace(/\/$/, ''));
+      candidates.push(location.origin);                  // если когда-нибудь настроишь Route /api → Worker
+      candidates.push('https://raykedy.workers.dev');    // запасные
       candidates.push('https://rk-pay.workers.dev');
       window.API_CANDIDATES = [...new Set(candidates)];
       window.pickApi = async function(){
         for (const base of window.API_CANDIDATES){
-          try{
-            const r = await fetch(base + '/api/order-status?order=test', { method:'GET' });
-            if (r.ok) return base;
-          }catch(_){}
+          try{ const r = await fetch(base + '/api/ping'); if (r.ok) return base; }catch(_){}
         }
         return window.API_CANDIDATES[0];
       }
@@ -73,37 +72,35 @@
   <script>
     const $ = s => document.querySelector(s);
     let asset = "";
-
     $("#coins").addEventListener("click", e=>{
-      const b = e.target.closest(".coin");
-      if (!b) return;
+      const b = e.target.closest(".coin"); if(!b) return;
       $("#coins").querySelectorAll(".coin").forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");
-      asset = b.dataset.asset || "";
+      b.classList.add("active"); asset = b.dataset.asset || "";
     });
 
     $("#payBtn").addEventListener("click", async ()=>{
       $("#err").hidden = true;
       const email = $("#email").value.trim();
       const amountUsd = 3.99;
-      if (!email) { showErr("Укажи e-mail"); return; }
+      if (!email) { err("Укажи e-mail"); return; }
 
       try {
         const API_BASE = await window.pickApi();
-        const r = await fetch(API_BASE + '/api/create-invoice',{
+        const r = await fetch(API_BASE + '/api/create-invoice', {
           method:"POST",
           headers:{ "Content-Type":"application/json" },
           body: JSON.stringify({ email, amountUsd, asset })
         });
         const d = await r.json();
-        if (d.ok && d.url) { location.href = d.url; }
-        else { showErr("Не удалось создать счёт. Попробуй ещё раз."); console.log("create-invoice fail:", d); }
+        if (d.ok && d.url) location.href = d.url;
+        else err("Не удалось создать счёт.\n" + (d.details?.message || d.error || "Попробуй ещё раз."));
       } catch (e) {
-        showErr("Сеть недоступна. Попробуй ещё раз."); console.error(e);
+        err("Сеть недоступна. Попробуй ещё раз.");
+        console.error(e);
       }
     });
 
-    function showErr(t){ const box=$("#err"); box.textContent=t; box.hidden=false; }
+    function err(t){ const box=$("#err"); box.textContent=t; box.hidden=false; }
   </script>
 </body>
 </html>
