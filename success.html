@@ -20,23 +20,20 @@
   </style>
 
   <script>
-    // Авто-поиск адреса API воркера (та же логика)
+    const FIXED_API = ''; // при желании впиши https://<твой>.workers.dev
     (function(){
       const q = new URLSearchParams(location.search);
       const override = q.get('api');
       const candidates = [];
       if (override) candidates.push(override.replace(/\/$/, ''));
-      if (window.API_BASE) candidates.push(String(window.API_BASE).replace(/\/$/, ''));
+      if (FIXED_API) candidates.push(FIXED_API.replace(/\/$/, ''));
       candidates.push(location.origin);
       candidates.push('https://raykedy.workers.dev');
       candidates.push('https://rk-pay.workers.dev');
       window.API_CANDIDATES = [...new Set(candidates)];
       window.pickApi = async function(){
         for (const base of window.API_CANDIDATES){
-          try{
-            const r = await fetch(base + '/api/order-status?order=test', { method:'GET' });
-            if (r.ok) return base;
-          }catch(_){}
+          try{ const r = await fetch(base + '/api/ping'); if (r.ok) return base; }catch(_){}
         }
         return window.API_CANDIDATES[0];
       }
@@ -70,12 +67,8 @@
         const API_BASE = await window.pickApi();
         const r = await fetch(API_BASE + '/api/order-status?order=' + encodeURIComponent(orderId));
         const d = await r.json();
-        if (d.ok && d.link) {
-          downloadLink.href = d.link;
-          downloadLink.classList.add('primary');
-          return; // готово
-        }
-      } catch(e) { console.log(e); }
+        if (d.ok && d.link) { downloadLink.href = d.link; downloadLink.classList.add('primary'); return; }
+      } catch(e) {}
       setTimeout(poll, 4000);
     }
 
