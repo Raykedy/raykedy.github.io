@@ -3,142 +3,102 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Оплата успешна — 2051: Алгоритм Пробуждение</title>
-  <meta name="color-scheme" content="dark">
+  <title>Оплата получена • 2051</title>
   <style>
-    :root{
-      --bg:#0b0f14; --panel:#121824; --text:#e6f0ff;
-      --muted:#a9b7d1; --stroke:#1c2533; --accent:#ff6a00;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      overflow:hidden;
-    }
-    .video{
-      position:fixed; inset:0; z-index:-2; object-fit:cover; width:100%; height:100%;
-      filter:brightness(.38) saturate(1.05);
-    }
-    .overlay{position:fixed; inset:0; z-index:-1;
-      background:radial-gradient(1200px 600px at 50% 20%, rgba(255,106,0,.18), transparent 60%),
-                 linear-gradient(180deg, transparent 0%, rgba(0,0,0,.35) 100%);
-    }
-    .wrap{
-      min-height:100%; display:grid; place-items:center; padding:24px;
-    }
-    .card{
-      width:min(680px, 92vw);
-      background:color-mix(in srgb, var(--panel) 92%, transparent);
-      border:1px solid var(--stroke);
-      border-radius:18px; padding:28px 24px;
-      box-shadow:0 20px 60px rgba(0,0,0,.45);
-      backdrop-filter: blur(6px);
-      text-align:center;
-    }
-    h1{margin:.2rem 0 0.6rem; font-size:clamp(22px,3.6vw,34px)}
-    p{margin:.2rem 0 1rem; color:var(--muted); line-height:1.55}
-    .row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px}
-    .btn{
-      display:inline-block; padding:12px 16px; border-radius:12px;
-      border:1px solid var(--stroke); text-decoration:none; color:var(--text);
-      transition:.2s transform, .2s background;
-      background:linear-gradient(180deg, #1d2636, #151b27);
-      pointer-events:none; opacity:.6;
-    }
-    .btn:hover{transform:translateY(-1px); background:#1b2231}
-    .btn.primary{
-      border-color:color-mix(in srgb, var(--accent) 60%, var(--stroke));
-      background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 35%, #1d2636),
-                                         color-mix(in srgb, var(--accent) 15%, #151b27));
-      pointer-events:auto; opacity:1;
-    }
-    .meta{font-size:.92rem; opacity:.8}
-    .ok{color:color-mix(in srgb, #00ffa2 85%, var(--text))}
-    .err{color:#ff8d8d}
-    footer{margin-top:12px; font-size:.85rem; color:#8ea0c2; opacity:.85}
-    .logo{font-weight:700; letter-spacing:.02em}
-    .small{font-size:.9rem}
+    :root { --bg:#0b0f14; --card:#111820; --text:#e7eef7; --muted:#9bb0c3; --pri:#22c55e; --pri2:#16a34a; }
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .card{width:100%;max-width:560px;background:var(--card);border:1px solid #1b2633;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+    h1{margin:0 0 8px;font-size:20px}
+    p{margin:0 0 10px}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:10px;margin-top:12px}
+    a.btn,button.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:10px;border:0;background:#233142;color:#dbe8f5;text-decoration:none;cursor:pointer}
+    a.btn.primary,button.btn.primary{background:var(--pri);color:#09210f}
+    a.btn.primary:hover,button.btn.primary:hover{background:var(--pri2)}
+    .note{margin-top:10px;color:#9ab; font-size:14px}
   </style>
-</head>
-<body>
-  <!-- Видеофон -->
-  <video class="video" autoplay muted playsinline loop poster="обложка.jpg">
-    <source src="vdhub555.mp4" type="video/mp4">
-  </video>
-  <div class="overlay"></div>
-
-  <main class="wrap">
-    <section class="card">
-      <div class="logo small">Ray Kedy • 2051</div>
-      <h1>Спасибо! Оплата получена <span class="ok">✅</span></h1>
-      <p>
-        Мы отправили письмо с ссылкой на <b>e-книгу (EPUB)</b> на ваш e-mail.<br>
-        Также вы сможете скачать книгу прямо по кнопке ниже, как только оплата подтвердится.
-      </p>
-
-      <div class="row">
-        <a id="downloadLink" class="btn" href="#" rel="noopener">Скачать e-книгу</a>
-        <a id="resendLink" class="btn" href="#" rel="noopener">Выслать письмо ещё раз</a>
-      </div>
-
-      <p class="meta" id="status" aria-live="polite"></p>
-
-      <footer>
-        Если ссылка не открывается — проверьте «Спам» или ответьте на письмо, мы поможем.
-      </footer>
-    </section>
-  </main>
 
   <script>
-    const q = new URLSearchParams(location.search);
-    const order = q.get('order') || '';
-    const statusEl = document.getElementById('status');
-    const dl = document.getElementById('downloadLink');
-    const resend = document.getElementById('resendLink');
+    // Авто-поиск адреса API воркера (та же логика)
+    (function(){
+      const q = new URLSearchParams(location.search);
+      const override = q.get('api');
+      const candidates = [];
+      if (override) candidates.push(override.replace(/\/$/, ''));
+      if (window.API_BASE) candidates.push(String(window.API_BASE).replace(/\/$/, ''));
+      candidates.push(location.origin);
+      candidates.push('https://raykedy.workers.dev');
+      candidates.push('https://rk-pay.workers.dev');
+      window.API_CANDIDATES = [...new Set(candidates)];
+      window.pickApi = async function(){
+        for (const base of window.API_CANDIDATES){
+          try{
+            const r = await fetch(base + '/api/order-status?order=test', { method:'GET' });
+            if (r.ok) return base;
+          }catch(_){}
+        }
+        return window.API_CANDIDATES[0];
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Спасибо! Платёж подтверждён</h1>
+      <p class="muted">Ссылка придёт на e-mail и появится ниже. Срок действия — 1 час.</p>
+
+      <div class="row" style="margin-top:16px">
+        <a id="downloadLink" class="btn" href="#" onclick="return false;">📥 Скачать e-книгу</a>
+        <button id="resendBtn" class="btn">🔄 Переслать письмо</button>
+      </div>
+
+      <p class="note">Если ссылка не появилась в течение пары минут — нажмите «Переслать письмо».</p>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const orderId = params.get('order') || '';
+
+    const downloadLink = document.getElementById('downloadLink');
+    const resendBtn = document.getElementById('resendBtn');
 
     async function poll() {
       try {
-        const r = await fetch(`/api/order-status?order=${encodeURIComponent(order)}`);
-        if (!r.ok) throw new Error(r.status);
+        const API_BASE = await window.pickApi();
+        const r = await fetch(API_BASE + '/api/order-status?order=' + encodeURIComponent(orderId));
         const d = await r.json();
-        if (d.status === "finished" && d.link) {
-          dl.href = d.link;
-          dl.classList.add("primary");
-          statusEl.textContent = "Ссылка активна 1 час.";
-          return;
-        } else {
-          statusEl.textContent = "Оплата обрабатывается… обычно до 1–2 минут.";
-          setTimeout(poll, 2500);
+        if (d.ok && d.link) {
+          downloadLink.href = d.link;
+          downloadLink.classList.add('primary');
+          return; // готово
         }
-      } catch {
-        statusEl.textContent = "Ошибка загрузки статуса. Попробуйте позже.";
-        statusEl.classList.add("err");
-        setTimeout(poll, 5000);
-      }
+      } catch(e) { console.log(e); }
+      setTimeout(poll, 4000);
     }
-    poll();
 
-    resend.addEventListener("click", async (e) => {
-      e.preventDefault();
-      const email = prompt("Введите ваш e-mail для повторной отправки:");
-      if (!email) return;
-      statusEl.textContent = "Отправляем письмо…";
+    resendBtn.addEventListener('click', async ()=>{
+      resendBtn.disabled = true;
       try {
-        const r = await fetch("/api/resend", {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({ orderId: order, email })
+        const email = prompt('Укажите e-mail, на который отправить ссылку:');
+        if (!email) { resendBtn.disabled = false; return; }
+        const API_BASE = await window.pickApi();
+        const r = await fetch(API_BASE + '/api/resend', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ orderId, email })
         });
-        const out = await r.json();
-        statusEl.textContent = out && out.ok
-          ? "Готово! Проверьте входящие и Спам."
-          : (out.error || "Не удалось отправить письмо.");
-      } catch {
-        statusEl.textContent = "Сбой сети. Попробуйте ещё раз.";
+        const d = await r.json();
+        alert(d.ok ? 'Письмо отправлено.' : 'Не удалось отправить письмо.');
+      } catch (e) {
+        alert('Ошибка сети. Попробуйте ещё раз.');
+      } finally {
+        resendBtn.disabled = false;
       }
     });
+
+    if (orderId) poll();
   </script>
 </body>
 </html>
