@@ -6,176 +6,139 @@
   <title>Оплата успешна — 2051: Алгоритм Пробуждение</title>
   <meta name="color-scheme" content="dark">
   <style>
-    html, body { height:100%; margin:0; }
-    body{
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background: url("https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg") no-repeat center center fixed;
-      background-size: cover;
-      color:#fff;
-      display:flex; justify-content:center; align-items:center;
-      padding:24px;
+    :root{
+      --bg:#0b0f14; --panel:#121824; --text:#e6f0ff;
+      --muted:#a9b7d1; --stroke:#1c2533; --accent:#ff6a00;
     }
-
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      overflow:hidden;
+    }
+    .video{
+      position:fixed; inset:0; z-index:-2; object-fit:cover; width:100%; height:100%;
+      filter:brightness(.38) saturate(1.05);
+    }
+    .overlay{position:fixed; inset:0; z-index:-1;
+      background:radial-gradient(1200px 600px at 50% 20%, rgba(255,106,0,.18), transparent 60%),
+                 linear-gradient(180deg, transparent 0%, rgba(0,0,0,.35) 100%);
+    }
+    .wrap{
+      min-height:100%; display:grid; place-items:center; padding:24px;
+    }
     .card{
-      width:min(680px,92vw);
-      background:rgba(0,0,0,0.65);
+      width:min(680px, 92vw);
+      background:color-mix(in srgb, var(--panel) 92%, transparent);
+      border:1px solid var(--stroke);
       border-radius:18px; padding:28px 24px;
       box-shadow:0 20px 60px rgba(0,0,0,.45);
+      backdrop-filter: blur(6px);
       text-align:center;
     }
-    h1{margin:.2rem 0 .6rem; font-size:clamp(22px,3.6vw,34px)}
-    .info {
-      margin: 1rem auto 1.5rem;
-      max-width: 520px;
-      line-height: 1.6;
-      font-size: 1.05rem;
-      color: #e2e8f0;
-      text-align: center;
-    }
-    .info span {
-      display: block;
-      margin-top: 0.4rem;
-      font-weight: 600;
-      color: #00ffa2;
-    }
+    h1{margin:.2rem 0 0.6rem; font-size:clamp(22px,3.6vw,34px)}
+    p{margin:.2rem 0 1rem; color:var(--muted); line-height:1.55}
+    .row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:10px}
     .btn{
-      display:inline-block; padding:16px 28px; border-radius:14px;
-      text-decoration:none; color:#fff; font-weight:700;
-      background:#ff6a00; transition:.2s transform,.2s background;
-      border:0; cursor:pointer;
+      display:inline-block; padding:12px 16px; border-radius:12px;
+      border:1px solid var(--stroke); text-decoration:none; color:var(--text);
+      transition:.2s transform, .2s background;
+      background:linear-gradient(180deg, #1d2636, #151b27);
+      pointer-events:none; opacity:.6;
     }
-    .btn:hover{transform:translateY(-2px); background:#e65d00}
-    .ok{color:#00ffa2}
-    footer{margin-top:14px; font-size:.85rem; color:#bbb; opacity:.85}
-    .logo{font-weight:700; letter-spacing:.02em; margin-bottom:8px;}
-
-    /* ===== Модалка e-mail ===== */
-    .modal{
-      position:fixed; inset:0; display:none;
-      align-items:center; justify-content:center;
-      background:rgba(0,0,0,.7); backdrop-filter:blur(2px);
-      z-index:1000; padding:20px;
+    .btn:hover{transform:translateY(-1px); background:#1b2231}
+    .btn.primary{
+      border-color:color-mix(in srgb, var(--accent) 60%, var(--stroke));
+      background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 35%, #1d2636),
+                                         color-mix(in srgb, var(--accent) 15%, #151b27));
+      pointer-events:auto; opacity:1;
     }
-    .modal.open{display:flex;}
-    .modal-box{
-      width:min(420px,94vw);
-      background:#0f1115; color:#fff;
-      border-radius:16px; padding:22px;
-      box-shadow:0 20px 60px rgba(0,0,0,.55);
-      text-align:center;
-    }
-    .modal h2{margin:0 0 12px; font-size:20px}
-    .field{width:100%; margin:10px 0 14px}
-    .input{
-      width:100%; padding:12px 14px; border-radius:12px;
-      border:1px solid #3a3f4b; background:#171a21; color:#fff; outline:none;
-    }
-    .actions{display:flex; gap:10px; justify-content:center}
-    .btn-sec{padding:12px 18px; border-radius:12px; border:none; cursor:pointer; color:#fff}
-    .btn-primary{background:#ff6a00;}
-    .btn-gray{background:#444;}
-
-    /* ===== Toast ===== */
-    .toast{
-      position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
-      background:rgba(15,17,21,.95); color:#fff; padding:14px 18px;
-      border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.45);
-      opacity:0; pointer-events:none; transition:.25s opacity,.25s transform; z-index:1100;
-      font-size:14px; border:1px solid transparent;
-    }
-    .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
-    .toast.success{border-color:#00c38a}
-    .toast.error{border-color:#ff4d4f}
+    .meta{font-size:.92rem; opacity:.8}
+    .ok{color:color-mix(in srgb, #00ffa2 85%, var(--text))}
+    .err{color:#ff8d8d}
+    footer{margin-top:12px; font-size:.85rem; color:#8ea0c2; opacity:.85}
+    .logo{font-weight:700; letter-spacing:.02em}
+    .small{font-size:.9rem}
   </style>
 </head>
 <body>
-  <section class="card">
-    <div class="logo small">Ray Kedy • 2051</div>
-    <h1>Спасибо! Оплата получена <span class="ok">✅</span></h1>
+  <!-- Видеофон -->
+  <video class="video" autoplay muted playsinline loop poster="обложка.jpg">
+    <source src="vdhub555.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
 
-    <p class="info">
-      Нажмите кнопку ниже, чтобы получить ссылку скачивания e-книги на ваш e-mail.
-      <span>Ссылка активна 1 час.</span>
-    </p>
+  <main class="wrap">
+    <section class="card">
+      <div class="logo small">Ray Kedy • 2051</div>
+      <h1>Спасибо! Оплата получена <span class="ok">✅</span></h1>
+      <p>
+        Мы отправили письмо с ссылкой на <b>e-книгу (EPUB)</b> на ваш e-mail.<br>
+        Также вы сможете скачать книгу прямо по кнопке ниже, как только оплата подтвердится.
+      </p>
 
-    <button id="resendLink" type="button" class="btn">📩 Выслать книгу на e-mail</button>
-
-    <footer>Если письмо не приходит — проверьте «Спам».</footer>
-  </section>
-
-  <!-- МОДАЛЬНОЕ ОКНО -->
-  <div id="emailModal" class="modal" aria-hidden="true">
-    <div class="modal-box">
-      <h2>Введите ваш e-mail</h2>
-      <div class="field">
-        <input id="emailInput" class="input" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+      <div class="row">
+        <a id="downloadLink" class="btn" href="#" rel="noopener">Скачать e-книгу</a>
+        <a id="resendLink" class="btn" href="#" rel="noopener">Выслать письмо ещё раз</a>
       </div>
-      <div class="actions">
-        <button id="sendBtn"  type="button" class="btn-sec btn-primary">Отправить</button>
-        <button id="closeBtn" type="button" class="btn-sec btn-gray">Отмена</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- ТОСТ-УВЕДОМЛЕНИЕ -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <p class="meta" id="status" aria-live="polite"></p>
+
+      <footer>
+        Если ссылка не открывается — проверьте «Спам» или ответьте на письмо, мы поможем.
+      </footer>
+    </section>
+  </main>
 
   <script>
-    if (location.hash === '#') history.replaceState(null,'',location.pathname + location.search);
+    const q = new URLSearchParams(location.search);
+    const order = q.get('order') || '';
+    const statusEl = document.getElementById('status');
+    const dl = document.getElementById('downloadLink');
+    const resend = document.getElementById('resendLink');
 
-    const qs = new URLSearchParams(location.search);
-    const orderId = qs.get('order') || '';
-
-    const resend   = document.getElementById('resendLink');
-    const modal    = document.getElementById('emailModal');
-    const input    = document.getElementById('emailInput');
-    const sendBtn  = document.getElementById('sendBtn');
-    const closeBtn = document.getElementById('closeBtn');
-    const toastEl  = document.getElementById('toast');
-
-    function openModal(){
-      modal.classList.add('open');
-      input.value='';
-      setTimeout(()=>input.focus(), 0);
-      document.body.style.overflow='hidden';
-    }
-    function closeModal(){
-      modal.classList.remove('open');
-      document.body.style.overflow='';
-    }
-    function toast(message, type='success'){
-      toastEl.textContent = message;
-      toastEl.className = `toast ${type} show`;
-      clearTimeout(toastEl._t);
-      toastEl._t = setTimeout(()=> toastEl.classList.remove('show'), 2600);
-    }
-
-    resend.addEventListener('click', (e)=>{ e.preventDefault(); openModal(); });
-    closeBtn.addEventListener('click', (e)=>{ e.preventDefault(); closeModal(); });
-    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
-
-    async function sendEmail(e){
-      e && e.preventDefault();
-      const email = input.value.trim();
-      if(!email) return toast('Введите e-mail', 'error');
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast('Некорректный e-mail', 'error');
-
-      try{
-        await fetch('/api/resend', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({ orderId, email }),
-          redirect:'manual'
-        });
-        closeModal();
-        toast('Готово! Проверьте почту (и папку «Спам»).','success');
-      }catch{
-        toast('Не удалось отправить письмо. Попробуйте ещё раз.','error');
+    async function poll() {
+      try {
+        const r = await fetch(`/api/order-status?order=${encodeURIComponent(order)}`);
+        if (!r.ok) throw new Error(r.status);
+        const d = await r.json();
+        if (d.status === "finished" && d.link) {
+          dl.href = d.link;
+          dl.classList.add("primary");
+          statusEl.textContent = "Ссылка активна 1 час.";
+          return;
+        } else {
+          statusEl.textContent = "Оплата обрабатывается… обычно до 1–2 минут.";
+          setTimeout(poll, 2500);
+        }
+      } catch {
+        statusEl.textContent = "Ошибка загрузки статуса. Попробуйте позже.";
+        statusEl.classList.add("err");
+        setTimeout(poll, 5000);
       }
     }
+    poll();
 
-    sendBtn.addEventListener('click', sendEmail);
-    input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendEmail(e); });
+    resend.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const email = prompt("Введите ваш e-mail для повторной отправки:");
+      if (!email) return;
+      statusEl.textContent = "Отправляем письмо…";
+      try {
+        const r = await fetch("/api/resend", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ orderId: order, email })
+        });
+        const out = await r.json();
+        statusEl.textContent = out && out.ok
+          ? "Готово! Проверьте входящие и Спам."
+          : (out.error || "Не удалось отправить письмо.");
+      } catch {
+        statusEl.textContent = "Сбой сети. Попробуйте ещё раз.";
+      }
+    });
   </script>
 </body>
 </html>
