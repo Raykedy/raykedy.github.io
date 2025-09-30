@@ -1,137 +1,110 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Скачать книгу за криптодонат</title>
-  <meta name="color-scheme" content="dark">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Оплата криптовалютой • 2051</title>
   <style>
-    :root{
-      --panel:#121824; --text:#e6f0ff;
-      --muted:#a9b7d1; --stroke:#1c2533; --accent:#ffa600;
-      --good:#00c46f;
-    }
-    html,body{
-      height:100%; margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    }
-    body{
-      background: url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color:var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding:16px;
-    }
-
-    .card{
-      width:100%; max-width:420px;
-      background:rgba(18,24,36,0.9);
-      border:1px solid var(--stroke); border-radius:18px;
-      padding:24px 20px;
-      box-shadow:0 20px 60px rgba(0,0,0,.45);
-      backdrop-filter:blur(6px);
-      text-align:center;
-    }
-
-    .logo{color:var(--muted); font-weight:600; margin-bottom:.4rem; opacity:.95}
-    h1{margin:.2rem 0 1rem; font-size:1.6rem; line-height:1.15}
-    p{margin:.5rem 0; color:var(--muted); font-size:.95rem}
-
-    .pill-btn,
-    .pill-price,
-    .email-input,
-    .static-btn {
-      display: block;
-      width: 100%;
-      max-width: 360px;
-      margin: 10px auto;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--stroke);
-      font-size: 16px;
-      font-weight: 700;
-      text-align: center;
-      box-sizing: border-box;
-    }
-
-    .pill-primary{background:var(--accent); color:#000}
-    .pill-price{background:var(--good); color:#000; cursor:default; opacity:.95}
-
-    .email-input{
-      font-weight:400;
-      background:#3a3f49;
-      color:var(--text);
-    }
-    .email-input::placeholder{color:#c9d2e4; opacity:.8}
-
-    .static-btn{
-      background:#2a2f3a; color:#777;
-      cursor:default; opacity:.7;
-      font-weight:400;
-    }
-
-    footer{margin-top:20px; font-size:13px; color:var(--muted)}
-    .nowrap{white-space:nowrap}
-    .link-back{color:#82c7f6; text-decoration:none}
+    :root { --bg:#0b0f14; --card:#111820; --text:#e7eef7; --muted:#9bb0c3; --pri:#22c55e; --pri2:#16a34a; }
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .card{width:100%;max-width:560px;background:var(--card);border:1px solid #1b2633;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+    h1{margin:0 0 8px;font-size:20px}
+    p.sub{margin:0 0 16px;color:var(--muted)}
+    label{display:block;margin:14px 0 6px}
+    input,button{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #233142;background:#0d141c;color:var(--text)}
+    input::placeholder{color:#768ea6}
+    .coins{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .coin{padding:8px 12px;border-radius:999px;border:1px solid #243244;background:#0d141c;color:#dbe8f5;cursor:pointer}
+    .coin.active{background:#13301e;border-color:#225e3b}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;background:var(--pri);border:0;cursor:pointer;font-weight:600}
+    .btn:hover{background:var(--pri2)}
+    .note{margin-top:10px;color:#9ab; font-size:14px}
+    .err{margin-top:10px;color:#f66}
   </style>
-</head>
-<body>
-  <section class="card">
-    <div class="logo">Ray Kedy • 2051</div>
-    <h1>Скачать книгу за криптодонат</h1>
-    <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
-
-    <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
-    <div class="pill-btn pill-price">3.99 USDT</div>
-
-    <input id="buyer-email" class="email-input" type="email"
-           placeholder="Ваш e-mail, на который придёт книга"
-           autocomplete="off" inputmode="email">
-
-    <p>Донаты идут на создание аудиокниги и перевод книги на английский язык.</p>
-
-    <div class="static-btn">EPUB</div>
-
-    <footer>
-      © 2051: Алгоритм Пробуждение — <span class="nowrap">Ray Kedy</span><br>
-      <a class="link-back" href="./index.html">На главную</a>
-    </footer>
-  </section>
 
   <script>
-    function getEmail(){
-      const v = document.getElementById('buyer-email').value.trim();
-      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){
-        alert('Введите корректный e-mail'); return null;
+    // Авто-поиск адреса API воркера
+    (function(){
+      const q = new URLSearchParams(location.search);
+      const override = q.get('api');
+      const candidates = [];
+      if (override) candidates.push(override.replace(/\/$/, ''));
+      if (window.API_BASE) candidates.push(String(window.API_BASE).replace(/\/$/, ''));
+      candidates.push(location.origin); // если настроишь Route /api → Worker
+      candidates.push('https://raykedy.workers.dev');
+      candidates.push('https://rk-pay.workers.dev');
+      window.API_CANDIDATES = [...new Set(candidates)];
+      window.pickApi = async function(){
+        for (const base of window.API_CANDIDATES){
+          try{
+            const r = await fetch(base + '/api/order-status?order=test', { method:'GET' });
+            if (r.ok) return base;
+          }catch(_){}
+        }
+        return window.API_CANDIDATES[0];
       }
-      return v;
-    }
-    async function startInvoice(){
-      const email = getEmail(); if(!email) return;
-      const btn = document.getElementById('btn-download');
-      const prev = btn.textContent;
-      btn.disabled = true; btn.textContent = 'Генерация ссылки...';
-      try{
-        const res = await fetch('/api/create-invoice',{
-          method:'POST',
-          headers:{'content-type':'application/json'},
-          body:JSON.stringify({
-            amount:3.99, currency:'USDT', network:'TRC20',
-            email, format:'epub'
-          })
+    })();
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Оплата криптовалютой</h1>
+      <p class="sub">Укажите e-mail и выберите монету. После оплаты ссылка на книгу придёт на почту и будет активна 1 час.</p>
+
+      <label for="email">Ваш e-mail, на который придёт книга</label>
+      <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+
+      <label>Монета</label>
+      <div class="coins" id="coins">
+        <button class="coin active" data-asset="">Любая (выбор на форме)</button>
+        <button class="coin" data-asset="usdt">USDT</button>
+        <button class="coin" data-asset="eth">ETH</button>
+        <button class="coin" data-asset="btc">BTC</button>
+      </div>
+
+      <button class="btn" id="payBtn">Перейти к оплате</button>
+      <div class="note">Оплата и безопасность на стороне NOWPayments.</div>
+      <div class="err" id="err" hidden></div>
+    </div>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    let asset = "";
+
+    $("#coins").addEventListener("click", e=>{
+      const b = e.target.closest(".coin");
+      if (!b) return;
+      $("#coins").querySelectorAll(".coin").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      asset = b.dataset.asset || "";
+    });
+
+    $("#payBtn").addEventListener("click", async ()=>{
+      $("#err").hidden = true;
+      const email = $("#email").value.trim();
+      const amountUsd = 3.99;
+      if (!email) { showErr("Укажи e-mail"); return; }
+
+      try {
+        const API_BASE = await window.pickApi();
+        const r = await fetch(API_BASE + '/api/create-invoice',{
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify({ email, amountUsd, asset })
         });
-        const data = await res.json();
-        if(data && data.url){ window.open(data.url,'_blank'); }
-        else{ alert('Не удалось создать ссылку.'); }
-      }catch(e){
-        alert('Ошибка соединения. Попробуйте ещё раз.');
-      }finally{
-        btn.disabled = false; btn.textContent = prev;
+        const d = await r.json();
+        if (d.ok && d.url) { location.href = d.url; }
+        else { showErr("Не удалось создать счёт. Попробуй ещё раз."); console.log("create-invoice fail:", d); }
+      } catch (e) {
+        showErr("Сеть недоступна. Попробуй ещё раз."); console.error(e);
       }
-    }
-    document.getElementById('btn-download').addEventListener('click', startInvoice);
+    });
+
+    function showErr(t){ const box=$("#err"); box.textContent=t; box.hidden=false; }
   </script>
 </body>
 </html>
+
