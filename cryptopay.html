@@ -5,93 +5,57 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Скачать книгу за криптодонат</title>
   <meta name="color-scheme" content="dark">
-
   <style>
     :root{
-      --panel:#121824; --text:#e6f0ff;
-      --muted:#a9b7d1; --stroke:#1c2533; --accent:#ffa600;
-      --good:#00c46f;
+      --panel:#121824; --text:#e6f0ff; --muted:#a9b7d1;
+      --stroke:#1c2533; --accent:#ffa600; --good:#00c46f; --danger:#ff6b6b;
     }
-    html,body{
-      height:100%; margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    }
-    body{
-      color:var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding:16px;
-    }
-
+    html,body{height:100%; margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    body{color:var(--text); display:flex; justify-content:center; align-items:center; padding:16px}
     /* Видео-фон */
-    #bgVideo{
-      position:fixed; inset:0; width:100%; height:100%;
-      object-fit:cover; z-index:0; pointer-events:none; background:#000;
-    }
-
+    #bgVideo{position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none; background:#000}
     .card{
-      width:100%; max-width:420px;
-      background:rgba(18,24,36,0.9);
-      border:1px solid var(--stroke); border-radius:18px;
-      padding:24px 20px;
-      box-shadow:0 20px 60px rgba(0,0,0,.45);
-      backdrop-filter:blur(6px);
-      text-align:center;
-      position:relative;
-      z-index:1;
+      width:100%; max-width:480px; background:rgba(18,24,36,.9);
+      border:1px solid var(--stroke); border-radius:18px; padding:24px 20px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45); backdrop-filter:blur(6px);
+      text-align:center; position:relative; z-index:1;
     }
-
     .logo{color:var(--muted); font-weight:600; margin-bottom:.4rem; opacity:.95}
     h1{margin:.2rem 0 1rem; font-size:1.6rem; line-height:1.15}
     p{margin:.5rem 0; color:var(--muted); font-size:.95rem}
+    .row{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:8px 0 4px}
 
-    .pill-btn,
-    .pill-price,
-    .email-input,
-    .static-btn {
-      display: block;
-      width: 100%;
-      max-width: 360px;
-      margin: 10px auto;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--stroke);
-      font-size: 16px;
-      font-weight: 700;
-      text-align: center;
-      box-sizing: border-box;
+    .btn, .pill, .email-input, .static{
+      display:block; width:100%; max-width:380px; margin:8px auto;
+      padding:14px 16px; border-radius:14px; border:1px solid var(--stroke);
+      font-size:16px; text-align:center; box-sizing:border-box;
     }
-
-    .pill-primary{background:var(--accent); color:#000}
-    .pill-price{background:var(--good); color:#000; cursor:default; opacity:.95}
-
-    .email-input{
-      font-weight:400;
-      background:#3a3f49;
-      color:var(--text);
-    }
+    .btn{background:var(--accent); color:#000; font-weight:800; cursor:pointer}
+    .btn[disabled]{opacity:.6; cursor:progress}
+    .price{background:var(--good); color:#000; font-weight:800}
+    .email-input{background:#3a3f49; color:var(--text); font-weight:500}
     .email-input::placeholder{color:#c9d2e4; opacity:.8}
+    .static{background:#2a2f3a; color:#777; font-weight:500}
 
-    .static-btn{
-      background:#2a2f3a; color:#777;
-      cursor:default; opacity:.7;
-      font-weight:400;
-    }
+    /* выбор монеты */
+    .pill{flex:1 1 110px; max-width:calc(50% - 8px); cursor:pointer; user-select:none}
+    .pill[data-active="1"]{outline:2px solid var(--accent); background:#1b2130}
+    .pill--all{max-width:100%}
 
-    footer{margin-top:20px; font-size:13px; color:var(--muted)}
+    .help{min-height:22px; font-size:13px; color:var(--muted); margin-top:6px}
+    .err{color:var(--danger)}
+    footer{margin-top:18px; font-size:13px; color:var(--muted)}
     .nowrap{white-space:nowrap}
     .link-back{color:#82c7f6; text-decoration:none}
   </style>
 </head>
-
 <body>
 
   <!-- Видео-фон -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-    <!-- Для Android/Chrome -->
+    <!-- Android/Chrome -->
     <source src="https://raykedy.github.io/fastvideobackground_faststart.webm" type="video/webm">
-    <!-- Для Safari/iOS -->
+    <!-- Safari/iOS -->
     <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
   </video>
 
@@ -100,16 +64,24 @@
     <h1>Скачать книгу за криптодонат</h1>
     <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
 
-    <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
-    <div class="pill-btn pill-price">3.99 USDT</div>
+    <!-- выбор монеты -->
+    <div class="row" id="assetRow">
+      <div class="pill" data-asset="usdt">USDT</div>
+      <div class="pill" data-asset="eth">ETH</div>
+      <div class="pill" data-asset="btc">BTC</div>
+      <div class="pill pill--all" data-asset="">Все монеты (выбор на странице оплаты)</div>
+    </div>
+
+    <button class="btn" id="btn-download">Сгенерировать ссылку оплаты</button>
+    <div class="price">3.99 USD</div>
 
     <input id="buyer-email" class="email-input" type="email"
-           placeholder="Ваш e-mail, на который придёт книга"
-           autocomplete="off" inputmode="email">
+           placeholder="Ваш e-mail, на который придёт книга" autocomplete="off" inputmode="email">
+
+    <div class="help" id="hint"></div>
 
     <p>Донаты идут на создание аудиокниги и перевод книги на английский язык.</p>
-
-    <div class="static-btn">EPUB</div>
+    <div class="static">Формат: EPUB</div>
 
     <footer>
       © 2051: Алгоритм Пробуждение — <span class="nowrap">Ray Kedy</span><br>
@@ -118,38 +90,74 @@
   </section>
 
   <script>
+    // ===== helpers =====
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     function getEmail(){
-      const v = document.getElementById('buyer-email').value.trim();
-      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){
-        alert('Введите корректный e-mail'); return null;
-      }
+      const v = $('#buyer-email').value.trim();
+      if(!emailRe.test(v)){ msg('Введите корректный e-mail', true); return null; }
       return v;
     }
+    function msg(t, isErr=false){
+      const el = $('#hint'); el.textContent = t || '';
+      el.classList.toggle('err', !!isErr);
+    }
+
+    // ===== выбор монеты (необязателен) =====
+    let selectedAsset = ''; // пусто → NOWPayments покажет список сам
+    const assetRow = $('#assetRow');
+    assetRow.addEventListener('click', (e) => {
+      const pill = e.target.closest('.pill'); if(!pill) return;
+      $$('.pill').forEach(p => p.dataset.active = '0');
+      pill.dataset.active = '1';
+      selectedAsset = pill.dataset.asset || '';
+    });
+
+    // По умолчанию активируем "Все монеты"
+    const allPill = $$('.pill').find(p => p.dataset.asset === '');
+    if (allPill) allPill.dataset.active = '1';
+
+    // ===== создание инвойса =====
     async function startInvoice(){
       const email = getEmail(); if(!email) return;
-      const btn = document.getElementById('btn-download');
+      msg('');
+
+      const btn = $('#btn-download');
       const prev = btn.textContent;
-      btn.disabled = true; btn.textContent = 'Генерация ссылки...';
+      btn.disabled = true; btn.textContent = 'Генерация ссылки…';
+
       try{
-        const res = await fetch('/api/create-invoice',{
+        const payload = {
+          email,
+          amountUsd: 3.99
+          // asset передаём только если выбрана конкретная монета
+        };
+        if (selectedAsset) payload.asset = selectedAsset;
+
+        const res = await fetch('/api/create-invoice', {
           method:'POST',
-          headers:{'content-type':'application/json'},
-          body:JSON.stringify({
-            amount:3.99, currency:'USDT', network:'TRC20',
-            email, format:'epub'
-          })
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
         });
         const data = await res.json();
-        if(data && data.url){ window.open(data.url,'_blank'); }
-        else{ alert('Не удалось создать ссылку.'); }
-      }catch(e){
-        alert('Ошибка соединения. Попробуйте ещё раз.');
-      }finally{
+
+        if (res.ok && data && data.ok && data.url){
+          // Откроем хостед-страницу NOWPayments
+          window.open(data.url, '_blank');
+          msg('Ссылка создана. Если вкладка не открылась — разрешите всплывающие окна.', false);
+        } else {
+          msg('Не удалось создать ссылку: ' + (data && data.error ? data.error : 'ошибка'), true);
+        }
+      } catch(err){
+        msg('Сбой сети. Попробуйте ещё раз.', true);
+      } finally {
         btn.disabled = false; btn.textContent = prev;
       }
     }
-    document.getElementById('btn-download').addEventListener('click', startInvoice);
-  </script>
 
+    $('#btn-download').addEventListener('click', startInvoice);
+  </script>
 </body>
 </html>
