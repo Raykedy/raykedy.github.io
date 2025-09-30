@@ -7,66 +7,92 @@
   <meta name="color-scheme" content="dark">
   <style>
     :root{
-      --panel:#121824; --text:#e6f0ff; --muted:#a9b7d1;
-      --stroke:#1c2533; --accent:#ffa600; --good:#00c46f; --danger:#ff6b6b;
+      --panel:#121824; --text:#e6f0ff;
+      --muted:#a9b7d1; --stroke:#1c2533; --accent:#ffa600;
+      --good:#00c46f;
     }
-    html,body{height:100%; margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    body{color:var(--text); display:flex; justify-content:center; align-items:center; padding:16px}
-    /* Видео-фон */
-    #bgVideo{position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none; background:#000}
+    html,body{
+      height:100%; margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    }
+    body{
+      background: url('https://raw.githubusercontent.com/Raykedy/raykedy.github.io/refs/heads/main/bcksucsess.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color:var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding:16px;
+    }
+
     .card{
-      width:100%; max-width:480px; background:rgba(18,24,36,.9);
-      border:1px solid var(--stroke); border-radius:18px; padding:24px 20px;
-      box-shadow:0 20px 60px rgba(0,0,0,.45); backdrop-filter:blur(6px);
-      text-align:center; position:relative; z-index:1;
+      width:100%; max-width:420px;
+      background:rgba(18,24,36,0.9);
+      border:1px solid var(--stroke); border-radius:18px;
+      padding:24px 20px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      backdrop-filter:blur(6px);
+      text-align:center;
     }
+
     .logo{color:var(--muted); font-weight:600; margin-bottom:.4rem; opacity:.95}
     h1{margin:.2rem 0 1rem; font-size:1.6rem; line-height:1.15}
     p{margin:.5rem 0; color:var(--muted); font-size:.95rem}
-    .btn, .price, .email-input, .static{
-      display:block; width:100%; max-width:380px; margin:8px auto;
-      padding:14px 16px; border-radius:14px; border:1px solid var(--stroke);
-      font-size:16px; text-align:center; box-sizing:border-box;
+
+    .pill-btn,
+    .pill-price,
+    .email-input,
+    .static-btn {
+      display: block;
+      width: 100%;
+      max-width: 360px;
+      margin: 10px auto;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      box-sizing: border-box;
     }
-    .btn{background:var(--accent); color:#000; font-weight:800; cursor:pointer}
-    .btn[disabled]{opacity:.6; cursor:progress}
-    .price{background:var(--good); color:#000; font-weight:800}
-    .email-input{background:#3a3f49; color:var(--text); font-weight:500}
+
+    .pill-primary{background:var(--accent); color:#000}
+    .pill-price{background:var(--good); color:#000; cursor:default; opacity:.95}
+
+    .email-input{
+      font-weight:400;
+      background:#3a3f49;
+      color:var(--text);
+    }
     .email-input::placeholder{color:#c9d2e4; opacity:.8}
-    .static{background:#2a2f3a; color:#777; font-weight:500}
-    .help{min-height:22px; font-size:13px; color:var(--muted); margin-top:6px}
-    .err{color:var(--danger)}
-    footer{margin-top:18px; font-size:13px; color:var(--muted)}
+
+    .static-btn{
+      background:#2a2f3a; color:#777;
+      cursor:default; opacity:.7;
+      font-weight:400;
+    }
+
+    footer{margin-top:20px; font-size:13px; color:var(--muted)}
     .nowrap{white-space:nowrap}
     .link-back{color:#82c7f6; text-decoration:none}
   </style>
 </head>
 <body>
-
-  <!-- Видео-фон -->
-  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
-    <!-- Android/Chrome -->
-    <source src="https://raykedy.github.io/fastvideobackground_faststart.webm" type="video/webm">
-    <!-- Safari/iOS -->
-    <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
-  </video>
-
   <section class="card">
     <div class="logo">Ray Kedy • 2051</div>
     <h1>Скачать книгу за криптодонат</h1>
     <p>«2051: Алгоритм Пробуждение» — Ray Kedy</p>
 
-    <!-- Кнопка как у TapLike: монету выберут на стороне NOWPayments -->
-    <button class="btn" id="btn-download">Сгенерировать ссылку оплаты</button>
-    <div class="price">3.99 USD</div>
+    <button class="pill-btn pill-primary" id="btn-download">Скачать книгу за донат</button>
+    <div class="pill-btn pill-price">3.99 USDT</div>
 
     <input id="buyer-email" class="email-input" type="email"
-           placeholder="Ваш e-mail, на который придёт книга" autocomplete="off" inputmode="email">
-
-    <div class="help" id="hint"></div>
+           placeholder="Ваш e-mail, на который придёт книга"
+           autocomplete="off" inputmode="email">
 
     <p>Донаты идут на создание аудиокниги и перевод книги на английский язык.</p>
-    <div class="static">Формат: EPUB</div>
+
+    <div class="static-btn">EPUB</div>
 
     <footer>
       © 2051: Алгоритм Пробуждение — <span class="nowrap">Ray Kedy</span><br>
@@ -75,54 +101,37 @@
   </section>
 
   <script>
-    const $ = (s) => document.querySelector(s);
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    function msg(t, isErr=false){
-      const el = $('#hint'); el.textContent = t || '';
-      el.classList.toggle('err', !!isErr);
-    }
     function getEmail(){
-      const v = $('#buyer-email').value.trim();
-      if(!emailRe.test(v)){ msg('Введите корректный e-mail', true); return null; }
+      const v = document.getElementById('buyer-email').value.trim();
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){
+        alert('Введите корректный e-mail'); return null;
+      }
       return v;
     }
-
-    // Создание инвойса — БЕЗ выбора монеты; NOWPayments сам покажет список
     async function startInvoice(){
       const email = getEmail(); if(!email) return;
-      msg('');
-
-      const btn = $('#btn-download');
+      const btn = document.getElementById('btn-download');
       const prev = btn.textContent;
-      btn.disabled = true; btn.textContent = 'Генерация ссылки…';
-
+      btn.disabled = true; btn.textContent = 'Генерация ссылки...';
       try{
-        const res = await fetch('/api/create-invoice', {
+        const res = await fetch('/api/create-invoice',{
           method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({
-            email,
-            amountUsd: 3.99
-            // asset НЕ передаём — выбор монеты будет на стороне NOWPayments
+          headers:{'content-type':'application/json'},
+          body:JSON.stringify({
+            amount:3.99, currency:'USDT', network:'TRC20',
+            email, format:'epub'
           })
         });
         const data = await res.json();
-
-        if (res.ok && data && data.ok && data.url){
-          window.open(data.url, '_blank'); // хостед-страница NOWPayments
-          msg('Ссылка создана. Если вкладка не открылась — разрешите всплывающие окна.');
-        } else {
-          msg('Не удалось создать ссылку: ' + (data && data.error ? data.error : 'ошибка'), true);
-        }
-      } catch(e){
-        msg('Сбой сети. Попробуйте ещё раз.', true);
-      } finally {
+        if(data && data.url){ window.open(data.url,'_blank'); }
+        else{ alert('Не удалось создать ссылку.'); }
+      }catch(e){
+        alert('Ошибка соединения. Попробуйте ещё раз.');
+      }finally{
         btn.disabled = false; btn.textContent = prev;
       }
     }
-
-    $('#btn-download').addEventListener('click', startInvoice);
+    document.getElementById('btn-download').addEventListener('click', startInvoice);
   </script>
 </body>
 </html>
