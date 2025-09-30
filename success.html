@@ -12,33 +12,13 @@
     h1{margin:0 0 8px;font-size:20px}
     p{margin:0 0 10px}
     .muted{color:var(--muted)}
-    .row{display:flex;gap:10px;margin-top:12px}
+    .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
     a.btn,button.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:10px;border:0;background:#233142;color:#dbe8f5;text-decoration:none;cursor:pointer}
     a.btn.primary,button.btn.primary{background:var(--pri);color:#09210f}
     a.btn.primary:hover,button.btn.primary:hover{background:var(--pri2)}
-    .note{margin-top:10px;color:#9ab; font-size:14px}
+    .note{margin-top:10px;color:#9ab;font-size:14px}
+    .err{margin-top:10px;color:#f66}
   </style>
-
-  <script>
-    const FIXED_API = ''; // при желании впиши https://<твой>.workers.dev
-    (function(){
-      const q = new URLSearchParams(location.search);
-      const override = q.get('api');
-      const candidates = [];
-      if (override) candidates.push(override.replace(/\/$/, ''));
-      if (FIXED_API) candidates.push(FIXED_API.replace(/\/$/, ''));
-      candidates.push(location.origin);
-      candidates.push('https://raykedy.workers.dev');
-      candidates.push('https://rk-pay.workers.dev');
-      window.API_CANDIDATES = [...new Set(candidates)];
-      window.pickApi = async function(){
-        for (const base of window.API_CANDIDATES){
-          try{ const r = await fetch(base + '/api/ping'); if (r.ok) return base; }catch(_){}
-        }
-        return window.API_CANDIDATES[0];
-      }
-    })();
-  </script>
 </head>
 <body>
   <div class="wrap">
@@ -48,10 +28,12 @@
 
       <div class="row" style="margin-top:16px">
         <a id="downloadLink" class="btn" href="#" onclick="return false;">📥 Скачать e-книгу</a>
-        <button id="resendBtn" class="btn">🔄 Переслать письмо</button>
+        <button id="refreshBtn" class="btn">🔄 Обновить ссылку</button>
+        <button id="resendBtn" class="btn">📧 Переслать письмо</button>
       </div>
 
-      <p class="note">Если ссылка не появилась в течение пары минут — нажмите «Переслать письмо».</p>
+      <p class="note">Если ссылка не появилась в течение пары минут — нажмите «Обновить ссылку» или «Переслать письмо».</p>
+      <div id="err" class="err" hidden></div>
     </div>
   </div>
 
@@ -60,35 +42,54 @@
     const orderId = params.get('order') || '';
 
     const downloadLink = document.getElementById('downloadLink');
-    const resendBtn = document.getElementById('resendBtn');
+    const refreshBtn   = document.getElementById('refreshBtn');
+    const resendBtn    = document.getElementById('resendBtn');
+    const errBox       = document.getElementById('err');
 
-    async function poll() {
-      try {
-        const API_BASE = await window.pickApi();
-        const r = await fetch(API_BASE + '/api/order-status?order=' + encodeURIComponent(orderId));
+    function showErr(t){ errBox.textContent=t; errBox.hidden=!t; }
+
+    async function checkOnce(){
+      try{
+        const r = await fetch(`/api/order-status?order=${encodeURIComponent(orderId)}`);
         const d = await r.json();
-        if (d.ok && d.link) { downloadLink.href = d.link; downloadLink.classList.add('primary'); return; }
-      } catch(e) {}
-      setTimeout(poll, 4000);
+        if (d.ok && d.link){
+          downloadLink.href = d.link;
+          downloadLink.classList.add('primary');
+          downloadLink.textContent = '📥 Скачать e-книгу';
+          showErr('');
+          return true;
+        }
+      }catch(e){ showErr('Сеть недоступна, попробуйте ещё раз.'); }
+      return false;
     }
+
+    // Авто-опрос: каждые 3 сек до ~5 минут
+    let tries = 0, timer = null;
+    async function poll(){
+      const ok = await checkOnce();
+      if (ok){ clearTimeout(timer); return; }
+      if (++tries < 100) timer = setTimeout(poll, 3000);
+    }
+
+    refreshBtn.addEventListener('click', async ()=>{
+      refreshBtn.disabled = true;
+      await checkOnce();
+      refreshBtn.disabled = false;
+    });
 
     resendBtn.addEventListener('click', async ()=>{
       resendBtn.disabled = true;
-      try {
+      try{
         const email = prompt('Укажите e-mail, на который отправить ссылку:');
-        if (!email) { resendBtn.disabled = false; return; }
-        const API_BASE = await window.pickApi();
-        const r = await fetch(API_BASE + '/api/resend', {
-          method: 'POST', headers: {'Content-Type':'application/json'},
+        if (!email){ resendBtn.disabled = false; return; }
+        const r = await fetch('/api/resend', {
+          method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({ orderId, email })
         });
         const d = await r.json();
         alert(d.ok ? 'Письмо отправлено.' : 'Не удалось отправить письмо.');
-      } catch (e) {
-        alert('Ошибка сети. Попробуйте ещё раз.');
-      } finally {
-        resendBtn.disabled = false;
-      }
+      }catch(e){ alert('Ошибка сети. Попробуйте ещё раз.'); }
+      finally{ resendBtn.disabled = false; }
     });
 
     if (orderId) poll();
