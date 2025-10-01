@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Оплата получена • 2051</title>
   <style>
-    :root { --bg:#0b0f14; --card:#111820; --text:#e7eef7; --muted:#9bb0c3; --pri:#22c55e; --pri2:#16a34a; }
+    :root { --bg:#0b0f14; --card:#111820; --text:#e7eef7; --muted:#9bb0c3; }
     body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
     .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
     .card{width:100%;max-width:560px;background:var(--card);border:1px solid #1b2633;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
@@ -23,11 +23,11 @@
   <div class="wrap">
     <div class="card">
       <h1>Спасибо! Платёж подтверждён</h1>
-      <p class="muted">Ссылка придёт на e-mail. Если письма нет пару минут — нажмите кнопку ниже.</p>
+      <p class="muted">Мы отправили ссылку на e-mail. Если письма нет пару минут — нажмите кнопку ниже.</p>
 
       <button id="resendBtn" class="btn">📧 Переслать письмо</button>
 
-      <p class="note">Срок действия ссылки — 1 час.</p>
+      <p class="note">Ссылка активна 1 час. Проверьте «Входящие», «Промоакции» и «Спам».</p>
       <div id="msg" class="ok" hidden>Готово: ссылка отправлена на почту.</div>
       <div id="err" class="err" hidden></div>
     </div>
@@ -39,27 +39,11 @@
     const resendBtn = document.getElementById('resendBtn');
     const msg = document.getElementById('msg');
     const err = document.getElementById('err');
+    function show(el, text){ el.textContent=text; el.hidden=!text; }
 
-    function show(el, text){ el.textContent = text; el.hidden = !text; }
-
-    // 1) Авто-подхват: как только воркер сгенерит ссылку — сразу открываем скачивание
-    let tries = 0, timer = null;
-    async function poll(){
-      try{
-        const r = await fetch(`/api/order-status?order=${encodeURIComponent(orderId)}`);
-        const d = await r.json();
-        if (d.ok && d.link){
-          location.href = d.link; // авто-скачивание
-          return;
-        }
-      }catch(_){}
-      if (++tries < 100) timer = setTimeout(poll, 3000); // до ~5 минут
-    }
-    if (orderId) poll();
-
-    // 2) Ручная пересылка письма
+    // Только ручная пересылка письма — без автоскачивания и без автопинга
     resendBtn.addEventListener('click', async ()=>{
-      resendBtn.disabled = true; show(err, ''); show(msg, '');
+      resendBtn.disabled = true; show(err,''); show(msg,'');
       try{
         const email = prompt('Укажите e-mail, на который отправить ссылку:');
         if (!email){ resendBtn.disabled = false; return; }
