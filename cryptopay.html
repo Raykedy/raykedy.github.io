@@ -1,45 +1,76 @@
-
 <!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Оплата криптовалютой • 2051</title>
+
   <style>
-    :root { --bg:#0b0f14; --card:#111820; --text:#e7eef7; --muted:#9bb0c3; --pri:#22c55e; --pri2:#16a34a; }
-    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
-    .card{width:100%;max-width:560px;background:var(--card);border:1px solid #1b2633;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
-    h1{margin:0 0 8px;font-size:20px}
-    p.sub{margin:0 0 16px;color:var(--muted)}
-    label{display:block;margin:14px 0 6px}
-    input,button{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #233142;background:#0d141c;color:var(--text)}
-    input::placeholder{color:#768ea6}
-    .coins{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .coin{padding:8px 12px;border-radius:999px;border:1px solid #243244;background:#0d141c;color:#dbe8f5;cursor:pointer}
-    .coin.active{background:#13301e;border-color:#225e3b}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;background:var(--pri);border:0;cursor:pointer;font-weight:600}
-    .btn:hover{background:var(--pri2)}
-    .note{margin-top:10px;color:#9ab; font-size:14px}
-    .err{margin-top:10px;color:#f66;white-space:pre-wrap}
+    html { min-height:100%; background:#000; }
+    body {
+      margin:0; min-height:100%; background:#000; color:#e7eef7;
+      font:16px/1.5 Arial, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, sans-serif;
+      overflow-y:auto;
+    }
+
+    /* Видеофон — идентично главной */
+    #bgVideo{
+      position:fixed; inset:0; width:100%; height:100%;
+      object-fit:cover; z-index:0; pointer-events:none; background:#000;
+    }
+
+    /* Контент */
+    .page { position:relative; z-index:1; min-height:100vh; display:grid; place-items:center; padding:20px; box-sizing:border-box; }
+    .card{
+      width:min(560px, 96%); background:rgba(8,12,18,.78);
+      border:1px solid rgba(180,240,255,.25); border-radius:16px; padding:22px 20px;
+      box-shadow:0 10px 40px rgba(0,0,0,.45); backdrop-filter: blur(6px);
+      text-align:center;  /* все по центру */
+    }
+    h1{ margin:0 0 10px; font-size:22px; }
+    p.sub{ margin:0 0 16px; color:#bcd0e0; }
+
+    label{ display:block; margin:14px 0 6px; text-align:center; color:#dbe7f3; font-weight:600; }
+    input{
+      width:100%; padding:12px 14px; border-radius:10px;
+      border:1px solid #233142; background:#0d141c; color:#e7eef7;
+    }
+    input::placeholder{ color:#8fa5ba; }
+
+    .btn{
+      width:100%; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      margin-top:16px; padding:12px 14px; border-radius:12px; border:0; cursor:pointer; font-weight:700;
+      background:#22c55e; color:#081219; transition:transform .12s ease, filter .2s ease;
+    }
+    .btn:hover{ transform:translateY(-1px); filter:brightness(1.05); }
+    .note{ margin-top:10px; color:#9fb4c7; font-size:14px; }
+    .err{ margin-top:10px; color:#ff7a7a; font-size:14px; display:none; }
+    .err.show{ display:block; }
+
+    @media (max-width:420px){
+      .card{ padding:18px 14px; }
+      h1{ font-size:20px; }
+    }
   </style>
 
   <script>
-    // ЖЁСТКО укажи адрес воркера (если знаешь). ИЛИ оставь как есть и добавь ?api=... в URL.
-    const FIXED_API = ''; // например: 'https://rk-pay.workers.dev'  (или оставь пустым)
+    // Авто-выбор доступного API (как было в рабочей версии)
     (function(){
       const q = new URLSearchParams(location.search);
-      const override = q.get('api');        // приоритетно: ?api=https://...workers.dev
+      const override = q.get('api');
       const candidates = [];
       if (override) candidates.push(override.replace(/\/$/, ''));
-      if (FIXED_API) candidates.push(FIXED_API.replace(/\/$/, ''));
-      candidates.push(location.origin);                  // если когда-нибудь настроишь Route /api → Worker
-      candidates.push('https://raykedy.workers.dev');    // запасные
+      if (window.API_BASE) candidates.push(String(window.API_BASE).replace(/\/$/, ''));
+      candidates.push(location.origin); // если Route /api → Worker
+      candidates.push('https://raykedy.workers.dev');
       candidates.push('https://rk-pay.workers.dev');
       window.API_CANDIDATES = [...new Set(candidates)];
       window.pickApi = async function(){
         for (const base of window.API_CANDIDATES){
-          try{ const r = await fetch(base + '/api/ping'); if (r.ok) return base; }catch(_){}
+          try{
+            const r = await fetch(base + '/api/order-status?order=test', { method:'GET' });
+            if (r.ok) return base;
+          }catch(_){}
         }
         return window.API_CANDIDATES[0];
       }
@@ -47,42 +78,43 @@
   </script>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
+
+  <!-- ВИДЕОФОН как на главной -->
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
+  </video>
+
+  <main class="page">
+    <section class="card" aria-label="Оплата криптовалютой">
       <h1>Оплата криптовалютой</h1>
-      <p class="sub">Укажите e-mail и выберите монету. После оплаты ссылка на книгу придёт на почту и будет активна 1 час.</p>
+      <p class="sub">
+        Укажите e-mail. После оплаты ссылка на книгу придёт на почту и будет активна 1 час.<br/>
+        Если письма нет во «Входящих», проверьте папку «Спам».
+      </p>
 
       <label for="email">Ваш e-mail, на который придёт книга</label>
       <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
 
-      <label>Монета</label>
-      <div class="coins" id="coins">
-        <button class="coin active" data-asset="">Любая (выбор на форме)</button>
-        <button class="coin" data-asset="usdt">USDT</button>
-        <button class="coin" data-asset="eth">ETH</button>
-        <button class="coin" data-asset="btc">BTC</button>
-      </div>
-
+      <!-- Выбор монеты убран по задаче. В бэкенд отправляем asset: "" -->
       <button class="btn" id="payBtn">Перейти к оплате</button>
+
       <div class="note">Оплата и безопасность на стороне NOWPayments.</div>
-      <div class="err" id="err" hidden></div>
-    </div>
-  </div>
+      <div class="err" id="errBox"></div>
+    </section>
+  </main>
 
   <script>
     const $ = s => document.querySelector(s);
-    let asset = "";
-    $("#coins").addEventListener("click", e=>{
-      const b = e.target.closest(".coin"); if(!b) return;
-      $("#coins").querySelectorAll(".coin").forEach(x=>x.classList.remove("active"));
-      b.classList.add("active"); asset = b.dataset.asset || "";
-    });
 
     $("#payBtn").addEventListener("click", async ()=>{
-      $("#err").hidden = true;
+      const err = $("#errBox");
+      err.classList.remove('show'); err.textContent = '';
+
       const email = $("#email").value.trim();
+      if (!email) { err.textContent = "Укажи e-mail"; err.classList.add('show'); return; }
+
       const amountUsd = 3.99;
-      if (!email) { err("Укажи e-mail"); return; }
+      const asset = ""; // «Любая» — без выбора монеты
 
       try {
         const API_BASE = await window.pickApi();
@@ -92,16 +124,21 @@
           body: JSON.stringify({ email, amountUsd, asset })
         });
         const d = await r.json();
-        if (d.ok && d.url) location.href = d.url;
-        else err("Не удалось создать счёт.\n" + (d.details?.message || d.error || "Попробуй ещё раз."));
+        if (d.ok && d.url) {
+          location.href = d.url;
+        } else {
+          err.textContent = "Не удалось создать счёт. Попробуй ещё раз.";
+          err.classList.add('show');
+          console.log("create-invoice fail:", d);
+        }
       } catch (e) {
-        err("Сеть недоступна. Попробуй ещё раз.");
+        err.textContent = "Сеть недоступна. Попробуй ещё раз.";
+        err.classList.add('show');
         console.error(e);
       }
     });
-
-    function err(t){ const box=$("#err"); box.textContent=t; box.hidden=false; }
   </script>
+
 </body>
 </html>
 
