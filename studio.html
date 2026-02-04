@@ -1,29 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Студия проекта 2051</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Студия проекта «2051»</title>
 
   <style>
-    /* RESET */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root{
+      --card-bg: rgba(0,0,0,.62);
+      --card-border: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.75);
+      --btn-bg: rgba(0,0,0,.55);
+      --btn-border: rgba(255,255,255,.12);
+      --btn-hover: rgba(255,255,255,.08);
+      --accent: #34d399; /* мягкий зелёный */
     }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
       background: #000;
-      color: #fff;
       overflow-x: hidden;
     }
 
-    /* ===== ФОН СТРАНИЦЫ ===== */
-    .studio-section {
+    /* ФОН-КАРТИНКА НА ВЕСЬ САЙТ */
+    .bg{
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.85)),
+        url("bg.jpg") center/cover no-repeat;
+      filter: saturate(1.05);
+      transform: translateZ(0);
+    }
+
+    /* Лёгкая виньетка */
+    .bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(70% 60% at 50% 35%, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.85) 100%);
+      pointer-events:none;
+    }
+
+    /* КОНТЕНТ ПОВЕРХ ФОНА */
+    .wrap{
+      position: relative;
+      z-index: 2;
       min-height: 100vh;
-      padding: 80px 20px;
+      padding: 40px 14px 70px;
       display: flex;
       justify-content: center;
-      align-items: flex-star
+    }
+
+    .card{
+      width: min(1100px, 100%);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 22px 18px 18px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+
+    .title{
+      margin: 0;
+      text-align: center;
+      font-size: clamp(22px, 3.2vw, 34px);
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .subtitle{
+      margin: 10px 0 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: clamp(12px, 1.5vw, 14px);
+      line-height: 1.35;
+    }
+
+    /* Видео */
+    .video{
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      background: #000;
+    }
+
+    .video .ratio{
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video iframe{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Кнопки */
+    .actions{
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      user-select: none;
+    }
+
+    .btn:hover{
+      background: rgba(0,0,0,.72);
+      border-color: rgba(255,255,255,.18);
+      transform: translateY(-1px);
+    }
+
+    .btn.primary{
+      border-color: rgba(52,211,153,.55);
+      box-shadow: 0 0 0 1px rgba(52,211,153,.15) inset;
+    }
+
+    .btn.primary:hover{
+      background: rgba(52,211,153,.10);
+      border-color: rgba(52,211,153,.75);
+    }
+
+    /* Мелкий блок подписи под видео (по желанию) */
+    .caption{
+      margin: 12px 0 0;
+      text-align: center;
+      color: rgba(255,255,255,.70);
+      font-size: 13px;
+    }
+
+    /* Чтобы точно скроллилось */
+    body, .wrap { overflow: visible; }
+  </style>
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="card">
+      <h1 class="title">Студия проекта «2051»</h1>
+      <p class="subtitle">Официальные клипы, тизеры и видео-презентации вселенной «2051: Алгоритм Пробуждение».</p>
+
+      <div class="video">
+        <div class="ratio">
+          <iframe
+            src="https://www.youtube.com/embed/0DjW4vLSlnU?rel=0&modestbranding=1"
+            title="EdisonFit — Здесь и сейчас | 2051: Алгоритм Пробуждение"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <p class="caption">EdisonFit — «Здесь и сейчас» • 2051 Studio</p>
+
+      <div class="actions">
+        <a class="btn primary" href="index.html">На главную</a>
+        <a class="btn" href="support.html">Поддержать проект</a>
+        <a class="btn" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
