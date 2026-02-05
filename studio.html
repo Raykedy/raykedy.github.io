@@ -1,188 +1,175 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Студия проекта «2051»</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Студия проекта «2051»</title>
 
-  <style>
-    :root{
-      --card-bg-desktop: rgba(0,0,0,.55); /* светлее, чем было */
-      --card-bg-mobile: rgba(0,0,0,.42);  /* ещё прозрачнее на мобиле */
-      --border: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.75);
-    }
+<style>
+:root{
+  --card-bg-desktop: rgba(255,255,255,0.18); /* ВАЖНО: светлая карточка */
+  --card-bg-mobile: rgba(255,255,255,0.22);  /* ещё светлее на iPhone */
+  --border: rgba(255,255,255,0.35);
+  --text: rgba(255,255,255,0.96);
+  --muted: rgba(255,255,255,0.80);
+}
 
-    *{ box-sizing: border-box; }
+*{box-sizing:border-box}
 
-    html, body{
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #000;
-      color: var(--text);
-    }
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#000;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+}
 
-    /* ФОН */
-    .bg{
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.9)),
-        url("bg.jpg") center / cover no-repeat;
-    }
+/* ФОН */
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.65)),
+    url("bg.jpg") center/cover no-repeat;
+}
 
-    .bg::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: radial-gradient(
-        70% 60% at 50% 35%,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,.55) 60%,
-        rgba(0,0,0,.85) 100%
-      );
-      pointer-events:none;
-    }
+/* КОНТЕНТ */
+main{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:40px 14px 70px;
+}
 
-    /* КОНТЕНТ */
-    main{
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 40px 14px 70px;
-    }
+.card{
+  width:min(1100px,100%);
+  background:var(--card-bg-desktop);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:26px 20px 22px;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
 
-    .card{
-      width: min(1100px, 100%);
-      background: var(--card-bg-desktop);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 22px 18px 20px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 18px 60px rgba(0,0,0,.55);
-    }
+/* Заголовки */
+h1{
+  margin:0;
+  text-align:center;
+  font-size:clamp(22px,3.2vw,36px);
+  font-weight:800;
+}
 
-    h1{
-      margin: 0;
-      text-align: center;
-      font-size: clamp(22px, 3.2vw, 34px);
-      font-weight: 800;
-    }
+.subtitle{
+  margin:10px 0 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:clamp(13px,1.6vw,15px);
+}
 
-    .subtitle{
-      margin: 10px 0 18px;
-      text-align: center;
-      color: var(--muted);
-      font-size: clamp(12px, 1.5vw, 14px);
-      line-height: 1.4;
-    }
+/* Видео */
+.video{
+  border-radius:16px;
+  overflow:hidden;
+  background:#000;
+  border:1px solid rgba(255,255,255,.25);
+}
 
-    /* ВИДЕО */
-    .video{
-      width: 100%;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.1);
-      background: #000;
-    }
+.ratio{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+}
 
-    .ratio{
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-    }
+iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
 
-    iframe{
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
+.caption{
+  margin-top:14px;
+  text-align:center;
+  font-size:13px;
+  color:rgba(255,255,255,.85);
+}
 
-    .caption{
-      margin-top: 12px;
-      text-align: center;
-      font-size: 13px;
-      color: rgba(255,255,255,.7);
-    }
+/* Кнопки */
+.actions{
+  margin-top:20px;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 
-    /* КНОПКИ */
-    .actions{
-      margin-top: 18px;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+.btn{
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  text-decoration:none;
+  font-size:14px;
+  transition:.2s ease;
+}
 
-    .btn{
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.15);
-      background: rgba(0,0,0,.55);
-      color: var(--text);
-      text-decoration: none;
-      font-size: 14px;
-      transition: .2s ease;
-    }
+.btn:hover{
+  background:rgba(255,255,255,.22);
+}
 
-    .btn:hover{
-      background: rgba(255,255,255,.08);
-    }
-
-    /* 📱 МОБИЛЬНЫЕ (iPhone) */
-    @media (max-width: 768px){
-      .card{
-        background: var(--card-bg-mobile);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
-    }
-  </style>
+/* 📱 МОБИЛЬНЫЕ — СУПЕР ВИДНО */
+@media (max-width:768px){
+  .card{
+    background:var(--card-bg-mobile);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="bg"></div>
+<div class="bg"></div>
 
-  <main>
-    <section class="card">
-      <h1>Студия проекта «2051»</h1>
-      <p class="subtitle">
-        Официальные клипы, тизеры и видео-презентации вселенной
-        «2051: Алгоритм Пробуждение»
-      </p>
+<main>
+  <section class="card">
+    <h1>Студия проекта «2051»</h1>
+    <p class="subtitle">
+      Официальные клипы, тизеры и видео-презентации вселенной
+      «2051: Алгоритм Пробуждение»
+    </p>
 
-      <div class="video">
-        <div class="ratio">
-          <iframe
-            src="https://www.youtube.com/embed/0DjW4vLSlnU?rel=0&modestbranding=1"
-            title="EdisonFit — Здесь и сейчас | 2051: Алгоритм Пробуждение"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
-        </div>
+    <div class="video">
+      <div class="ratio">
+        <iframe
+          src="https://www.youtube.com/embed/0DjW4vLSlnU?rel=0&modestbranding=1"
+          title="EdisonFit — Здесь и сейчас | 2051"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
       </div>
+    </div>
 
-      <div class="caption">
-        EdisonFit — «Здесь и сейчас» • 2051 Studio
-      </div>
+    <div class="caption">
+      EdisonFit — «Здесь и сейчас» • 2051 Studio
+    </div>
 
-      <div class="actions">
-        <a class="btn" href="index.html">На главную</a>
-        <a class="btn" href="support.html">Поддержать проект</a>
-        <a class="btn" href="https://t.me/" target="_blank">Telegram</a>
-      </div>
-    </section>
-  </main>
+    <div class="actions">
+      <a class="btn" href="index.html">На главную</a>
+      <a class="btn" href="support.html">Поддержать проект</a>
+      <a class="btn" href="https://t.me/" target="_blank">Telegram</a>
+    </div>
+  </section>
+</main>
 
 </body>
 </html>
