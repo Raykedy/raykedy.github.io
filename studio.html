@@ -3,134 +3,243 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>2051 Studio</title>
 
 <style>
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                 Roboto, Arial, sans-serif;
-    color: #fff;
-    background: #0b0d12;
-    overflow-x: hidden;
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; min-height:100%; }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color:#fff;
+    background:#0b0d12;
+    overflow-x:hidden;
   }
 
-  /* ===== ВИДЕО-ФОН 9:16 ===== */
-  .bg-video {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    overflow: hidden;
-    background: #0b0d12;
-  }
-
-  .bg-video video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;        /* КЛЮЧЕВО */
-    object-position: center;  /* центр кадра */
-    filter: saturate(1.05) contrast(1.05);
-  }
-
-  /* мягкий фильтр поверх видео */
-  .bg-video::after {
-    content: "";
-    position: absolute;
-    inset: 0;
+  /* ===== ВИДЕО-ФОН ===== */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    overflow:hidden;
     background:
-      radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.15), rgba(0,0,0,0.65)),
-      linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
-    pointer-events: none;
+      radial-gradient(900px 600px at 20% 15%, rgba(52,211,153,.12), transparent 60%),
+      radial-gradient(900px 600px at 85% 40%, rgba(99,102,241,.10), transparent 60%),
+      linear-gradient(180deg, #070912, #0b1022);
+  }
+
+  .bg video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;          /* ключевой момент */
+    object-position:center;
+    opacity:1;
+  }
+
+  /* мягкое затемнение поверх видео */
+  .bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.10), rgba(0,0,0,0.70)),
+      linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.55));
+    pointer-events:none;
   }
 
   /* ===== КОНТЕНТ ===== */
-  .wrap {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 16px;
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px 16px 80px;
+    text-align:center;
   }
 
-  .center {
-    text-align: center;
-    max-width: 720px;
+  h1{
+    margin:0 0 10px;
+    font-size:clamp(26px,4vw,44px);
+    font-weight:900;
+    letter-spacing:.3px;
   }
 
-  h1 {
-    margin: 0 0 12px;
-    font-size: clamp(26px, 4vw, 44px);
-    font-weight: 900;
-    letter-spacing: .3px;
+  p{
+    margin:0 0 26px;
+    color:rgba(255,255,255,.78);
+    font-size:15px;
+    line-height:1.45;
   }
 
-  p {
-    margin: 0 0 28px;
-    color: rgba(255,255,255,.78);
-    font-size: 15px;
-    line-height: 1.45;
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 20px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.28);
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+    transition:.18s ease;
+    user-select:none;
+  }
+  .btn:hover{
+    background:rgba(255,255,255,.12);
+    transform:translateY(-1px);
+  }
+  .tri{
+    width:0;height:0;
+    border-left:12px solid #fff;
+    border-top:8px solid transparent;
+    border-bottom:8px solid transparent;
+    opacity:.95;
   }
 
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 20px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,.28);
-    background: rgba(0,0,0,.45);
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-    transition: .18s ease;
+  /* ===== MODAL ===== */
+  .modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    z-index:999;
+  }
+  .modal.open{ display:flex; }
+
+  .box{
+    width:min(1100px,100%);
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.14);
+    background:#000;
+    box-shadow:0 40px 120px rgba(0,0,0,.75);
+    position:relative;
   }
 
-  .btn:hover {
-    background: rgba(255,255,255,.12);
-    transform: translateY(-1px);
+  .ratio{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    background:#000;
+  }
+  .ratio iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
   }
 
-  .tri {
-    width: 0;
-    height: 0;
-    border-left: 12px solid #fff;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
+  .close{
+    position:absolute;
+    top:10px; right:10px;
+    width:38px; height:38px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.35);
+    color:#fff;
+    cursor:pointer;
+    font-size:18px;
+    line-height:38px;
+    text-align:center;
+    user-select:none;
   }
+  .close:hover{ background:rgba(255,255,255,.10); }
 
+  /* мобильные */
+  @media (max-width:768px){
+    .wrap{ padding:48px 14px 64px; }
+    p{ font-size:14px; }
+  }
 </style>
 </head>
 
 <body>
 
 <!-- ВИДЕО-ФОН -->
-<div class="bg-video">
-  <video autoplay muted loop playsinline>
+<div class="bg">
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
     <source src="Fonstudio.mp4" type="video/mp4">
   </video>
 </div>
 
 <!-- КОНТЕНТ -->
 <main class="wrap">
-  <div class="center">
+  <div>
     <h1>2051 Studio</h1>
-    <p>
-      Видео, тизеры и визуальные истории по вселенной
-      «2051: Алгоритм Пробуждение»
-    </p>
+    <p>Тизеры, клипы и презентации по вселенной «2051: Алгоритм Пробуждение».</p>
 
-    <a href="#" class="btn">
+    <button class="btn" id="openVideo" type="button">
       <span class="tri"></span>
       Смотреть
-    </a>
+    </button>
   </div>
 </main>
+
+<!-- МОДАЛКА -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="box" role="dialog" aria-modal="true" aria-label="Видео">
+    <div class="close" id="closeModal" aria-label="Закрыть">✕</div>
+    <div class="ratio" id="playerSlot"></div>
+  </div>
+</div>
+
+<script>
+  // ID твоего видео на YouTube (замени если нужно)
+  const videoId = "0DjW4vLSlnU";
+
+  const modal = document.getElementById("modal");
+  const slot = document.getElementById("playerSlot");
+  const openBtn = document.getElementById("openVideo");
+  const closeBtn = document.getElementById("closeModal");
+
+  function openModal(){
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+
+    slot.innerHTML = `
+      <iframe
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    `;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(){
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+    slot.innerHTML = ""; // стоп видео
+    document.body.style.overflow = "";
+  }
+
+  openBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+
+  // Если видеофон не загрузился — просто остаётся красивый градиентный фон
+  const bgVideo = document.getElementById("bgVideo");
+  bgVideo.addEventListener("error", () => {
+    console.log("BG video failed to load: check Fonstudio.mp4 path/name");
+  });
+</script>
 
 </body>
 </html>
