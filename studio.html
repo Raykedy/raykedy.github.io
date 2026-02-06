@@ -32,12 +32,11 @@
     inset:0;
     width:100%;
     height:100%;
-    object-fit:cover;          /* ключевой момент */
+    object-fit:cover;
     object-position:center;
-    opacity:1;
+    filter:saturate(1.05) contrast(1.05);
   }
 
-  /* мягкое затемнение поверх видео */
   .bg::after{
     content:"";
     position:absolute;
@@ -131,13 +130,25 @@
     aspect-ratio:16/9;
     background:#000;
   }
-  .ratio iframe{
+
+  /* контейнер для API-плеера */
+  #ytPlayer{
     position:absolute;
     inset:0;
     width:100%;
     height:100%;
-    border:0;
   }
+
+  /* Fade overlay — чтобы красиво закрывать до end screen */
+  .fade{
+    position:absolute;
+    inset:0;
+    background:#000;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 420ms ease;
+  }
+  .box.fading .fade{ opacity:1; }
 
   .close{
     position:absolute;
@@ -152,10 +163,10 @@
     line-height:38px;
     text-align:center;
     user-select:none;
+    z-index:2;
   }
   .close:hover{ background:rgba(255,255,255,.10); }
 
-  /* мобильные */
   @media (max-width:768px){
     .wrap{ padding:48px 14px 64px; }
     p{ font-size:14px; }
@@ -167,7 +178,7 @@
 
 <!-- ВИДЕО-ФОН -->
 <div class="bg">
-  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+  <video autoplay muted loop playsinline preload="auto">
     <source src="Fonstudio.mp4" type="video/mp4">
   </video>
 </div>
@@ -187,59 +198,144 @@
 
 <!-- МОДАЛКА -->
 <div class="modal" id="modal" aria-hidden="true">
-  <div class="box" role="dialog" aria-modal="true" aria-label="Видео">
+  <div class="box" id="modalBox" role="dialog" aria-modal="true" aria-label="Видео">
     <div class="close" id="closeModal" aria-label="Закрыть">✕</div>
-    <div class="ratio" id="playerSlot"></div>
+
+    <div class="ratio">
+      <div id="ytPlayer"></div>
+      <div class="fade" id="fadeLayer"></div>
+    </div>
   </div>
 </div>
 
 <script>
-  // ID твоего видео на YouTube (замени если нужно)
-  const videoId = "0DjW4vLSlnU";
-
+  // ===== НАСТРОЙКИ =====
+  const videoId = "0DjW4vLSlnU"; // YouTube ID
   const modal = document.getElementById("modal");
-  const slot = document.getElementById("playerSlot");
+  const box = document.getElementById("modalBox");
   const openBtn = document.getElementById("openVideo");
   const closeBtn = document.getElementById("closeModal");
 
+  let ytReady = false;
+  let player = null;
+  let apiLoading = false;
+
+  function loadYouTubeAPI(){
+    if (ytReady || apiLoading) return;
+    apiLoading = true;
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  }
+
+  // YouTube вызовет это сам, когда API будет готов
+  window.onYouTubeIframeAPIReady = function(){
+    ytReady = true;
+    apiLoading = false;
+  };
+
   function openModal(){
     modal.classList.add("open");
-    modal.setAttribute("aria-hidden","false");
-
-    slot.innerHTML = `
-      <iframe
-        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1"
-        title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen></iframe>
-    `;
+    modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+    box.classList.remove("fading");
+
+    // если API не готов — грузим
+    if (!ytReady) {
+      loadYouTubeAPI();
+      // небольшая задержка, чтобы дать API подхватиться
+      // и создать плеер в следующем клике, если нужно
+    }
+
+    // создаём плеер один раз, потом только play/stop
+    if (ytReady && !player) {
+      createPlayer();
+    } else if (player) {
+      // если плеер уже есть — просто запускаем
+      try { player.playVideo(); } catch (e) {}
+    }
   }
 
-  function closeModal(){
+  function createPlayer(){
+    player = new YT.Player("ytPlayer", {
+      videoId,
+      playerVars: {
+        autoplay: 1,
+        rel: 0,
+        modestbranding: 1,
+        iv_load_policy: 3,
+        playsinline: 1
+      },
+      events: {
+        onReady: (e) => {
+          try { e.target.playVideo(); } catch (_) {}
+        },
+        onStateChange: (e) => {
+          // 0 = ended
+          if (e.data === YT.PlayerState.ENDED) {
+            // Сразу перекрываем end screen
+            fadeAndClose();
+          }
+        }
+      }
+    });
+  }
+
+  function fadeAndClose(){
+    // если уже закрываем — не дублируем
+    if (!modal.classList.contains("open")) return;
+
+    box.classList.add("fading");
+
+    // ждём анимацию затемнения и закрываем
+    setTimeout(() => {
+      closeModal(true);
+    }, 430);
+  }
+
+  function closeModal(fromAutoClose = false){
+    // останавливаем видео до того, как YouTube покажет end screen
+    try {
+      if (player && typeof player.stopVideo === "function") player.stopVideo();
+    } catch (e) {}
+
     modal.classList.remove("open");
-    modal.setAttribute("aria-hidden","true");
-    slot.innerHTML = ""; // стоп видео
+    modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    box.classList.remove("fading");
   }
 
-  openBtn.addEventListener("click", openModal);
-  closeBtn.addEventListener("click", closeModal);
+  // Открытие
+  openBtn.addEventListener("click", () => {
+    // гарантируем загрузку API заранее
+    loadYouTubeAPI();
 
+    // если API ещё не успел подгрузиться — откроем модалку,
+    // а плеер создастся, как только API станет готов (во втором клике),
+    // поэтому делаем трюк: подождём чуть-чуть и попробуем создать.
+    openModal();
+
+    // “дожим” — если API догрузился быстро, создадим сразу
+    setTimeout(() => {
+      if (ytReady && !player) createPlayer();
+    }, 180);
+  });
+
+  // Закрытие по крестику
+  closeBtn.addEventListener("click", () => closeModal(false));
+
+  // Клик по фону закрывает
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
+    if (e.target === modal) closeModal(false);
   });
 
+  // Esc закрывает
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
-  });
-
-  // Если видеофон не загрузился — просто остаётся красивый градиентный фон
-  const bgVideo = document.getElementById("bgVideo");
-  bgVideo.addEventListener("error", () => {
-    console.log("BG video failed to load: check Fonstudio.mp4 path/name");
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal(false);
   });
 </script>
 
 </body>
 </html>
+
