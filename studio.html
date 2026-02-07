@@ -1,99 +1,565 @@
 
 <!doctype html>
+
 <html lang="ru">
 
 <head>
+
 <meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Studio 2051</title>
 
+
+
 <style>
+
   *{ box-sizing:border-box; }
+
   html,body{ margin:0; min-height:100%; }
+
   body{
+
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+
     color:#fff;
+
     background:#0b0d12;
+
     overflow-x:hidden;
+
   }
 
-  /* ===== ВИДЕО-ФОН ===== */
+
+
+  /* ===== ВИДЕО-ФОН (ОСТАВЛЕНО КАК У ТЕБЯ, РАБОЧЕЕ) ===== */
+
   .bg{
+
     position:fixed;
+
     inset:0;
+
     z-index:-3;
+
     overflow:hidden;
+
     background:
+
       radial-gradient(900px 600px at 20% 15%, rgba(52,211,153,.12), transparent 60%),
+
       radial-gradient(900px 600px at 85% 40%, rgba(99,102,241,.10), transparent 60%),
+
       linear-gradient(180deg, #070912, #0b1022);
+
   }
+
   .bg video{
+
     position:absolute;
+
     inset:0;
+
     width:100%;
+
     height:100%;
+
     object-fit:cover;
+
     object-position:center;
+
     filter:saturate(1.05) contrast(1.05);
+
   }
+
   .bg::after{
+
     content:"";
+
     position:absolute;
+
     inset:0;
+
     background:
+
       radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.10), rgba(0,0,0,0.70)),
+
       linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.55));
+
     pointer-events:none;
+
   }
 
-  /* ===== HERO ===== */
+
+
+  /* ===== HERO (как у тебя) ===== */
+
   .wrap{
+
     position:relative;
+
     z-index:1;
+
     min-height:100vh;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     padding:60px 16px 80px;
+
     text-align:center;
-  }
-  h1{
-    margin:0 0 10px;
-    font-size:clamp(26px,4vw,44px);
-    font-weight:900;
-    letter-spacing:.3px;
-  }
-  p{
-    margin:0 0 26px;
-    color:rgba(255,255,255,.78);
-    font-size:15px;
-    line-height:1.45;
-  }
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    padding:14px 20px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.28);
-    background:rgba(0,0,0,.45);
-    color:#fff;
-    font-weight:800;
-    cursor:pointer;
-    transition:.18s ease;
-    user-select:none;
-  }
-  .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
-  .tri{
-    width:0;height:0;
-    border-left:12px solid #fff;
-    border-top:8px solid transparent;
-    border-bottom:8px solid transparent;
-    opacity:.95;
+
   }
 
-  /* ===== SCROLL INDICATOR (ДОБАВЛЕНО) ===== */
+  h1{
+
+    margin:0 0 10px;
+
+    font-size:clamp(26px,4vw,44px);
+
+    font-weight:900;
+
+    letter-spacing:.3px;
+
+  }
+
+  p{
+
+    margin:0 0 26px;
+
+    color:rgba(255,255,255,.78);
+
+    font-size:15px;
+
+    line-height:1.45;
+
+  }
+
+  .btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:14px 20px;
+
+    border-radius:999px;
+
+    border:1px solid rgba(255,255,255,.28);
+
+    background:rgba(0,0,0,.45);
+
+    color:#fff;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.18s ease;
+
+    user-select:none;
+
+  }
+
+  .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
+
+  .tri{
+
+    width:0;height:0;
+
+    border-left:12px solid #fff;
+
+    border-top:8px solid transparent;
+
+    border-bottom:8px solid transparent;
+
+    opacity:.95;
+
+  }
+
+
+
+  /* ===== БЛОКИ (ДОБАВЛЕНО: панель + 3 секции, всё по центру) ===== */
+
+  .content{
+
+    position:relative;
+
+    z-index:1;
+
+    padding:40px 16px 80px;
+
+  }
+
+  .container{
+
+    width:min(1080px,100%);
+
+    margin:0 auto;
+
+  }
+
+  .panel{
+
+    background:rgba(0,0,0,.42);
+
+    backdrop-filter:blur(10px);
+
+    -webkit-backdrop-filter:blur(10px);
+
+    border:1px solid rgba(255,255,255,.10);
+
+    border-radius:18px;
+
+    box-shadow:0 30px 90px rgba(0,0,0,.55);
+
+    overflow:hidden;
+
+  }
+
+  .section{
+
+    padding:36px 22px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    text-align:center;
+
+  }
+
+  .section:first-child{ border-top:0; }
+
+
+
+  .text-wrap{
+
+    max-width:760px;
+
+    margin:0 auto;
+
+  }
+
+
+
+  .section h2{
+
+    margin:0 0 16px;
+
+    font-size:18px;
+
+    font-weight:900;
+
+  }
+
+  .section p{
+
+    margin:0;
+
+    color:rgba(255,255,255,.78);
+
+    line-height:1.65;
+
+    font-size:15px;
+
+  }
+
+
+
+  ul.clean{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:20px 0;
+
+  }
+
+  ul.clean li{
+
+    margin:6px 0;
+
+    color:rgba(255,255,255,.75);
+
+  }
+
+
+
+  /* прайс строго по центру */
+
+  .pricing{
+
+    list-style:none;
+
+    padding:0;
+
+    margin:18px auto 10px;
+
+    width:min(760px,100%);
+
+    text-align:center;
+
+  }
+
+  .pricing li{
+
+    padding:12px 0;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+  }
+
+  .pricing li:first-child{ border-top:0; }
+
+  .pricing .name{
+
+    display:block;
+
+    color:rgba(255,255,255,.82);
+
+    font-size:14.5px;
+
+    line-height:1.35;
+
+  }
+
+  .pricing .price{
+
+    display:block;
+
+    margin-top:6px;
+
+    color:rgba(255,255,255,.70);
+
+    font-size:14px;
+
+  }
+
+
+
+  .footer{
+
+    text-align:center;
+
+    padding:20px;
+
+    color:rgba(255,255,255,.55);
+
+    font-size:12px;
+
+  }
+
+
+
+  /* ===== MODAL FULLSCREEN (ОСТАВЛЕНО КАК У ТЕБЯ, РАБОЧЕЕ) ===== */
+
+  .modal{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:0;
+
+    background:rgba(0,0,0,.88);
+
+    backdrop-filter:blur(6px);
+
+    -webkit-backdrop-filter:blur(6px);
+
+    z-index:999;
+
+  }
+
+  .modal.open{ display:flex; }
+
+
+
+  .box{
+
+    width:100vw;
+
+    height:100vh;
+
+    border-radius:0;
+
+    overflow:hidden;
+
+    border:0;
+
+    background:#000;
+
+    box-shadow:none;
+
+    position:relative;
+
+  }
+
+  .ratio{
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    background:#000;
+
+  }
+
+
+
+  #ytPlayer{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+  }
+
+
+
+  .loader{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    color:rgba(255,255,255,.85);
+
+    background:rgba(0,0,0,.35);
+
+    backdrop-filter: blur(2px);
+
+    -webkit-backdrop-filter: blur(2px);
+
+    z-index:2;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:opacity .18s ease;
+
+  }
+
+  .box.loading .loader{ opacity:1; }
+
+  .dot{
+
+    width:8px;height:8px;border-radius:999px;
+
+    background:rgba(255,255,255,.85);
+
+    animation:b 1s infinite ease-in-out;
+
+  }
+
+  .dot:nth-child(2){ animation-delay:.12s; opacity:.7; }
+
+  .dot:nth-child(3){ animation-delay:.24s; opacity:.5; }
+
+  @keyframes b{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
+
+
+
+  .fade{
+
+    position:absolute;
+
+    inset:0;
+
+    background:#000;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:opacity 420ms ease;
+
+    z-index:3;
+
+  }
+
+  .box.fading .fade{ opacity:1; }
+
+
+
+  .close, .fs{
+
+    position:absolute;
+
+    top:10px;
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:999px;
+
+    border:1px solid rgba(255,255,255,.18);
+
+    background:rgba(0,0,0,.35);
+
+    color:#fff;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    line-height:40px;
+
+    text-align:center;
+
+    user-select:none;
+
+    z-index:4;
+
+  }
+
+  .close{ right:10px; }
+
+  .fs{ right:58px; }
+
+  .close:hover, .fs:hover{ background:rgba(255,255,255,.10); }
+
+
+
+  @media (max-width:768px){
+
+    .wrap{ padding:48px 14px 64px; }
+
+    p{ font-size:14px; }
+
+    .section{ padding:30px 18px; }
+
+  }
+
+  /* ===== ГАЛОЧКА-УКАЗАТЕЛЬ (ДОБАВЛЕНО, НИЧЕГО ДРУГОГО НЕ ТРОГАЛ) ===== */
   .scroll-indicator{
     position:fixed;
     left:50%;
@@ -103,170 +569,116 @@
     height:14px;
     border-right:2px solid rgba(255,255,255,.65);
     border-bottom:2px solid rgba(255,255,255,.65);
-    opacity:.8;
+    opacity:.85;
     z-index:2;
     animation:scrollHint 1.6s infinite ease-in-out;
     pointer-events:none;
   }
   @keyframes scrollHint{
-    0%   { transform:translate(-50%,0) rotate(45deg); opacity:.3; }
+    0%   { transform:translate(-50%,0) rotate(45deg); opacity:.35; }
     50%  { transform:translate(-50%,6px) rotate(45deg); opacity:1; }
-    100% { transform:translate(-50%,0) rotate(45deg); opacity:.3; }
+    100% { transform:translate(-50%,0) rotate(45deg); opacity:.35; }
   }
 
-  /* ===== КОНТЕНТ ===== */
-  .content{
-    position:relative;
-    z-index:1;
-    padding:40px 16px 80px;
-  }
-  .container{
-    width:min(1080px,100%);
-    margin:0 auto;
-  }
-  .panel{
-    background:rgba(0,0,0,.42);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:18px;
-    box-shadow:0 30px 90px rgba(0,0,0,.55);
-    overflow:hidden;
-  }
-  .section{
-    padding:36px 22px;
-    border-top:1px solid rgba(255,255,255,.08);
-    text-align:center;
-  }
-  .section:first-child{ border-top:0; }
-  .text-wrap{
-    max-width:760px;
-    margin:0 auto;
-  }
-  .section h2{
-    margin:0 0 16px;
-    font-size:18px;
-    font-weight:900;
-  }
-  .section p{
-    margin:0;
-    color:rgba(255,255,255,.78);
-    line-height:1.65;
-    font-size:15px;
-  }
-  ul.clean{
-    list-style:none;
-    padding:0;
-    margin:20px 0;
-  }
-  ul.clean li{
-    margin:6px 0;
-    color:rgba(255,255,255,.75);
-  }
-
-  .pricing{
-    list-style:none;
-    padding:0;
-    margin:18px auto 10px;
-    width:min(760px,100%);
-    text-align:center;
-  }
-  .pricing li{
-    padding:12px 0;
-    border-top:1px solid rgba(255,255,255,.08);
-  }
-  .pricing li:first-child{ border-top:0; }
-  .pricing .name{
-    display:block;
-    color:rgba(255,255,255,.82);
-    font-size:14.5px;
-    line-height:1.35;
-  }
-  .pricing .price{
-    display:block;
-    margin-top:6px;
-    color:rgba(255,255,255,.70);
-    font-size:14px;
-  }
-  .footer{
-    text-align:center;
-    padding:20px;
-    color:rgba(255,255,255,.55);
-    font-size:12px;
-  }
-
-  /* ===== MODAL ===== */
-  .modal{
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:0;
-    background:rgba(0,0,0,.88);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    z-index:999;
-  }
-  .modal.open{ display:flex; }
-
-  .box{
-    width:100vw;
-    height:100vh;
-    border-radius:0;
-    overflow:hidden;
-    border:0;
-    background:#000;
-    box-shadow:none;
-    position:relative;
-  }
-  .ratio{
-    position:relative;
-    width:100%;
-    height:100%;
-    background:#000;
-  }
-  #ytPlayer{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-  }
-
-  @media (max-width:768px){
-    .wrap{ padding:48px 14px 64px; }
-    p{ font-size:14px; }
-    .section{ padding:30px 18px; }
-  }
 </style>
+
 </head>
+
+
 
 <body>
 
+
+
 <!-- ВИДЕО-ФОН -->
+
 <div class="bg">
+
   <video autoplay muted loop playsinline preload="auto">
+
     <source src="Fonstudio.mp4" type="video/mp4">
+
   </video>
+
 </div>
 
+
+
 <!-- HERO -->
+
 <main class="wrap">
+
   <div>
+
     <h1>Studio 2051</h1>
+
     <p>Official Video</p>
+
+
+
     <button class="btn" id="openVideo" type="button">
+
       <span class="tri"></span>
+
       Смотреть
+
     </button>
+
   </div>
+
 </main>
 
-<!-- УКАЗАТЕЛЬ ПРОКРУТКИ (ДОБАВЛЕНО) -->
+<!-- ГАЛОЧКА-УКАЗАТЕЛЬ ВНИЗ (ДОБАВЛЕНО) -->
 <div class="scroll-indicator" aria-hidden="true"></div>
 
-<!-- ДАЛЬШЕ КОД БЕЗ ИЗМЕНЕНИЙ -->
-<!-- … (весь остальной контент, модалка и JS остаются как у тебя) -->
 
-</body>
-</html>
+
+<!-- БЛОКИ (тексты целиком) -->
+
+<section class="content">
+
+  <div class="container">
+
+    <div class="panel">
+
+
+
+      <div class="section">
+
+        <div class="text-wrap">
+
+          <h2>О проекте</h2>
+
+          <p>
+
+            <strong>Studio 2051</strong> — это рабочая площадка проекта
+
+            <strong>«Алгоритм Пробуждение»</strong>, созданная как пространство
+
+            для сотрудничества художников, музыкантов, программистов и всех
+
+            творческих, критически мыслящих людей.
+
+            <br><br>
+
+            Студия объединяет тех, кто создаёт свои работы осознанно —
+
+            <strong>ради лучшего мира без войн, насилия и страха</strong>.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="section">
+
+        <div class="text-wrap">
+
+          <h2>Сотрудничество</h2>
+
+          <p>
+
+            Studio 2051 открыта к совместной работе
