@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -16,7 +15,7 @@
     overflow-x:hidden;
   }
 
-  /* ===== ВИДЕО-ФОН ===== */
+  /* ===== ВИДЕО-ФОН (ОСТАВЛЕНО КАК У ТЕБЯ, РАБОЧЕЕ) ===== */
   .bg{
     position:fixed;
     inset:0;
@@ -46,7 +45,7 @@
     pointer-events:none;
   }
 
-  /* ===== КОНТЕНТ ===== */
+  /* ===== HERO (как у тебя) ===== */
   .wrap{
     position:relative;
     z-index:1;
@@ -92,7 +91,93 @@
     opacity:.95;
   }
 
-  /* ===== MODAL FULLSCREEN ===== */
+  /* ===== БЛОКИ (ДОБАВЛЕНО: панель + 3 секции, всё по центру) ===== */
+  .content{
+    position:relative;
+    z-index:1;
+    padding:40px 16px 80px;
+  }
+  .container{
+    width:min(1080px,100%);
+    margin:0 auto;
+  }
+  .panel{
+    background:rgba(0,0,0,.42);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:18px;
+    box-shadow:0 30px 90px rgba(0,0,0,.55);
+    overflow:hidden;
+  }
+  .section{
+    padding:36px 22px;
+    border-top:1px solid rgba(255,255,255,.08);
+    text-align:center;
+  }
+  .section:first-child{ border-top:0; }
+
+  .text-wrap{
+    max-width:760px;
+    margin:0 auto;
+  }
+
+  .section h2{
+    margin:0 0 16px;
+    font-size:18px;
+    font-weight:900;
+  }
+  .section p{
+    margin:0;
+    color:rgba(255,255,255,.78);
+    line-height:1.65;
+    font-size:15px;
+  }
+
+  ul.clean{
+    list-style:none;
+    padding:0;
+    margin:20px 0;
+  }
+  ul.clean li{
+    margin:6px 0;
+    color:rgba(255,255,255,.75);
+  }
+
+  /* прайс строго по центру */
+  .pricing{
+    list-style:none;
+    padding:0;
+    margin:18px auto 10px;
+    width:min(760px,100%);
+    text-align:center;
+  }
+  .pricing li{
+    padding:12px 0;
+    border-top:1px solid rgba(255,255,255,.08);
+  }
+  .pricing li:first-child{ border-top:0; }
+  .pricing .name{
+    display:block;
+    color:rgba(255,255,255,.82);
+    font-size:14.5px;
+    line-height:1.35;
+  }
+  .pricing .price{
+    display:block;
+    margin-top:6px;
+    color:rgba(255,255,255,.70);
+    font-size:14px;
+  }
+
+  .footer{
+    text-align:center;
+    padding:20px;
+    color:rgba(255,255,255,.55);
+    font-size:12px;
+  }
+
+  /* ===== MODAL FULLSCREEN (ОСТАВЛЕНО КАК У ТЕБЯ, РАБОЧЕЕ) ===== */
   .modal{
     position:fixed;
     inset:0;
@@ -124,7 +209,6 @@
     background:#000;
   }
 
-  /* контейнер для API-плеера */
   #ytPlayer{
     position:absolute;
     inset:0;
@@ -132,7 +216,6 @@
     height:100%;
   }
 
-  /* Loader поверх, пока API/плеер грузится */
   .loader{
     position:absolute;
     inset:0;
@@ -159,7 +242,6 @@
   .dot:nth-child(3){ animation-delay:.24s; opacity:.5; }
   @keyframes b{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
 
-  /* Fade overlay — чтобы закрывать до end screen */
   .fade{
     position:absolute;
     inset:0;
@@ -171,7 +253,6 @@
   }
   .box.fading .fade{ opacity:1; }
 
-  /* кнопки управления */
   .close, .fs{
     position:absolute;
     top:10px;
@@ -195,6 +276,7 @@
   @media (max-width:768px){
     .wrap{ padding:48px 14px 64px; }
     p{ font-size:14px; }
+    .section{ padding:30px 18px; }
   }
 </style>
 </head>
@@ -208,7 +290,7 @@
   </video>
 </div>
 
-<!-- КОНТЕНТ -->
+<!-- HERO -->
 <main class="wrap">
   <div>
     <h1>Studio 2051</h1>
@@ -221,7 +303,102 @@
   </div>
 </main>
 
-<!-- МОДАЛКА -->
+<!-- БЛОКИ (тексты целиком) -->
+<section class="content">
+  <div class="container">
+    <div class="panel">
+
+      <div class="section">
+        <div class="text-wrap">
+          <h2>О проекте</h2>
+          <p>
+            <strong>Studio 2051</strong> — это рабочая площадка проекта
+            <strong>«Алгоритм Пробуждение»</strong>, созданная как пространство
+            для сотрудничества художников, музыкантов, программистов и всех
+            творческих, критически мыслящих людей.
+            <br><br>
+            Студия объединяет тех, кто создаёт свои работы осознанно —
+            <strong>ради лучшего мира без войн, насилия и страха</strong>.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="text-wrap">
+          <h2>Сотрудничество</h2>
+          <p>
+            Studio 2051 открыта к совместной работе с художниками, музыкантами,
+            программистами, разработчиками и независимыми авторами из разных областей.
+            Мы рассматриваем сотрудничество как совместное создание проектов —
+            от идеи и замысла до реализации и развития готового результата.
+          </p>
+
+          <ul class="clean">
+            <li>Книги, литературные и философские проекты</li>
+            <li>Видеоклипы, визуальные истории и мультимедийные форматы</li>
+            <li>Музыкальные и аудиовизуальные проекты</li>
+            <li>Компьютерные игры, интерактивные системы и приложения</li>
+            <li>Экспериментальные цифровые и гибридные медиа</li>
+          </ul>
+
+          <p>
+            В приоритете — проекты, создаваемые
+            <strong>ради смысла и развития</strong>,
+            а не ради формального следования трендам.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="text-wrap">
+          <h2>Для заказчиков</h2>
+          <p>
+            Studio 2051 выполняет заказные проекты в области визуального, мультимедийного
+            и рекламного производства. Мы работаем с брендами и независимыми заказчиками,
+            которым важны смысл, атмосфера и целостность результата.
+          </p>
+
+          <ul class="pricing">
+            <li>
+              <span class="name">Рекламные и имиджевые видеоролики</span>
+              <span class="price">от 15 € / 10 сек</span>
+            </li>
+            <li>
+              <span class="name">Постановочные видеоклипы и авторские видеоработы</span>
+              <span class="price">от 25 € / 10 сек</span>
+            </li>
+            <li>
+              <span class="name">Визуальные презентации и концептуальные ролики</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Визуальные материалы и видео-сопровождение для книг и аудиокниг</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Мультимедийные и интерактивные проекты</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Разработка визуальной и концептуальной части для цифровых продуктов и идей</span>
+              <span class="price">цена договорная</span>
+            </li>
+          </ul>
+
+          <p>
+            Каждый проект рассматривается индивидуально. Формат, объём и условия работы
+            определяются в процессе обсуждения задачи. Возможны различные формы оплаты.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer">Studio 2051 · production layer</div>
+
+    </div>
+  </div>
+</section>
+
+<!-- МОДАЛКА (как у тебя) -->
 <div class="modal" id="modal" aria-hidden="true">
   <div class="box" id="modalBox" role="dialog" aria-modal="true" aria-label="Видео">
     <div class="fs" id="fsBtn" aria-label="Fullscreen">⛶</div>
@@ -241,7 +418,7 @@
 </div>
 
 <script>
-  // ===== НАСТРОЙКИ =====
+  // ===== НАСТРОЙКИ (как у тебя) =====
   const videoId = "0DjW4vLSlnU"; // YouTube ID
   const ORIGIN = location.origin;
 
@@ -257,7 +434,7 @@
   let apiLoading = false;
   let pendingOpen = false;
 
-  // Грузим API заранее (фикс надёжности)
+  // Грузим API заранее
   loadYouTubeAPI();
 
   function loadYouTubeAPI(){
@@ -340,7 +517,7 @@
     setTimeout(() => closeModal(true), 430);
   }
 
-  function closeModal(fromAutoClose=false){
+  function closeModal(){
     try{
       if (player && typeof player.stopVideo === "function") player.stopVideo();
     }catch(_){}
@@ -366,17 +543,18 @@
   }
 
   openBtn.addEventListener("click", openModal);
-  closeBtn.addEventListener("click", () => closeModal(false));
+  closeBtn.addEventListener("click", closeModal);
   fsBtn.addEventListener("click", toggleFullscreen);
 
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal(false);
+    if (e.target === modal) closeModal();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("open")) closeModal(false);
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
   });
 </script>
 
 </body>
 </html>
+
