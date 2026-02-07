@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2051 Studio</title>
+<title>Studio 2051</title>
 
 <style>
   *{ box-sizing:border-box; }
@@ -99,35 +99,37 @@
     opacity:.95;
   }
 
-  /* ===== MODAL ===== */
+  /* ===== MODAL FULLSCREEN (вся площадь экрана) ===== */
   .modal{
     position:fixed;
     inset:0;
     display:none;
     align-items:center;
     justify-content:center;
-    padding:18px;
-    background:rgba(0,0,0,.78);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
+    padding:0;
+    background:rgba(0,0,0,.88);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
     z-index:999;
   }
   .modal.open{ display:flex; }
 
   .box{
-    width:min(1100px,100%);
-    border-radius:18px;
+    width:100vw;
+    height:100vh;
+    border-radius:0;
     overflow:hidden;
-    border:1px solid rgba(255,255,255,.14);
+    border:0;
     background:#000;
-    box-shadow:0 40px 120px rgba(0,0,0,.75);
+    box-shadow:none;
     position:relative;
   }
 
   .ratio{
     position:relative;
     width:100%;
-    aspect-ratio:16/9;
+    height:100%;
+    aspect-ratio:auto;
     background:#000;
   }
 
@@ -146,26 +148,30 @@
     background:#000;
     opacity:0;
     pointer-events:none;
-    transition: opacity 420ms ease;
+    transition:opacity 420ms ease;
   }
   .box.fading .fade{ opacity:1; }
 
-  .close{
+  /* кнопки управления вверху */
+  .close, .fs{
     position:absolute;
-    top:10px; right:10px;
-    width:38px; height:38px;
+    top:10px;
+    width:40px;
+    height:40px;
     border-radius:999px;
     border:1px solid rgba(255,255,255,.18);
     background:rgba(0,0,0,.35);
     color:#fff;
     cursor:pointer;
     font-size:18px;
-    line-height:38px;
+    line-height:40px;
     text-align:center;
     user-select:none;
-    z-index:2;
+    z-index:3;
   }
-  .close:hover{ background:rgba(255,255,255,.10); }
+  .close{ right:10px; }
+  .fs{ right:58px; }
+  .close:hover, .fs:hover{ background:rgba(255,255,255,.10); }
 
   @media (max-width:768px){
     .wrap{ padding:48px 14px 64px; }
@@ -186,12 +192,12 @@
 <!-- КОНТЕНТ -->
 <main class="wrap">
   <div>
-    <h1>2051 Studio</h1>
-    <p>Тизеры, клипы и презентации по вселенной «2051: Алгоритм Пробуждение».</p>
+    <h1>Studio 2051</h1>
+    <p>Официальное видео проекта «2051: Алгоритм Пробуждение».</p>
 
     <button class="btn" id="openVideo" type="button">
       <span class="tri"></span>
-      Смотреть
+      Смотреть официальное видео
     </button>
   </div>
 </main>
@@ -199,6 +205,7 @@
 <!-- МОДАЛКА -->
 <div class="modal" id="modal" aria-hidden="true">
   <div class="box" id="modalBox" role="dialog" aria-modal="true" aria-label="Видео">
+    <div class="fs" id="fsBtn" aria-label="Fullscreen">⛶</div>
     <div class="close" id="closeModal" aria-label="Закрыть">✕</div>
 
     <div class="ratio">
@@ -211,10 +218,12 @@
 <script>
   // ===== НАСТРОЙКИ =====
   const videoId = "0DjW4vLSlnU"; // YouTube ID
+
   const modal = document.getElementById("modal");
   const box = document.getElementById("modalBox");
   const openBtn = document.getElementById("openVideo");
   const closeBtn = document.getElementById("closeModal");
+  const fsBtn = document.getElementById("fsBtn");
 
   let ytReady = false;
   let player = null;
@@ -223,39 +232,15 @@
   function loadYouTubeAPI(){
     if (ytReady || apiLoading) return;
     apiLoading = true;
-
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
   }
 
-  // YouTube вызовет это сам, когда API будет готов
   window.onYouTubeIframeAPIReady = function(){
     ytReady = true;
     apiLoading = false;
   };
-
-  function openModal(){
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    box.classList.remove("fading");
-
-    // если API не готов — грузим
-    if (!ytReady) {
-      loadYouTubeAPI();
-      // небольшая задержка, чтобы дать API подхватиться
-      // и создать плеер в следующем клике, если нужно
-    }
-
-    // создаём плеер один раз, потом только play/stop
-    if (ytReady && !player) {
-      createPlayer();
-    } else if (player) {
-      // если плеер уже есть — просто запускаем
-      try { player.playVideo(); } catch (e) {}
-    }
-  }
 
   function createPlayer(){
     player = new YT.Player("ytPlayer", {
@@ -265,16 +250,15 @@
         rel: 0,
         modestbranding: 1,
         iv_load_policy: 3,
-        playsinline: 1
+        playsinline: 1,
+        fs: 1
       },
       events: {
         onReady: (e) => {
           try { e.target.playVideo(); } catch (_) {}
         },
         onStateChange: (e) => {
-          // 0 = ended
           if (e.data === YT.PlayerState.ENDED) {
-            // Сразу перекрываем end screen
             fadeAndClose();
           }
         }
@@ -282,55 +266,62 @@
     });
   }
 
-  function fadeAndClose(){
-    // если уже закрываем — не дублируем
-    if (!modal.classList.contains("open")) return;
-
-    box.classList.add("fading");
-
-    // ждём анимацию затемнения и закрываем
-    setTimeout(() => {
-      closeModal(true);
-    }, 430);
-  }
-
-  function closeModal(fromAutoClose = false){
-    // останавливаем видео до того, как YouTube покажет end screen
-    try {
-      if (player && typeof player.stopVideo === "function") player.stopVideo();
-    } catch (e) {}
-
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
+  function openModal(){
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
     box.classList.remove("fading");
-  }
 
-  // Открытие
-  openBtn.addEventListener("click", () => {
-    // гарантируем загрузку API заранее
     loadYouTubeAPI();
 
-    // если API ещё не успел подгрузиться — откроем модалку,
-    // а плеер создастся, как только API станет готов (во втором клике),
-    // поэтому делаем трюк: подождём чуть-чуть и попробуем создать.
-    openModal();
-
-    // “дожим” — если API догрузился быстро, создадим сразу
+    // если API уже готов — создаём/запускаем плеер
     setTimeout(() => {
       if (ytReady && !player) createPlayer();
-    }, 180);
-  });
+      if (player) {
+        try { player.playVideo(); } catch (_) {}
+      }
+    }, 120);
+  }
 
-  // Закрытие по крестику
+  function fadeAndClose(){
+    if (!modal.classList.contains("open")) return;
+    box.classList.add("fading");
+    setTimeout(() => closeModal(true), 430);
+  }
+
+  function closeModal(fromAutoClose=false){
+    try{
+      if (player && typeof player.stopVideo === "function") player.stopVideo();
+    }catch(_){}
+
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+    box.classList.remove("fading");
+
+    // если был true fullscreen — выходим
+    if (document.fullscreenElement) {
+      try { document.exitFullscreen(); } catch(_) {}
+    }
+  }
+
+  function toggleFullscreen(){
+    const el = document.getElementById("modalBox");
+    if (!document.fullscreenElement) {
+      if (el.requestFullscreen) el.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  }
+
+  openBtn.addEventListener("click", openModal);
   closeBtn.addEventListener("click", () => closeModal(false));
+  fsBtn.addEventListener("click", toggleFullscreen);
 
-  // Клик по фону закрывает
   modal.addEventListener("click", (e) => {
     if (e.target === modal) closeModal(false);
   });
 
-  // Esc закрывает
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.classList.contains("open")) closeModal(false);
   });
@@ -338,4 +329,3 @@
 
 </body>
 </html>
-
