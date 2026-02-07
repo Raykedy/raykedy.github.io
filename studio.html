@@ -11,18 +11,17 @@
 html,body{margin:0;min-height:100%}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:#0b0d12;
   color:#fff;
   overflow-x:hidden;
-  background:transparent; /* важно для видеофона */
 }
 
 /* ===== ВИДЕО-ФОН ===== */
 .bg{
   position:fixed;
   inset:0;
-  z-index:0;            /* было отрицательное — из-за этого видео могло "исчезать" */
+  z-index:-3;
   overflow:hidden;
-  background:#0b0d12;   /* фолбэк если видео не загрузится */
 }
 .bg video{
   width:100%;
@@ -37,12 +36,7 @@ body{
   background:
     radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,.15), rgba(0,0,0,.75)),
     linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
-}
-
-/* ===== СЛОИ КОНТЕНТА НАД ФОНОМ ===== */
-.hero, .content{
-  position:relative;
-  z-index:1;
+  pointer-events:none;
 }
 
 /* ===== HERO ===== */
@@ -63,6 +57,8 @@ body{
   margin:0 0 28px;
   color:rgba(255,255,255,.78);
 }
+
+/* кнопка-ссылка на YouTube */
 .btn{
   display:inline-flex;
   align-items:center;
@@ -74,6 +70,7 @@ body{
   color:#fff;
   font-weight:800;
   cursor:pointer;
+  text-decoration:none;
 }
 .tri{
   width:0;height:0;
@@ -83,8 +80,13 @@ body{
 }
 
 /* ===== КОНТЕНТ ===== */
-.content{ padding:40px 16px 80px; }
-.container{ width:min(1080px,100%); margin:0 auto; }
+.content{
+  padding:40px 16px 80px;
+}
+.container{
+  width:min(1080px,100%);
+  margin:0 auto;
+}
 .panel{
   background:rgba(0,0,0,.42);
   backdrop-filter:blur(10px);
@@ -99,12 +101,13 @@ body{
 }
 .section:first-child{border-top:0}
 
-/* ===== ЦЕНТРОВКА ВСЕГО ТЕКСТА ===== */
+/* ===== ЦЕНТРОВКА БЛОКОВ ===== */
 .section.center{ text-align:center; }
 .section.center .text-wrap{
   max-width:760px;
   margin:0 auto;
 }
+
 .section h2{
   margin:0 0 16px;
   font-size:18px;
@@ -117,19 +120,30 @@ body{
   font-size:15px;
 }
 
-/* ===== ПРАЙС: ТОЖЕ ПО ЦЕНТРУ ===== */
+/* списки (как было) */
+ul.clean{
+  list-style:none;
+  padding:0;
+  margin:20px 0;
+}
+ul.clean li{
+  margin:6px 0;
+  color:rgba(255,255,255,.75);
+}
+
+/* ===== ПРАЙС: ТЕПЕРЬ ПО ЦЕНТРУ ===== */
 .pricing{
   list-style:none;
   padding:0;
   margin:18px auto 10px;
-  max-width:760px;
+  width:min(760px, 100%);
+  text-align:center;
 }
 .pricing li{
   padding:12px 0;
   border-top:1px solid rgba(255,255,255,.08);
-  text-align:center;
 }
-.pricing li:first-child{border-top:0}
+.pricing li:first-child{ border-top:0; }
 .pricing .name{
   display:block;
   color:rgba(255,255,255,.82);
@@ -167,10 +181,12 @@ body{
   <div>
     <h1>Studio 2051</h1>
     <p>Official Video</p>
-    <button class="btn">
+
+    <!-- ССЫЛКА НА YOUTUBE (как ты просил, рабочая) -->
+    <a class="btn" href="https://youtu.be/P-zOlcl4UKg?si=H7nqdbmuVYGsRFFE" target="_blank" rel="noopener">
       <span class="tri"></span>
       Смотреть
-    </button>
+    </a>
   </div>
 </section>
 
@@ -205,6 +221,20 @@ body{
             Мы рассматриваем сотрудничество как совместное создание проектов —
             от идеи и замысла до реализации и развития готового результата.
           </p>
+
+          <ul class="clean">
+            <li>Книги, литературные и философские проекты</li>
+            <li>Видеоклипы, визуальные истории и мультимедийные форматы</li>
+            <li>Музыкальные и аудиовизуальные проекты</li>
+            <li>Компьютерные игры, интерактивные системы и приложения</li>
+            <li>Экспериментальные цифровые и гибридные медиа</li>
+          </ul>
+
+          <p>
+            В приоритете — проекты, создаваемые
+            <strong>ради смысла и развития</strong>,
+            а не ради формального следования трендам.
+          </p>
         </div>
       </div>
 
@@ -213,10 +243,9 @@ body{
         <div class="text-wrap">
           <h2>Для заказчиков</h2>
           <p>
-            Studio 2051 выполняет заказные проекты в области визуального,
-            мультимедийного и рекламного производства. Мы работаем с брендами
-            и независимыми заказчиками, которым важны смысл, атмосфера и
-            целостность результата.
+            Studio 2051 выполняет заказные проекты в области визуального, мультимедийного
+            и рекламного производства. Мы работаем с брендами и независимыми заказчиками,
+            которым важны смысл, атмосфера и целостность результата.
           </p>
 
           <ul class="pricing">
@@ -230,10 +259,6 @@ body{
             </li>
             <li>
               <span class="name">Визуальные презентации и концептуальные ролики</span>
-              <span class="price">цена договорная</span>
-            </li>
-            <li>
-              <span class="name">Книги, литературные и философские проекты</span>
               <span class="price">цена договорная</span>
             </li>
             <li>
