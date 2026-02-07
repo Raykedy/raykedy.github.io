@@ -131,7 +131,7 @@
     height:100%;
   }
 
-  /* Loader поверх, пока API/плеер грузится (важно для Android) */
+  /* Loader поверх, пока API/плеер грузится */
   .loader{
     position:absolute;
     inset:0;
@@ -148,9 +148,7 @@
     pointer-events:none;
     transition:opacity .18s ease;
   }
-  .box.loading .loader{
-    opacity:1;
-  }
+  .box.loading .loader{ opacity:1; }
   .dot{
     width:8px;height:8px;border-radius:999px;
     background:rgba(255,255,255,.85);
@@ -213,11 +211,11 @@
 <main class="wrap">
   <div>
     <h1>Studio 2051</h1>
-    <p>Официальное видео проекта «2051: Алгоритм Пробуждение».</p>
+    <p>Official Video</p>
 
     <button class="btn" id="openVideo" type="button">
       <span class="tri"></span>
-      Смотреть официальное видео
+      Смотреть
     </button>
   </div>
 </main>
@@ -243,7 +241,7 @@
 
 <script>
   // ===== НАСТРОЙКИ =====
-  const videoId = "0DjW4vLSlnU"; // YouTube ID (оставил твой)
+  const videoId = "0DjW4vLSlnU"; // YouTube ID
   const ORIGIN = location.origin;
 
   const modal = document.getElementById("modal");
@@ -256,9 +254,9 @@
   let player = null;
   let playerReady = false;
   let apiLoading = false;
-  let pendingOpen = false; // если нажали "Смотреть", пока API не готов
+  let pendingOpen = false;
 
-  // 1) Грузим API заранее (главный фикс надёжности)
+  // Грузим API заранее (фикс надёжности)
   loadYouTubeAPI();
 
   function loadYouTubeAPI(){
@@ -269,21 +267,14 @@
     document.head.appendChild(tag);
   }
 
-  // YouTube вызывает сам
   window.onYouTubeIframeAPIReady = function(){
     ytReady = true;
     apiLoading = false;
-
-    // если пользователь уже нажал "Смотреть" — дожимаем автоматически
-    if (pendingOpen) {
-      ensurePlayerAndPlay();
-    }
+    if (pendingOpen) ensurePlayerAndPlay();
   };
 
   function createPlayer(){
-    // Защита от повторного создания
     if (!ytReady || player) return;
-
     playerReady = false;
 
     player = new YT.Player("ytPlayer", {
@@ -300,24 +291,15 @@
       events: {
         onReady: (e) => {
           playerReady = true;
-
-          // если модалка открыта — запускаем
           if (modal.classList.contains("open")) {
-            try {
-              e.target.loadVideoById(videoId);
-            } catch(_) {}
+            try { e.target.loadVideoById(videoId); } catch(_) {}
           }
-
-          // убираем лоадер
           box.classList.remove("loading");
         },
         onStateChange: (e) => {
-          if (e.data === YT.PlayerState.ENDED) {
-            fadeAndClose();
-          }
+          if (e.data === YT.PlayerState.ENDED) fadeAndClose();
         },
         onError: () => {
-          // На Android иногда бывает глюк при первом создании — просто оставляем лоадер и даём повторить открытие
           box.classList.remove("loading");
         }
       }
@@ -325,7 +307,6 @@
   }
 
   function ensurePlayerAndPlay(){
-    // показываем “Загрузка…”
     box.classList.add("loading");
 
     if (!ytReady) {
@@ -338,11 +319,8 @@
 
     if (!player) createPlayer();
 
-    // если уже создан и готов — грузим видео явно (надёжнее, чем playVideo)
     if (player && playerReady) {
-      try {
-        player.loadVideoById(videoId);
-      } catch(_) {}
+      try { player.loadVideoById(videoId); } catch(_) {}
       box.classList.remove("loading");
     }
   }
@@ -352,7 +330,6 @@
     modal.setAttribute("aria-hidden","false");
     document.body.style.overflow = "hidden";
     box.classList.remove("fading");
-
     ensurePlayerAndPlay();
   }
 
@@ -373,7 +350,6 @@
     box.classList.remove("fading");
     box.classList.remove("loading");
 
-    // если был fullscreen — выходим
     if (document.fullscreenElement) {
       try { document.exitFullscreen(); } catch(_) {}
     }
