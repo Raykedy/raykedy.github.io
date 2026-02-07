@@ -45,7 +45,7 @@
     pointer-events:none;
   }
 
-  /* ===== КОНТЕНТ ===== */
+  /* ===== HERO ===== */
   .wrap{
     position:relative;
     z-index:1;
@@ -53,7 +53,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:60px 16px 80px;
+    padding:60px 16px 40px;
     text-align:center;
   }
   h1{
@@ -91,6 +91,128 @@
     opacity:.95;
   }
 
+  /* стрелка вниз (аккуратно) */
+  .down{
+    margin:26px auto 0;
+    width:46px;height:46px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(0,0,0,.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:rgba(255,255,255,.75);
+    cursor:pointer;
+    transition:.18s ease;
+  }
+  .down:hover{ background:rgba(255,255,255,.08); transform:translateY(-1px); }
+  .down span{ font-size:18px; line-height:1; }
+
+  /* ===== СЕКЦИИ НИЖЕ ===== */
+  .content{
+    position:relative;
+    z-index:1;
+    padding:28px 16px 80px;
+  }
+
+  /* общий контейнер */
+  .container{
+    width:min(1080px, 100%);
+    margin:0 auto;
+  }
+
+  /* “плашка” под контентом, чтобы читалось на видеофоне */
+  .panel{
+    border:1px solid rgba(255,255,255,.10);
+    background:rgba(0,0,0,.42);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius:18px;
+    box-shadow:0 30px 90px rgba(0,0,0,.55);
+    overflow:hidden;
+  }
+
+  .section{
+    padding:26px 22px;
+    border-top:1px solid rgba(255,255,255,.08);
+  }
+  .section:first-child{ border-top:0; }
+
+  .section h2{
+    margin:0 0 10px;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:.2px;
+  }
+
+  .muted{
+    margin:0;
+    color:rgba(255,255,255,.74);
+    font-size:14px;
+    line-height:1.55;
+  }
+
+  /* сетка карточек внутри секций */
+  .grid{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap:12px;
+  }
+  .card{
+    border:1px solid rgba(255,255,255,.10);
+    background:rgba(255,255,255,.04);
+    border-radius:16px;
+    padding:14px 14px;
+  }
+  .card .t{
+    margin:0 0 6px;
+    font-weight:900;
+    font-size:14px;
+    letter-spacing:.15px;
+  }
+  .card .d{
+    margin:0;
+    color:rgba(255,255,255,.70);
+    font-size:13px;
+    line-height:1.45;
+  }
+
+  /* служебные “плейсхолдеры” под завтра */
+  .placeholder{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:999px;
+    border:1px dashed rgba(255,255,255,.20);
+    color:rgba(255,255,255,.70);
+    font-size:12px;
+    margin-left:8px;
+    transform:translateY(-1px);
+  }
+
+  /* футер */
+  .footer{
+    margin-top:16px;
+    padding:18px 22px;
+    border-top:1px solid rgba(255,255,255,.08);
+    color:rgba(255,255,255,.55);
+    font-size:12.5px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .footer b{ color:rgba(255,255,255,.78); font-weight:900; }
+
+  @media (max-width: 760px){
+    .wrap{ padding:52px 14px 34px; }
+    p{ font-size:14px; }
+    .section{ padding:22px 16px; }
+    .grid{ grid-template-columns: 1fr; }
+    .footer{ padding:16px 16px; }
+  }
+
   /* ===== MODAL FULLSCREEN ===== */
   .modal{
     position:fixed;
@@ -123,7 +245,6 @@
     background:#000;
   }
 
-  /* контейнер для API-плеера */
   #ytPlayer{
     position:absolute;
     inset:0;
@@ -131,7 +252,6 @@
     height:100%;
   }
 
-  /* Loader поверх, пока API/плеер грузится */
   .loader{
     position:absolute;
     inset:0;
@@ -158,7 +278,6 @@
   .dot:nth-child(3){ animation-delay:.24s; opacity:.5; }
   @keyframes b{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
 
-  /* Fade overlay — чтобы закрывать до end screen */
   .fade{
     position:absolute;
     inset:0;
@@ -170,7 +289,6 @@
   }
   .box.fading .fade{ opacity:1; }
 
-  /* кнопки управления */
   .close, .fs{
     position:absolute;
     top:10px;
@@ -190,11 +308,6 @@
   .close{ right:10px; }
   .fs{ right:58px; }
   .close:hover, .fs:hover{ background:rgba(255,255,255,.10); }
-
-  @media (max-width:768px){
-    .wrap{ padding:48px 14px 64px; }
-    p{ font-size:14px; }
-  }
 </style>
 </head>
 
@@ -207,7 +320,7 @@
   </video>
 </div>
 
-<!-- КОНТЕНТ -->
+<!-- HERO -->
 <main class="wrap">
   <div>
     <h1>Studio 2051</h1>
@@ -217,8 +330,99 @@
       <span class="tri"></span>
       Смотреть
     </button>
+
+    <div class="down" id="scrollDown" title="Вниз">
+      <span>⌄</span>
+    </div>
   </div>
 </main>
+
+<!-- НИЖНИЕ БЛОКИ -->
+<section class="content" id="info">
+  <div class="container">
+    <div class="panel">
+
+      <!-- О проекте -->
+      <div class="section" id="about">
+        <h2>О проекте <span class="placeholder">текст завтра</span></h2>
+        <p class="muted">
+          Здесь будет короткое описание вселенной и идеи проекта в 3–5 строк без перегруза.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <p class="t">Фокус</p>
+            <p class="d">Свобода, выбор, сознание, алгоритмы.</p>
+          </div>
+          <div class="card">
+            <p class="t">Формат</p>
+            <p class="d">Мультимедиа: видео + аудио + визуальные материалы.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio 2051 -->
+      <div class="section" id="studio">
+        <h2>Studio 2051 <span class="placeholder">текст завтра</span></h2>
+        <p class="muted">
+          Здесь будет коротко: чем занимается студия и какие типы материалов выпускает.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <p class="t">Официальные видео</p>
+            <p class="d">Релизы, тизеры, презентации.</p>
+          </div>
+          <div class="card">
+            <p class="t">Визуальные эксперименты</p>
+            <p class="d">Атмосферные форматы, гибридные стили.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сотрудничество -->
+      <div class="section" id="collab">
+        <h2>Сотрудничество <span class="placeholder">текст завтра</span></h2>
+        <p class="muted">
+          Здесь будет спокойный абзац: студия открыта к коллаборациям и совместным релизам.
+        </p>
+        <div class="grid">
+          <div class="card">
+            <p class="t">Кому интересно</p>
+            <p class="d">Музыкантам, авторам, художникам, независимым проектам.</p>
+          </div>
+          <div class="card">
+            <p class="t">Формат работы</p>
+            <p class="d">Совместные видео, визуальные концепции, промо-материалы.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Для заказчиков -->
+      <div class="section" id="clients">
+        <h2>Для заказчиков <span class="placeholder">текст завтра</span></h2>
+        <p class="muted">
+          Здесь будет: что вы делаете на заказ и каков подход (индивидуально, смысл/атмосфера/целостность).
+        </p>
+        <div class="grid">
+          <div class="card">
+            <p class="t">Что можно заказать</p>
+            <p class="d">Музыкальные видео, визуальные сопровождения, презентации проектов.</p>
+          </div>
+          <div class="card">
+            <p class="t">Принцип</p>
+            <p class="d">Авторская работа под задачу, без шаблонов.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Футер (без ссылок и без донатов) -->
+      <div class="footer">
+        <div><b>Studio 2051</b> — production layer</div>
+        <div>© 2051</div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- МОДАЛКА -->
 <div class="modal" id="modal" aria-hidden="true">
@@ -240,7 +444,7 @@
 </div>
 
 <script>
-  // ===== НАСТРОЙКИ =====
+  // ===== ВИДЕО (YouTube) =====
   const videoId = "0DjW4vLSlnU"; // YouTube ID
   const ORIGIN = location.origin;
 
@@ -256,7 +460,7 @@
   let apiLoading = false;
   let pendingOpen = false;
 
-  // Грузим API заранее (фикс надёжности)
+  // грузим API заранее
   loadYouTubeAPI();
 
   function loadYouTubeAPI(){
@@ -316,7 +520,6 @@
     }
 
     pendingOpen = false;
-
     if (!player) createPlayer();
 
     if (player && playerReady) {
@@ -374,6 +577,12 @@
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.classList.contains("open")) closeModal(false);
+  });
+
+  // ===== СКРОЛЛ ВНИЗ =====
+  const scrollDown = document.getElementById("scrollDown");
+  scrollDown.addEventListener("click", () => {
+    document.getElementById("info").scrollIntoView({ behavior: "smooth", block: "start" });
   });
 </script>
 
