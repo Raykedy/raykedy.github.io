@@ -26,7 +26,6 @@
       radial-gradient(900px 600px at 85% 40%, rgba(99,102,241,.10), transparent 60%),
       linear-gradient(180deg, #070912, #0b1022);
   }
-
   .bg video{
     position:absolute;
     inset:0;
@@ -36,7 +35,6 @@
     object-position:center;
     filter:saturate(1.05) contrast(1.05);
   }
-
   .bg::after{
     content:"";
     position:absolute;
@@ -58,21 +56,18 @@
     padding:60px 16px 80px;
     text-align:center;
   }
-
   h1{
     margin:0 0 10px;
     font-size:clamp(26px,4vw,44px);
     font-weight:900;
     letter-spacing:.3px;
   }
-
   p{
     margin:0 0 26px;
     color:rgba(255,255,255,.78);
     font-size:15px;
     line-height:1.45;
   }
-
   .btn{
     display:inline-flex;
     align-items:center;
@@ -87,10 +82,7 @@
     transition:.18s ease;
     user-select:none;
   }
-  .btn:hover{
-    background:rgba(255,255,255,.12);
-    transform:translateY(-1px);
-  }
+  .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
   .tri{
     width:0;height:0;
     border-left:12px solid #fff;
@@ -99,7 +91,7 @@
     opacity:.95;
   }
 
-  /* ===== MODAL FULLSCREEN (вся площадь экрана) ===== */
+  /* ===== MODAL FULLSCREEN ===== */
   .modal{
     position:fixed;
     inset:0;
@@ -124,12 +116,10 @@
     box-shadow:none;
     position:relative;
   }
-
   .ratio{
     position:relative;
     width:100%;
     height:100%;
-    aspect-ratio:auto;
     background:#000;
   }
 
@@ -141,7 +131,36 @@
     height:100%;
   }
 
-  /* Fade overlay — чтобы красиво закрывать до end screen */
+  /* Loader поверх, пока API/плеер грузится (важно для Android) */
+  .loader{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    color:rgba(255,255,255,.85);
+    background:rgba(0,0,0,.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index:2;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  .box.loading .loader{
+    opacity:1;
+  }
+  .dot{
+    width:8px;height:8px;border-radius:999px;
+    background:rgba(255,255,255,.85);
+    animation:b 1s infinite ease-in-out;
+  }
+  .dot:nth-child(2){ animation-delay:.12s; opacity:.7; }
+  .dot:nth-child(3){ animation-delay:.24s; opacity:.5; }
+  @keyframes b{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
+
+  /* Fade overlay — чтобы закрывать до end screen */
   .fade{
     position:absolute;
     inset:0;
@@ -149,10 +168,11 @@
     opacity:0;
     pointer-events:none;
     transition:opacity 420ms ease;
+    z-index:3;
   }
   .box.fading .fade{ opacity:1; }
 
-  /* кнопки управления вверху */
+  /* кнопки управления */
   .close, .fs{
     position:absolute;
     top:10px;
@@ -167,7 +187,7 @@
     line-height:40px;
     text-align:center;
     user-select:none;
-    z-index:3;
+    z-index:4;
   }
   .close{ right:10px; }
   .fs{ right:58px; }
@@ -210,6 +230,12 @@
 
     <div class="ratio">
       <div id="ytPlayer"></div>
+
+      <div class="loader" id="loader">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div style="font-weight:800">Загрузка видео…</div>
+      </div>
+
       <div class="fade" id="fadeLayer"></div>
     </div>
   </div>
@@ -217,7 +243,8 @@
 
 <script>
   // ===== НАСТРОЙКИ =====
-  const videoId = "0DjW4vLSlnU"; // YouTube ID
+  const videoId = "0DjW4vLSlnU"; // YouTube ID (оставил твой)
+  const ORIGIN = location.origin;
 
   const modal = document.getElementById("modal");
   const box = document.getElementById("modalBox");
@@ -227,7 +254,12 @@
 
   let ytReady = false;
   let player = null;
+  let playerReady = false;
   let apiLoading = false;
+  let pendingOpen = false; // если нажали "Смотреть", пока API не готов
+
+  // 1) Грузим API заранее (главный фикс надёжности)
+  loadYouTubeAPI();
 
   function loadYouTubeAPI(){
     if (ytReady || apiLoading) return;
@@ -237,33 +269,82 @@
     document.head.appendChild(tag);
   }
 
+  // YouTube вызывает сам
   window.onYouTubeIframeAPIReady = function(){
     ytReady = true;
     apiLoading = false;
+
+    // если пользователь уже нажал "Смотреть" — дожимаем автоматически
+    if (pendingOpen) {
+      ensurePlayerAndPlay();
+    }
   };
 
   function createPlayer(){
+    // Защита от повторного создания
+    if (!ytReady || player) return;
+
+    playerReady = false;
+
     player = new YT.Player("ytPlayer", {
       videoId,
       playerVars: {
-        autoplay: 1,
+        autoplay: 0,
         rel: 0,
         modestbranding: 1,
         iv_load_policy: 3,
         playsinline: 1,
-        fs: 1
+        fs: 1,
+        origin: ORIGIN
       },
       events: {
         onReady: (e) => {
-          try { e.target.playVideo(); } catch (_) {}
+          playerReady = true;
+
+          // если модалка открыта — запускаем
+          if (modal.classList.contains("open")) {
+            try {
+              e.target.loadVideoById(videoId);
+            } catch(_) {}
+          }
+
+          // убираем лоадер
+          box.classList.remove("loading");
         },
         onStateChange: (e) => {
           if (e.data === YT.PlayerState.ENDED) {
             fadeAndClose();
           }
+        },
+        onError: () => {
+          // На Android иногда бывает глюк при первом создании — просто оставляем лоадер и даём повторить открытие
+          box.classList.remove("loading");
         }
       }
     });
+  }
+
+  function ensurePlayerAndPlay(){
+    // показываем “Загрузка…”
+    box.classList.add("loading");
+
+    if (!ytReady) {
+      pendingOpen = true;
+      loadYouTubeAPI();
+      return;
+    }
+
+    pendingOpen = false;
+
+    if (!player) createPlayer();
+
+    // если уже создан и готов — грузим видео явно (надёжнее, чем playVideo)
+    if (player && playerReady) {
+      try {
+        player.loadVideoById(videoId);
+      } catch(_) {}
+      box.classList.remove("loading");
+    }
   }
 
   function openModal(){
@@ -272,15 +353,7 @@
     document.body.style.overflow = "hidden";
     box.classList.remove("fading");
 
-    loadYouTubeAPI();
-
-    // если API уже готов — создаём/запускаем плеер
-    setTimeout(() => {
-      if (ytReady && !player) createPlayer();
-      if (player) {
-        try { player.playVideo(); } catch (_) {}
-      }
-    }, 120);
+    ensurePlayerAndPlay();
   }
 
   function fadeAndClose(){
@@ -298,8 +371,9 @@
     modal.setAttribute("aria-hidden","true");
     document.body.style.overflow = "";
     box.classList.remove("fading");
+    box.classList.remove("loading");
 
-    // если был true fullscreen — выходим
+    // если был fullscreen — выходим
     if (document.fullscreenElement) {
       try { document.exitFullscreen(); } catch(_) {}
     }
