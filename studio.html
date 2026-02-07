@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -15,7 +17,7 @@
     overflow-x:hidden;
   }
 
-  /* ===== ВИДЕО-ФОН (ОСТАВЛЕНО КАК У ТЕБЯ, РАБОЧЕЕ) ===== */
+  /* ===== ВИДЕО-ФОН ===== */
   .bg{
     position:fixed;
     inset:0;
@@ -32,7 +34,6 @@
     width:100%;
     height:100%;
     object-fit:cover;
-    object-position:center;
     filter:saturate(1.05) contrast(1.05);
   }
   .bg::after{
@@ -40,12 +41,12 @@
     position:absolute;
     inset:0;
     background:
-      radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.10), rgba(0,0,0,0.70)),
-      linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.55));
+      radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,.10), rgba(0,0,0,.70)),
+      linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.55));
     pointer-events:none;
   }
 
-  /* ===== HERO (как у тебя) ===== */
+  /* ===== HERO ===== */
   .wrap{
     position:relative;
     z-index:1;
@@ -60,7 +61,6 @@
     margin:0 0 10px;
     font-size:clamp(26px,4vw,44px);
     font-weight:900;
-    letter-spacing:.3px;
   }
   p{
     margin:0 0 26px;
@@ -79,36 +79,49 @@
     color:#fff;
     font-weight:800;
     cursor:pointer;
-    transition:.18s ease;
-    user-select:none;
   }
-  .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
   .tri{
     width:0;height:0;
     border-left:12px solid #fff;
     border-top:8px solid transparent;
     border-bottom:8px solid transparent;
-    opacity:.95;
   }
 
-  /* ===== БЛОКИ (ДОБАВЛЕНО: панель + 3 секции, всё по центру) ===== */
-  .content{
-    position:relative;
-    z-index:1;
-    padding:40px 16px 80px;
+  /* ===== СТРЕЛКА ВНИЗ ===== */
+  .scrollHint{
+    margin:18px auto 0;
+    width:46px;
+    height:46px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
   }
-  .container{
-    width:min(1080px,100%);
-    margin:0 auto;
+  .chev{
+    width:12px;
+    height:12px;
+    border-right:2px solid rgba(255,255,255,.85);
+    border-bottom:2px solid rgba(255,255,255,.85);
+    transform:rotate(45deg);
+    animation:chev 1.25s infinite ease-in-out;
   }
+  @keyframes chev{
+    0%,100%{ transform:translateY(0) rotate(45deg); opacity:.7; }
+    50%{ transform:translateY(5px) rotate(45deg); opacity:1; }
+  }
+
+  /* ===== КОНТЕНТ ===== */
+  .content{ position:relative; z-index:1; padding:40px 16px 80px; }
+  .container{ width:min(1080px,100%); margin:0 auto; }
   .panel{
     background:rgba(0,0,0,.42);
     backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
     border:1px solid rgba(255,255,255,.10);
     border-radius:18px;
     box-shadow:0 30px 90px rgba(0,0,0,.55);
-    overflow:hidden;
   }
   .section{
     padding:36px 22px;
@@ -116,35 +129,11 @@
     text-align:center;
   }
   .section:first-child{ border-top:0; }
+  .text-wrap{ max-width:760px; margin:0 auto; }
 
-  .text-wrap{
-    max-width:760px;
-    margin:0 auto;
-  }
+  ul.clean{ list-style:none; padding:0; margin:20px 0; }
+  ul.clean li{ margin:6px 0; color:rgba(255,255,255,.75); }
 
-  .section h2{
-    margin:0 0 16px;
-    font-size:18px;
-    font-weight:900;
-  }
-  .section p{
-    margin:0;
-    color:rgba(255,255,255,.78);
-    line-height:1.65;
-    font-size:15px;
-  }
-
-  ul.clean{
-    list-style:none;
-    padding:0;
-    margin:20px 0;
-  }
-  ul.clean li{
-    margin:6px 0;
-    color:rgba(255,255,255,.75);
-  }
-
-  /* прайс строго по центру */
   .pricing{
     list-style:none;
     padding:0;
@@ -157,18 +146,6 @@
     border-top:1px solid rgba(255,255,255,.08);
   }
   .pricing li:first-child{ border-top:0; }
-  .pricing .name{
-    display:block;
-    color:rgba(255,255,255,.82);
-    font-size:14.5px;
-    line-height:1.35;
-  }
-  .pricing .price{
-    display:block;
-    margin-top:6px;
-    color:rgba(255,255,255,.70);
-    font-size:14px;
-  }
 
   .footer{
     text-align:center;
@@ -177,384 +154,106 @@
     font-size:12px;
   }
 
-  /* ===== MODAL FULLSCREEN (ОСТАВЛЕНО КАК У ТЕБЯ, РАБОЧЕЕ) ===== */
+  /* ===== MODAL YOUTUBE ===== */
   .modal{
     position:fixed;
     inset:0;
     display:none;
     align-items:center;
     justify-content:center;
-    padding:0;
     background:rgba(0,0,0,.88);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
     z-index:999;
   }
   .modal.open{ display:flex; }
+  .box{ width:100vw; height:100vh; background:#000; position:relative; }
+  #ytPlayer{ position:absolute; inset:0; width:100%; height:100%; }
 
-  .box{
-    width:100vw;
-    height:100vh;
-    border-radius:0;
-    overflow:hidden;
-    border:0;
-    background:#000;
-    box-shadow:none;
-    position:relative;
-  }
-  .ratio{
-    position:relative;
-    width:100%;
-    height:100%;
-    background:#000;
-  }
-
-  #ytPlayer{
+  .close{
     position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-  }
-
-  .loader{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-    color:rgba(255,255,255,.85);
-    background:rgba(0,0,0,.35);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    z-index:2;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .18s ease;
-  }
-  .box.loading .loader{ opacity:1; }
-  .dot{
-    width:8px;height:8px;border-radius:999px;
-    background:rgba(255,255,255,.85);
-    animation:b 1s infinite ease-in-out;
-  }
-  .dot:nth-child(2){ animation-delay:.12s; opacity:.7; }
-  .dot:nth-child(3){ animation-delay:.24s; opacity:.5; }
-  @keyframes b{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
-
-  .fade{
-    position:absolute;
-    inset:0;
-    background:#000;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 420ms ease;
-    z-index:3;
-  }
-  .box.fading .fade{ opacity:1; }
-
-  .close, .fs{
-    position:absolute;
-    top:10px;
+    top:12px;
+    right:12px;
     width:40px;
     height:40px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.18);
-    background:rgba(0,0,0,.35);
+    border-radius:50%;
+    background:rgba(0,0,0,.5);
+    border:1px solid rgba(255,255,255,.2);
     color:#fff;
     cursor:pointer;
-    font-size:18px;
-    line-height:40px;
-    text-align:center;
-    user-select:none;
-    z-index:4;
-  }
-  .close{ right:10px; }
-  .fs{ right:58px; }
-  .close:hover, .fs:hover{ background:rgba(255,255,255,.10); }
-
-  @media (max-width:768px){
-    .wrap{ padding:48px 14px 64px; }
-    p{ font-size:14px; }
-    .section{ padding:30px 18px; }
+    z-index:2;
   }
 </style>
 </head>
 
 <body>
 
-<!-- ВИДЕО-ФОН -->
 <div class="bg">
-  <video autoplay muted loop playsinline preload="auto">
+  <video autoplay muted loop playsinline>
     <source src="Fonstudio.mp4" type="video/mp4">
   </video>
 </div>
 
-<!-- HERO -->
 <main class="wrap">
   <div>
     <h1>Studio 2051</h1>
     <p>Official Video</p>
 
-    <button class="btn" id="openVideo" type="button">
-      <span class="tri"></span>
-      Смотреть
+    <button class="btn" id="openVideo">
+      <span class="tri"></span> Смотреть
     </button>
+
+    <div class="scrollHint" id="scrollHint">
+      <div class="chev"></div>
+    </div>
   </div>
 </main>
 
-<!-- БЛОКИ (тексты целиком) -->
 <section class="content">
   <div class="container">
     <div class="panel">
-
-      <div class="section">
-        <div class="text-wrap">
-          <h2>О проекте</h2>
-          <p>
-            <strong>Studio 2051</strong> — это рабочая площадка проекта
-            <strong>«Алгоритм Пробуждение»</strong>, созданная как пространство
-            для сотрудничества художников, музыкантов, программистов и всех
-            творческих, критически мыслящих людей.
-            <br><br>
-            Студия объединяет тех, кто создаёт свои работы осознанно —
-            <strong>ради лучшего мира без войн, насилия и страха</strong>.
-          </p>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="text-wrap">
-          <h2>Сотрудничество</h2>
-          <p>
-            Studio 2051 открыта к совместной работе с художниками, музыкантами,
-            программистами, разработчиками и независимыми авторами из разных областей.
-            Мы рассматриваем сотрудничество как совместное создание проектов —
-            от идеи и замысла до реализации и развития готового результата.
-          </p>
-
-          <ul class="clean">
-            <li>Книги, литературные и философские проекты</li>
-            <li>Видеоклипы, визуальные истории и мультимедийные форматы</li>
-            <li>Музыкальные и аудиовизуальные проекты</li>
-            <li>Компьютерные игры, интерактивные системы и приложения</li>
-            <li>Экспериментальные цифровые и гибридные медиа</li>
-          </ul>
-
-          <p>
-            В приоритете — проекты, создаваемые
-            <strong>ради смысла и развития</strong>,
-            а не ради формального следования трендам.
-          </p>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="text-wrap">
-          <h2>Для заказчиков</h2>
-          <p>
-            Studio 2051 выполняет заказные проекты в области визуального, мультимедийного
-            и рекламного производства. Мы работаем с брендами и независимыми заказчиками,
-            которым важны смысл, атмосфера и целостность результата.
-          </p>
-
-          <ul class="pricing">
-            <li>
-              <span class="name">Рекламные и имиджевые видеоролики</span>
-              <span class="price">от 15 € / 10 сек</span>
-            </li>
-            <li>
-              <span class="name">Постановочные видеоклипы и авторские видеоработы</span>
-              <span class="price">от 25 € / 10 сек</span>
-            </li>
-            <li>
-              <span class="name">Визуальные презентации и концептуальные ролики</span>
-              <span class="price">цена договорная</span>
-            </li>
-            <li>
-              <span class="name">Визуальные материалы и видео-сопровождение для книг и аудиокниг</span>
-              <span class="price">цена договорная</span>
-            </li>
-            <li>
-              <span class="name">Мультимедийные и интерактивные проекты</span>
-              <span class="price">цена договорная</span>
-            </li>
-            <li>
-              <span class="name">Разработка визуальной и концептуальной части для цифровых продуктов и идей</span>
-              <span class="price">цена договорная</span>
-            </li>
-          </ul>
-
-          <p>
-            Каждый проект рассматривается индивидуально. Формат, объём и условия работы
-            определяются в процессе обсуждения задачи. Возможны различные формы оплаты.
-          </p>
-        </div>
-      </div>
-
+      <div class="section"><div class="text-wrap"><h2>О проекте</h2><p>Studio 2051 — творческая площадка проекта «Алгоритм Пробуждение».</p></div></div>
+      <div class="section"><div class="text-wrap"><h2>Сотрудничество</h2><p>Мы открыты к совместным проектам.</p></div></div>
+      <div class="section"><div class="text-wrap"><h2>Для заказчиков</h2><ul class="pricing"><li>Видео — от 15 € / 10 сек</li></ul></div></div>
       <div class="footer">Studio 2051 · production layer</div>
-
     </div>
   </div>
 </section>
 
-<!-- МОДАЛКА (как у тебя) -->
-<div class="modal" id="modal" aria-hidden="true">
-  <div class="box" id="modalBox" role="dialog" aria-modal="true" aria-label="Видео">
-    <div class="fs" id="fsBtn" aria-label="Fullscreen">⛶</div>
-    <div class="close" id="closeModal" aria-label="Закрыть">✕</div>
-
-    <div class="ratio">
-      <div id="ytPlayer"></div>
-
-      <div class="loader" id="loader">
-        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        <div style="font-weight:800">Загрузка видео…</div>
-      </div>
-
-      <div class="fade" id="fadeLayer"></div>
-    </div>
+<div class="modal" id="modal">
+  <div class="box">
+    <button class="close" id="closeModal">✕</button>
+    <div id="ytPlayer"></div>
   </div>
 </div>
 
 <script>
-  // ===== НАСТРОЙКИ (как у тебя) =====
-  const videoId = "0DjW4vLSlnU"; // YouTube ID
-  const ORIGIN = location.origin;
-
-  const modal = document.getElementById("modal");
-  const box = document.getElementById("modalBox");
+  const videoId = "0DjW4vLSlnU";
   const openBtn = document.getElementById("openVideo");
+  const modal = document.getElementById("modal");
   const closeBtn = document.getElementById("closeModal");
-  const fsBtn = document.getElementById("fsBtn");
+  const scrollHint = document.getElementById("scrollHint");
+  const content = document.querySelector(".content");
 
-  let ytReady = false;
-  let player = null;
-  let playerReady = false;
-  let apiLoading = false;
-  let pendingOpen = false;
+  let player;
 
-  // Грузим API заранее
-  loadYouTubeAPI();
-
-  function loadYouTubeAPI(){
-    if (ytReady || apiLoading) return;
-    apiLoading = true;
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
+  function onYouTubeIframeAPIReady(){
+    player = new YT.Player("ytPlayer",{ videoId });
   }
+  const tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
 
-  window.onYouTubeIframeAPIReady = function(){
-    ytReady = true;
-    apiLoading = false;
-    if (pendingOpen) ensurePlayerAndPlay();
-  };
-
-  function createPlayer(){
-    if (!ytReady || player) return;
-    playerReady = false;
-
-    player = new YT.Player("ytPlayer", {
-      videoId,
-      playerVars: {
-        autoplay: 0,
-        rel: 0,
-        modestbranding: 1,
-        iv_load_policy: 3,
-        playsinline: 1,
-        fs: 1,
-        origin: ORIGIN
-      },
-      events: {
-        onReady: (e) => {
-          playerReady = true;
-          if (modal.classList.contains("open")) {
-            try { e.target.loadVideoById(videoId); } catch(_) {}
-          }
-          box.classList.remove("loading");
-        },
-        onStateChange: (e) => {
-          if (e.data === YT.PlayerState.ENDED) fadeAndClose();
-        },
-        onError: () => {
-          box.classList.remove("loading");
-        }
-      }
-    });
-  }
-
-  function ensurePlayerAndPlay(){
-    box.classList.add("loading");
-
-    if (!ytReady) {
-      pendingOpen = true;
-      loadYouTubeAPI();
-      return;
-    }
-
-    pendingOpen = false;
-
-    if (!player) createPlayer();
-
-    if (player && playerReady) {
-      try { player.loadVideoById(videoId); } catch(_) {}
-      box.classList.remove("loading");
-    }
-  }
-
-  function openModal(){
+  openBtn.onclick = () => {
     modal.classList.add("open");
-    modal.setAttribute("aria-hidden","false");
-    document.body.style.overflow = "hidden";
-    box.classList.remove("fading");
-    ensurePlayerAndPlay();
-  }
-
-  function fadeAndClose(){
-    if (!modal.classList.contains("open")) return;
-    box.classList.add("fading");
-    setTimeout(() => closeModal(true), 430);
-  }
-
-  function closeModal(){
-    try{
-      if (player && typeof player.stopVideo === "function") player.stopVideo();
-    }catch(_){}
-
+    player.loadVideoById(videoId);
+    document.body.style.overflow="hidden";
+  };
+  closeBtn.onclick = () => {
     modal.classList.remove("open");
-    modal.setAttribute("aria-hidden","true");
-    document.body.style.overflow = "";
-    box.classList.remove("fading");
-    box.classList.remove("loading");
-
-    if (document.fullscreenElement) {
-      try { document.exitFullscreen(); } catch(_) {}
-    }
-  }
-
-  function toggleFullscreen(){
-    const el = document.getElementById("modalBox");
-    if (!document.fullscreenElement) {
-      if (el.requestFullscreen) el.requestFullscreen();
-    } else {
-      if (document.exitFullscreen) document.exitFullscreen();
-    }
-  }
-
-  openBtn.addEventListener("click", openModal);
-  closeBtn.addEventListener("click", closeModal);
-  fsBtn.addEventListener("click", toggleFullscreen);
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
-  });
+    player.stopVideo();
+    document.body.style.overflow="";
+  };
+  scrollHint.onclick = () => content.scrollIntoView({behavior:"smooth"});
 </script>
 
 </body>
 </html>
-
