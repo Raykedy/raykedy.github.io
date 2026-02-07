@@ -11,22 +11,24 @@
 html,body{margin:0;min-height:100%}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  background:#0b0d12;
   color:#fff;
   overflow-x:hidden;
+  background:transparent; /* важно для видеофона */
 }
 
 /* ===== ВИДЕО-ФОН ===== */
 .bg{
   position:fixed;
   inset:0;
-  z-index:-3;
+  z-index:0;            /* было отрицательное — из-за этого видео могло "исчезать" */
   overflow:hidden;
+  background:#0b0d12;   /* фолбэк если видео не загрузится */
 }
 .bg video{
   width:100%;
   height:100%;
   object-fit:cover;
+  display:block;
 }
 .bg::after{
   content:"";
@@ -35,6 +37,12 @@ body{
   background:
     radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,.15), rgba(0,0,0,.75)),
     linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
+}
+
+/* ===== СЛОИ КОНТЕНТА НАД ФОНОМ ===== */
+.hero, .content{
+  position:relative;
+  z-index:1;
 }
 
 /* ===== HERO ===== */
@@ -90,8 +98,13 @@ body{
   border-top:1px solid rgba(255,255,255,.08);
 }
 .section:first-child{border-top:0}
-.section.center{text-align:center}
-.section.center .text-wrap{max-width:760px;margin:0 auto}
+
+/* ===== ЦЕНТРОВКА ВСЕГО ТЕКСТА ===== */
+.section.center{ text-align:center; }
+.section.center .text-wrap{
+  max-width:760px;
+  margin:0 auto;
+}
 .section h2{
   margin:0 0 16px;
   font-size:18px;
@@ -104,62 +117,69 @@ body{
   font-size:15px;
 }
 
-/* списки */
+/* ===== ПРАЙС: ТОЖЕ ПО ЦЕНТРУ ===== */
 .pricing{
-  display:inline-block;
-  text-align:left;
-  width:min(760px,100%);
-  margin:18px auto 10px;
+  list-style:none;
   padding:0;
+  margin:18px auto 10px;
+  max-width:760px;
 }
 .pricing li{
-  list-style:none;
-  display:flex;
-  gap:14px;
-  justify-content:space-between;
-  align-items:flex-start;
-  padding:10px 0;
+  padding:12px 0;
   border-top:1px solid rgba(255,255,255,.08);
+  text-align:center;
 }
 .pricing li:first-child{border-top:0}
-.pricing .name{flex:1}
-.pricing .price{white-space:nowrap}
+.pricing .name{
+  display:block;
+  color:rgba(255,255,255,.82);
+  font-size:14.5px;
+  line-height:1.35;
+}
+.pricing .price{
+  display:block;
+  margin-top:6px;
+  color:rgba(255,255,255,.70);
+  font-size:14px;
+}
 
+/* футер */
 .footer{
   text-align:center;
   padding:20px;
   color:rgba(255,255,255,.55);
   font-size:12px;
 }
-
-@media (max-width:560px){
-  .pricing li{flex-direction:column;gap:6px}
-  .pricing .price{white-space:normal}
-}
 </style>
 </head>
 
 <body>
 
+<!-- ФОН -->
 <div class="bg">
   <video autoplay muted loop playsinline preload="auto">
     <source src="Fonstudio.mp4" type="video/mp4">
   </video>
 </div>
 
+<!-- HERO -->
 <section class="hero">
   <div>
     <h1>Studio 2051</h1>
     <p>Official Video</p>
-    <button class="btn"><span class="tri"></span>Смотреть</button>
+    <button class="btn">
+      <span class="tri"></span>
+      Смотреть
+    </button>
   </div>
 </section>
 
+<!-- КОНТЕНТ -->
 <section class="content">
   <div class="container">
     <div class="panel">
 
-      <!-- О проекте -->
+      <!-- 1. О проекте -->
       <div class="section center">
         <div class="text-wrap">
           <h2>О проекте</h2>
@@ -175,7 +195,7 @@ body{
         </div>
       </div>
 
-      <!-- Сотрудничество -->
+      <!-- 2. Сотрудничество -->
       <div class="section center">
         <div class="text-wrap">
           <h2>Сотрудничество</h2>
@@ -188,7 +208,7 @@ body{
         </div>
       </div>
 
-      <!-- Для заказчиков -->
+      <!-- 3. Для заказчиков -->
       <div class="section center">
         <div class="text-wrap">
           <h2>Для заказчиков</h2>
@@ -200,13 +220,34 @@ body{
           </p>
 
           <ul class="pricing">
-            <li><span class="name">Рекламные и имиджевые видеоролики</span><span class="price">от 15 € / 10 сек</span></li>
-            <li><span class="name">Постановочные видеоклипы и авторские видеоработы</span><span class="price">от 25 € / 10 сек</span></li>
-            <li><span class="name">Визуальные презентации и концептуальные ролики</span><span class="price">цена договорная</span></li>
-            <li><span class="name">Книги, литературные и философские проекты</span><span class="price">цена договорная</span></li>
-            <li><span class="name">Визуальные материалы и видео-сопровождение для книг и аудиокниг</span><span class="price">цена договорная</span></li>
-            <li><span class="name">Мультимедийные и интерактивные проекты</span><span class="price">цена договорная</span></li>
-            <li><span class="name">Разработка визуальной и концептуальной части для цифровых продуктов и идей</span><span class="price">цена договорная</span></li>
+            <li>
+              <span class="name">Рекламные и имиджевые видеоролики</span>
+              <span class="price">от 15 € / 10 сек</span>
+            </li>
+            <li>
+              <span class="name">Постановочные видеоклипы и авторские видеоработы</span>
+              <span class="price">от 25 € / 10 сек</span>
+            </li>
+            <li>
+              <span class="name">Визуальные презентации и концептуальные ролики</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Книги, литературные и философские проекты</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Визуальные материалы и видео-сопровождение для книг и аудиокниг</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Мультимедийные и интерактивные проекты</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Разработка визуальной и концептуальной части для цифровых продуктов и идей</span>
+              <span class="price">цена договорная</span>
+            </li>
           </ul>
 
           <p>
@@ -216,7 +257,9 @@ body{
         </div>
       </div>
 
-      <div class="footer">Studio 2051 · production layer</div>
+      <div class="footer">
+        Studio 2051 · production layer
+      </div>
 
     </div>
   </div>
@@ -224,3 +267,4 @@ body{
 
 </body>
 </html>
+
