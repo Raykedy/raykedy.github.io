@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -74,13 +75,8 @@ body{
 }
 
 /* ===== КОНТЕНТ ===== */
-.content{
-  padding:40px 16px 80px;
-}
-.container{
-  width:min(1080px,100%);
-  margin:0 auto;
-}
+.content{ padding:40px 16px 80px; }
+.container{ width:min(1080px,100%); margin:0 auto; }
 .panel{
   background:rgba(0,0,0,.42);
   backdrop-filter:blur(10px);
@@ -94,14 +90,8 @@ body{
   border-top:1px solid rgba(255,255,255,.08);
 }
 .section:first-child{border-top:0}
-
-/* ===== ЦЕНТРОВКА БЛОКОВ ===== */
-.section.center{ text-align:center; }
-.section.center .text-wrap{
-  max-width:760px;
-  margin:0 auto;
-}
-
+.section.center{text-align:center}
+.section.center .text-wrap{max-width:760px;margin:0 auto}
 .section h2{
   margin:0 0 16px;
   font-size:18px;
@@ -115,25 +105,15 @@ body{
 }
 
 /* списки */
-ul.clean{
-  list-style:none;
-  padding:0;
-  margin:20px 0;
-}
-ul.clean li{
-  margin:6px 0;
-  color:rgba(255,255,255,.75);
-}
-
-/* прайс-лист (внутри центрированного блока, но строки читаются слева) */
 .pricing{
   display:inline-block;
   text-align:left;
-  width:min(760px, 100%);
+  width:min(760px,100%);
   margin:18px auto 10px;
   padding:0;
 }
 .pricing li{
+  list-style:none;
   display:flex;
   gap:14px;
   justify-content:space-between;
@@ -141,20 +121,10 @@ ul.clean li{
   padding:10px 0;
   border-top:1px solid rgba(255,255,255,.08);
 }
-.pricing li:first-child{ border-top:0; }
-.pricing .name{
-  color:rgba(255,255,255,.82);
-  font-size:14.5px;
-  line-height:1.35;
-  flex:1;
-}
-.pricing .price{
-  color:rgba(255,255,255,.70);
-  font-size:14px;
-  white-space:nowrap;
-}
+.pricing li:first-child{border-top:0}
+.pricing .name{flex:1}
+.pricing .price{white-space:nowrap}
 
-/* футер */
 .footer{
   text-align:center;
   padding:20px;
@@ -162,43 +132,34 @@ ul.clean li{
   font-size:12px;
 }
 
-@media (max-width: 560px){
-  .pricing li{
-    flex-direction:column;
-    gap:6px;
-  }
-  .pricing .price{ white-space:normal; }
+@media (max-width:560px){
+  .pricing li{flex-direction:column;gap:6px}
+  .pricing .price{white-space:normal}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ФОН -->
 <div class="bg">
   <video autoplay muted loop playsinline preload="auto">
     <source src="Fonstudio.mp4" type="video/mp4">
   </video>
 </div>
 
-<!-- HERO -->
 <section class="hero">
   <div>
     <h1>Studio 2051</h1>
     <p>Official Video</p>
-    <button class="btn">
-      <span class="tri"></span>
-      Смотреть
-    </button>
+    <button class="btn"><span class="tri"></span>Смотреть</button>
   </div>
 </section>
 
-<!-- КОНТЕНТ -->
 <section class="content">
   <div class="container">
     <div class="panel">
 
-      <!-- 1. О проекте -->
+      <!-- О проекте -->
       <div class="section center">
         <div class="text-wrap">
           <h2>О проекте</h2>
@@ -214,7 +175,7 @@ ul.clean li{
         </div>
       </div>
 
-      <!-- 2. Сотрудничество -->
+      <!-- Сотрудничество -->
       <div class="section center">
         <div class="text-wrap">
           <h2>Сотрудничество</h2>
@@ -224,70 +185,38 @@ ul.clean li{
             Мы рассматриваем сотрудничество как совместное создание проектов —
             от идеи и замысла до реализации и развития готового результата.
           </p>
-
-          <ul class="clean">
-            <li>Книги, литературные и философские проекты</li>
-            <li>Видеоклипы, визуальные истории и мультимедийные форматы</li>
-            <li>Музыкальные и аудиовизуальные проекты</li>
-            <li>Компьютерные игры, интерактивные системы и приложения</li>
-            <li>Экспериментальные цифровые и гибридные медиа</li>
-          </ul>
-
-          <p>
-            В приоритете — проекты, создаваемые
-            <strong>ради смысла и развития</strong>,
-            а не ради формального следования трендам.
-          </p>
         </div>
       </div>
 
-      <!-- 3. Для заказчиков -->
+      <!-- Для заказчиков -->
       <div class="section center">
         <div class="text-wrap">
           <h2>Для заказчиков</h2>
           <p>
-            Studio 2051 выполняет заказные проекты в области визуального, мультимедийного
-            и рекламного производства. Мы работаем с брендами и независимыми заказчиками,
-            которым важны смысл, атмосфера и целостность результата.
+            Studio 2051 выполняет заказные проекты в области визуального,
+            мультимедийного и рекламного производства. Мы работаем с брендами
+            и независимыми заказчиками, которым важны смысл, атмосфера и
+            целостность результата.
           </p>
 
           <ul class="pricing">
-            <li>
-              <span class="name">Рекламные и имиджевые видеоролики</span>
-              <span class="price">от 15 € / 10 сек</span>
-            </li>
-            <li>
-              <span class="name">Постановочные видеоклипы и авторские видеоработы</span>
-              <span class="price">от 25 € / 10 сек</span>
-            </li>
-            <li>
-              <span class="name">Визуальные презентации и концептуальные ролики</span>
-              <span class="price">цена договорная</span>
-            </li>
-            <li>
-              <span class="name">Визуальные материалы и видео-сопровождение для книг и аудиокниг</span>
-              <span class="price">цена договорная</span>
-            </li>
-            <li>
-              <span class="name">Мультимедийные и интерактивные проекты</span>
-              <span class="price">цена договорная</span>
-            </li>
-            <li>
-              <span class="name">Разработка визуальной и концептуальной части для цифровых продуктов и идей</span>
-              <span class="price">цена договорная</span>
-            </li>
+            <li><span class="name">Рекламные и имиджевые видеоролики</span><span class="price">от 15 € / 10 сек</span></li>
+            <li><span class="name">Постановочные видеоклипы и авторские видеоработы</span><span class="price">от 25 € / 10 сек</span></li>
+            <li><span class="name">Визуальные презентации и концептуальные ролики</span><span class="price">цена договорная</span></li>
+            <li><span class="name">Книги, литературные и философские проекты</span><span class="price">цена договорная</span></li>
+            <li><span class="name">Визуальные материалы и видео-сопровождение для книг и аудиокниг</span><span class="price">цена договорная</span></li>
+            <li><span class="name">Мультимедийные и интерактивные проекты</span><span class="price">цена договорная</span></li>
+            <li><span class="name">Разработка визуальной и концептуальной части для цифровых продуктов и идей</span><span class="price">цена договорная</span></li>
           </ul>
 
           <p>
             Каждый проект рассматривается индивидуально. Формат, объём и условия работы
-            определяются в процессе обсуждения задачи.
+            определяются в процессе обсуждения задачи. Возможны различные формы оплаты.
           </p>
         </div>
       </div>
 
-      <div class="footer">
-        Studio 2051 · production layer
-      </div>
+      <div class="footer">Studio 2051 · production layer</div>
 
     </div>
   </div>
