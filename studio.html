@@ -7,217 +7,376 @@
 <title>Studio 2051</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%}
-body{
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  background:#0b0d12;
-  color:#fff;
-  overflow-x:hidden;
-}
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; min-height:100%; }
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color:#fff;
+    background:#0b0d12;
+    overflow-x:hidden;
+  }
 
-/* ===== ВИДЕО-ФОН ===== */
-.bg{
-  position:fixed;
-  inset:0;
-  z-index:-3;
-  overflow:hidden;
-}
-.bg video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-.bg::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,.15), rgba(0,0,0,.75)),
-    linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55));
-}
+  /* ===== ВИДЕО-ФОН ===== */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    overflow:hidden;
+    background:
+      radial-gradient(900px 600px at 20% 15%, rgba(52,211,153,.12), transparent 60%),
+      radial-gradient(900px 600px at 85% 40%, rgba(99,102,241,.10), transparent 60%),
+      linear-gradient(180deg, #070912, #0b1022);
+  }
+  .bg video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    filter:saturate(1.05) contrast(1.05);
+  }
+  .bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.10), rgba(0,0,0,0.70)),
+      linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.55));
+    pointer-events:none;
+  }
 
-/* ===== HERO ===== */
-.hero{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:60px 16px 40px;
-}
-.hero h1{
-  margin:0 0 10px;
-  font-size:clamp(28px,4vw,44px);
-  font-weight:900;
-}
-.hero p{
-  margin:0 0 28px;
-  color:rgba(255,255,255,.78);
-}
-.btn{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:14px 22px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.28);
-  background:rgba(0,0,0,.45);
-  color:#fff;
-  font-weight:800;
-  cursor:pointer;
-}
-.tri{
-  width:0;height:0;
-  border-left:12px solid #fff;
-  border-top:8px solid transparent;
-  border-bottom:8px solid transparent;
-}
+  /* ===== КОНТЕНТ ===== */
+  .wrap{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:60px 16px 80px;
+    text-align:center;
+  }
+  h1{
+    margin:0 0 10px;
+    font-size:clamp(26px,4vw,44px);
+    font-weight:900;
+    letter-spacing:.3px;
+  }
+  p{
+    margin:0 0 26px;
+    color:rgba(255,255,255,.78);
+    font-size:15px;
+    line-height:1.45;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 20px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.28);
+    background:rgba(0,0,0,.45);
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+    transition:.18s ease;
+    user-select:none;
+  }
+  .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
+  .tri{
+    width:0;height:0;
+    border-left:12px solid #fff;
+    border-top:8px solid transparent;
+    border-bottom:8px solid transparent;
+    opacity:.95;
+  }
 
-/* ===== КОНТЕНТ ===== */
-.content{
-  padding:40px 16px 80px;
-}
-.container{
-  width:min(1080px,100%);
-  margin:0 auto;
-}
-.panel{
-  background:rgba(0,0,0,.42);
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:18px;
-  box-shadow:0 30px 90px rgba(0,0,0,.55);
-  overflow:hidden;
-}
-.section{
-  padding:36px 22px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-.section:first-child{border-top:0}
+  /* ===== MODAL FULLSCREEN ===== */
+  .modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    background:rgba(0,0,0,.88);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    z-index:999;
+  }
+  .modal.open{ display:flex; }
 
-/* ===== ЦЕНТРОВКА БЛОКОВ ===== */
-.section.center{
-  text-align:center;
-}
-.section.center .text-wrap{
-  max-width:760px;
-  margin:0 auto;
-}
+  .box{
+    width:100vw;
+    height:100vh;
+    border-radius:0;
+    overflow:hidden;
+    border:0;
+    background:#000;
+    box-shadow:none;
+    position:relative;
+  }
+  .ratio{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:#000;
+  }
 
-.section h2{
-  margin:0 0 16px;
-  font-size:18px;
-  font-weight:900;
-}
-.section p{
-  margin:0;
-  color:rgba(255,255,255,.78);
-  line-height:1.65;
-  font-size:15px;
-}
+  /* контейнер для API-плеера */
+  #ytPlayer{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
 
-ul.clean{
-  list-style:none;
-  padding:0;
-  margin:20px 0;
-}
-ul.clean li{
-  margin:6px 0;
-  color:rgba(255,255,255,.75);
-}
+  /* Loader поверх, пока API/плеер грузится */
+  .loader{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    color:rgba(255,255,255,.85);
+    background:rgba(0,0,0,.35);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index:2;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  .box.loading .loader{ opacity:1; }
+  .dot{
+    width:8px;height:8px;border-radius:999px;
+    background:rgba(255,255,255,.85);
+    animation:b 1s infinite ease-in-out;
+  }
+  .dot:nth-child(2){ animation-delay:.12s; opacity:.7; }
+  .dot:nth-child(3){ animation-delay:.24s; opacity:.5; }
+  @keyframes b{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
 
-.footer{
-  text-align:center;
-  padding:20px;
-  color:rgba(255,255,255,.55);
-  font-size:12px;
-}
+  /* Fade overlay — чтобы закрывать до end screen */
+  .fade{
+    position:absolute;
+    inset:0;
+    background:#000;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 420ms ease;
+    z-index:3;
+  }
+  .box.fading .fade{ opacity:1; }
+
+  /* кнопки управления */
+  .close, .fs{
+    position:absolute;
+    top:10px;
+    width:40px;
+    height:40px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.35);
+    color:#fff;
+    cursor:pointer;
+    font-size:18px;
+    line-height:40px;
+    text-align:center;
+    user-select:none;
+    z-index:4;
+  }
+  .close{ right:10px; }
+  .fs{ right:58px; }
+  .close:hover, .fs:hover{ background:rgba(255,255,255,.10); }
+
+  @media (max-width:768px){
+    .wrap{ padding:48px 14px 64px; }
+    p{ font-size:14px; }
+  }
 </style>
 </head>
 
 <body>
 
-<!-- ФОН -->
+<!-- ВИДЕО-ФОН -->
 <div class="bg">
   <video autoplay muted loop playsinline preload="auto">
     <source src="Fonstudio.mp4" type="video/mp4">
   </video>
 </div>
 
-<!-- HERO -->
-<section class="hero">
+<!-- КОНТЕНТ -->
+<main class="wrap">
   <div>
     <h1>Studio 2051</h1>
     <p>Official Video</p>
-    <button class="btn">
+
+    <button class="btn" id="openVideo" type="button">
       <span class="tri"></span>
       Смотреть
     </button>
   </div>
-</section>
+</main>
 
-<!-- КОНТЕНТ -->
-<section class="content">
-  <div class="container">
-    <div class="panel">
+<!-- МОДАЛКА -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="box" id="modalBox" role="dialog" aria-modal="true" aria-label="Видео">
+    <div class="fs" id="fsBtn" aria-label="Fullscreen">⛶</div>
+    <div class="close" id="closeModal" aria-label="Закрыть">✕</div>
 
-      <!-- 1. О проекте -->
-      <div class="section center">
-        <div class="text-wrap">
-          <h2>О проекте</h2>
-          <p>
-            <strong>Studio 2051</strong> — это рабочая площадка проекта
-            <strong>«Алгоритм Пробуждение»</strong>, созданная как пространство
-            для сотрудничества художников, музыкантов, программистов и всех
-            творческих, критически мыслящих людей.
-            <br><br>
-            Студия объединяет тех, кто создаёт свои работы осознанно —
-            <strong>ради мира без войн, насилия и страха</strong>.
-          </p>
-        </div>
+    <div class="ratio">
+      <div id="ytPlayer"></div>
+
+      <div class="loader" id="loader">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div style="font-weight:800">Загрузка видео…</div>
       </div>
 
-      <!-- 2. Сотрудничество -->
-      <div class="section center">
-        <div class="text-wrap">
-          <h2>Сотрудничество</h2>
-          <p>
-            Studio 2051 открыта к совместной работе с художниками, музыкантами,
-            программистами, разработчиками и независимыми авторами из разных областей.
-            Мы рассматриваем сотрудничество как совместное создание проектов —
-            от идеи и замысла до реализации и развития готового результата.
-          </p>
-
-          <ul class="clean">
-            <li>Книги, литературные и философские проекты</li>
-            <li>Видеоклипы, визуальные истории и мультимедийные форматы</li>
-            <li>Музыкальные и аудиовизуальные проекты</li>
-            <li>Компьютерные игры, интерактивные системы и приложения</li>
-            <li>Экспериментальные цифровые и гибридные медиа</li>
-          </ul>
-
-          <p>
-            В приоритете — проекты, создаваемые
-            <strong>ради смысла и развития</strong>,
-            а не ради формального следования трендам.
-          </p>
-        </div>
-      </div>
-
-      <!-- 3. Для заказчиков -->
-      <div class="section">
-        <h2>Для заказчиков</h2>
-        <p>Текст блока будет добавлен позже.</p>
-      </div>
-
-      <div class="footer">
-        Studio 2051 · production layer
-      </div>
-
+      <div class="fade" id="fadeLayer"></div>
     </div>
   </div>
-</section>
+</div>
+
+<script>
+  // ===== НАСТРОЙКИ =====
+  const videoId = "0DjW4vLSlnU"; // YouTube ID
+  const ORIGIN = location.origin;
+
+  const modal = document.getElementById("modal");
+  const box = document.getElementById("modalBox");
+  const openBtn = document.getElementById("openVideo");
+  const closeBtn = document.getElementById("closeModal");
+  const fsBtn = document.getElementById("fsBtn");
+
+  let ytReady = false;
+  let player = null;
+  let playerReady = false;
+  let apiLoading = false;
+  let pendingOpen = false;
+
+  // Грузим API заранее (фикс надёжности)
+  loadYouTubeAPI();
+
+  function loadYouTubeAPI(){
+    if (ytReady || apiLoading) return;
+    apiLoading = true;
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  }
+
+  window.onYouTubeIframeAPIReady = function(){
+    ytReady = true;
+    apiLoading = false;
+    if (pendingOpen) ensurePlayerAndPlay();
+  };
+
+  function createPlayer(){
+    if (!ytReady || player) return;
+    playerReady = false;
+
+    player = new YT.Player("ytPlayer", {
+      videoId,
+      playerVars: {
+        autoplay: 0,
+        rel: 0,
+        modestbranding: 1,
+        iv_load_policy: 3,
+        playsinline: 1,
+        fs: 1,
+        origin: ORIGIN
+      },
+      events: {
+        onReady: (e) => {
+          playerReady = true;
+          if (modal.classList.contains("open")) {
+            try { e.target.loadVideoById(videoId); } catch(_) {}
+          }
+          box.classList.remove("loading");
+        },
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.ENDED) fadeAndClose();
+        },
+        onError: () => {
+          box.classList.remove("loading");
+        }
+      }
+    });
+  }
+
+  function ensurePlayerAndPlay(){
+    box.classList.add("loading");
+
+    if (!ytReady) {
+      pendingOpen = true;
+      loadYouTubeAPI();
+      return;
+    }
+
+    pendingOpen = false;
+
+    if (!player) createPlayer();
+
+    if (player && playerReady) {
+      try { player.loadVideoById(videoId); } catch(_) {}
+      box.classList.remove("loading");
+    }
+  }
+
+  function openModal(){
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+    box.classList.remove("fading");
+    ensurePlayerAndPlay();
+  }
+
+  function fadeAndClose(){
+    if (!modal.classList.contains("open")) return;
+    box.classList.add("fading");
+    setTimeout(() => closeModal(true), 430);
+  }
+
+  function closeModal(fromAutoClose=false){
+    try{
+      if (player && typeof player.stopVideo === "function") player.stopVideo();
+    }catch(_){}
+
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+    box.classList.remove("fading");
+    box.classList.remove("loading");
+
+    if (document.fullscreenElement) {
+      try { document.exitFullscreen(); } catch(_) {}
+    }
+  }
+
+  function toggleFullscreen(){
+    const el = document.getElementById("modalBox");
+    if (!document.fullscreenElement) {
+      if (el.requestFullscreen) el.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+    }
+  }
+
+  openBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", () => closeModal(false));
+  fsBtn.addEventListener("click", toggleFullscreen);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal(false);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal(false);
+  });
+</script>
 
 </body>
 </html>
