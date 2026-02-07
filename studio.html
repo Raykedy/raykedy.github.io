@@ -96,9 +96,7 @@ body{
 .section:first-child{border-top:0}
 
 /* ===== ЦЕНТРОВКА БЛОКОВ ===== */
-.section.center{
-  text-align:center;
-}
+.section.center{ text-align:center; }
 .section.center .text-wrap{
   max-width:760px;
   margin:0 auto;
@@ -116,6 +114,7 @@ body{
   font-size:15px;
 }
 
+/* списки */
 ul.clean{
   list-style:none;
   padding:0;
@@ -126,11 +125,49 @@ ul.clean li{
   color:rgba(255,255,255,.75);
 }
 
+/* прайс-лист (внутри центрированного блока, но строки читаются слева) */
+.pricing{
+  display:inline-block;
+  text-align:left;
+  width:min(760px, 100%);
+  margin:18px auto 10px;
+  padding:0;
+}
+.pricing li{
+  display:flex;
+  gap:14px;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:10px 0;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.pricing li:first-child{ border-top:0; }
+.pricing .name{
+  color:rgba(255,255,255,.82);
+  font-size:14.5px;
+  line-height:1.35;
+  flex:1;
+}
+.pricing .price{
+  color:rgba(255,255,255,.70);
+  font-size:14px;
+  white-space:nowrap;
+}
+
+/* футер */
 .footer{
   text-align:center;
   padding:20px;
   color:rgba(255,255,255,.55);
   font-size:12px;
+}
+
+@media (max-width: 560px){
+  .pricing li{
+    flex-direction:column;
+    gap:6px;
+  }
+  .pricing .price{ white-space:normal; }
 }
 </style>
 </head>
@@ -172,7 +209,7 @@ ul.clean li{
             творческих, критически мыслящих людей.
             <br><br>
             Студия объединяет тех, кто создаёт свои работы осознанно —
-            <strong>ради мира без войн, насилия и страха</strong>.
+            <strong>ради лучшего мира без войн, насилия и страха</strong>.
           </p>
         </div>
       </div>
@@ -205,9 +242,47 @@ ul.clean li{
       </div>
 
       <!-- 3. Для заказчиков -->
-      <div class="section">
-        <h2>Для заказчиков</h2>
-        <p>Текст блока будет добавлен позже.</p>
+      <div class="section center">
+        <div class="text-wrap">
+          <h2>Для заказчиков</h2>
+          <p>
+            Studio 2051 выполняет заказные проекты в области визуального, мультимедийного
+            и рекламного производства. Мы работаем с брендами и независимыми заказчиками,
+            которым важны смысл, атмосфера и целостность результата.
+          </p>
+
+          <ul class="pricing">
+            <li>
+              <span class="name">Рекламные и имиджевые видеоролики</span>
+              <span class="price">от 15 € / 10 сек</span>
+            </li>
+            <li>
+              <span class="name">Постановочные видеоклипы и авторские видеоработы</span>
+              <span class="price">от 25 € / 10 сек</span>
+            </li>
+            <li>
+              <span class="name">Визуальные презентации и концептуальные ролики</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Визуальные материалы и видео-сопровождение для книг и аудиокниг</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Мультимедийные и интерактивные проекты</span>
+              <span class="price">цена договорная</span>
+            </li>
+            <li>
+              <span class="name">Разработка визуальной и концептуальной части для цифровых продуктов и идей</span>
+              <span class="price">цена договорная</span>
+            </li>
+          </ul>
+
+          <p>
+            Каждый проект рассматривается индивидуально. Формат, объём и условия работы
+            определяются в процессе обсуждения задачи.
+          </p>
+        </div>
       </div>
 
       <div class="footer">
