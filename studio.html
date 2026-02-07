@@ -1,5 +1,4 @@
 
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -87,7 +86,7 @@
     border-bottom:8px solid transparent;
   }
 
-  /* ===== СТРЕЛКА ВНИЗ ===== */
+  /* ===== ГАЛОЧКА ВНИЗ ===== */
   .scrollHint{
     margin:18px auto 0;
     width:46px;
@@ -113,7 +112,7 @@
     50%{ transform:translateY(5px) rotate(45deg); opacity:1; }
   }
 
-  /* ===== КОНТЕНТ ===== */
+  /* ===== БЛОКИ ===== */
   .content{ position:relative; z-index:1; padding:40px 16px 80px; }
   .container{ width:min(1080px,100%); margin:0 auto; }
   .panel{
@@ -122,6 +121,7 @@
     border:1px solid rgba(255,255,255,.10);
     border-radius:18px;
     box-shadow:0 30px 90px rgba(0,0,0,.55);
+    overflow:hidden;
   }
   .section{
     padding:36px 22px;
@@ -131,55 +131,24 @@
   .section:first-child{ border-top:0; }
   .text-wrap{ max-width:760px; margin:0 auto; }
 
-  ul.clean{ list-style:none; padding:0; margin:20px 0; }
-  ul.clean li{ margin:6px 0; color:rgba(255,255,255,.75); }
-
-  .pricing{
+  ul.pricing{
     list-style:none;
     padding:0;
     margin:18px auto 10px;
     width:min(760px,100%);
     text-align:center;
   }
-  .pricing li{
-    padding:12px 0;
+  ul.pricing li{
+    padding:10px 0;
     border-top:1px solid rgba(255,255,255,.08);
   }
-  .pricing li:first-child{ border-top:0; }
+  ul.pricing li:first-child{ border-top:0; }
 
   .footer{
     text-align:center;
     padding:20px;
     color:rgba(255,255,255,.55);
     font-size:12px;
-  }
-
-  /* ===== MODAL YOUTUBE ===== */
-  .modal{
-    position:fixed;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,.88);
-    z-index:999;
-  }
-  .modal.open{ display:flex; }
-  .box{ width:100vw; height:100vh; background:#000; position:relative; }
-  #ytPlayer{ position:absolute; inset:0; width:100%; height:100%; }
-
-  .close{
-    position:absolute;
-    top:12px;
-    right:12px;
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    background:rgba(0,0,0,.5);
-    border:1px solid rgba(255,255,255,.2);
-    color:#fff;
-    cursor:pointer;
-    z-index:2;
   }
 </style>
 </head>
@@ -192,6 +161,7 @@
   </video>
 </div>
 
+<!-- HERO -->
 <main class="wrap">
   <div>
     <h1>Studio 2051</h1>
@@ -207,52 +177,80 @@
   </div>
 </main>
 
-<section class="content">
+<!-- БЛОКИ С ТЕКСТОМ -->
+<section class="content" id="content">
   <div class="container">
     <div class="panel">
-      <div class="section"><div class="text-wrap"><h2>О проекте</h2><p>Studio 2051 — творческая площадка проекта «Алгоритм Пробуждение».</p></div></div>
-      <div class="section"><div class="text-wrap"><h2>Сотрудничество</h2><p>Мы открыты к совместным проектам.</p></div></div>
-      <div class="section"><div class="text-wrap"><h2>Для заказчиков</h2><ul class="pricing"><li>Видео — от 15 € / 10 сек</li></ul></div></div>
+
+      <!-- О проекте -->
+      <div class="section">
+        <div class="text-wrap">
+          <h2>О проекте</h2>
+          <p>
+            Studio 2051 — это рабочая площадка проекта «Алгоритм Пробуждение»,
+            созданная как пространство для сотрудничества художников, музыкантов,
+            программистов и всех творческих, критически мыслящих людей.
+            <br><br>
+            Студия объединяет тех, кто создаёт свои работы осознанно —
+            ради лучшего мира без войн, насилия и страха.
+          </p>
+        </div>
+      </div>
+
+      <!-- Сотрудничество -->
+      <div class="section">
+        <div class="text-wrap">
+          <h2>Сотрудничество</h2>
+          <p>
+            Studio 2051 открыта к совместной работе с художниками, музыкантами,
+            программистами, разработчиками и независимыми авторами из разных областей.
+            Мы рассматриваем сотрудничество как совместное создание проектов —
+            от идеи и замысла до реализации и развития готового результата.
+          </p>
+        </div>
+      </div>
+
+      <!-- Для заказчиков -->
+      <div class="section">
+        <div class="text-wrap">
+          <h2>Для заказчиков</h2>
+          <p>
+            Studio 2051 выполняет заказные проекты в области визуального,
+            мультимедийного и рекламного производства. Мы работаем с брендами
+            и независимыми заказчиками, которым важны смысл, атмосфера
+            и целостность результата.
+          </p>
+
+          <ul class="pricing">
+            <li>Рекламные и имиджевые видеоролики — от 15 € / 10 сек</li>
+            <li>Постановочные видеоклипы и авторские видеоработы — от 25 € / 10 сек</li>
+            <li>Визуальные презентации и концептуальные ролики — цена договорная</li>
+            <li>Книги, литературные и философские проекты — цена договорная</li>
+            <li>Визуальные материалы и видео-сопровождение для книг и аудиокниг — цена договорная</li>
+            <li>Мультимедийные и интерактивные проекты — цена договорная</li>
+            <li>Разработка визуальной и концептуальной части для цифровых продуктов и идей — цена договорная</li>
+          </ul>
+
+          <p>
+            Каждый проект рассматривается индивидуально. Формат, объём и условия работы
+            определяются в процессе обсуждения задачи. Возможны различные формы оплаты.
+          </p>
+        </div>
+      </div>
+
       <div class="footer">Studio 2051 · production layer</div>
+
     </div>
   </div>
 </section>
 
-<div class="modal" id="modal">
-  <div class="box">
-    <button class="close" id="closeModal">✕</button>
-    <div id="ytPlayer"></div>
-  </div>
-</div>
-
 <script>
-  const videoId = "0DjW4vLSlnU";
-  const openBtn = document.getElementById("openVideo");
-  const modal = document.getElementById("modal");
-  const closeBtn = document.getElementById("closeModal");
   const scrollHint = document.getElementById("scrollHint");
-  const content = document.querySelector(".content");
+  const content = document.getElementById("content");
 
-  let player;
-
-  function onYouTubeIframeAPIReady(){
-    player = new YT.Player("ytPlayer",{ videoId });
-  }
-  const tag = document.createElement("script");
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-
-  openBtn.onclick = () => {
-    modal.classList.add("open");
-    player.loadVideoById(videoId);
-    document.body.style.overflow="hidden";
-  };
-  closeBtn.onclick = () => {
-    modal.classList.remove("open");
-    player.stopVideo();
-    document.body.style.overflow="";
-  };
-  scrollHint.onclick = () => content.scrollIntoView({behavior:"smooth"});
+  scrollHint.addEventListener("click", () => {
+    content.scrollIntoView({ behavior: "smooth" });
+  });
 </script>
 
 </body>
