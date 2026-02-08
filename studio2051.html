@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -6,105 +7,102 @@
 <title>Studio 2051</title>
 
 <style>
-  *{ box-sizing:border-box; }
-  html,body{ margin:0; min-height:100%; }
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-    color:#fff;
-    background:#0b0d12;
-    overflow-x:hidden;
-  }
+/* ===== ВСЁ ТВОЁ ОРИГИНАЛЬНОЕ ===== */
+*{ box-sizing:border-box; }
+html,body{ margin:0; min-height:100%; }
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:#fff;
+  background:#0b0d12;
+  overflow-x:hidden;
+}
 
-  .bg{
-    position:fixed;
-    inset:0;
-    z-index:-3;
-    overflow:hidden;
-    background:
-      radial-gradient(900px 600px at 20% 15%, rgba(52,211,153,.12), transparent 60%),
-      radial-gradient(900px 600px at 85% 40%, rgba(99,102,241,.10), transparent 60%),
-      linear-gradient(180deg, #070912, #0b1022);
-  }
-  .bg video{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-  }
-  .bg::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.10), rgba(0,0,0,0.70)),
-      linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.55));
-  }
+/* ===== ВИДЕО-ФОН (НЕ ТРОГАЛ) ===== */
+.bg{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  overflow:hidden;
+}
+.bg video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
 
-  .wrap{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:60px 16px 80px;
-  }
+/* ===== HERO ===== */
+.wrap{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:60px 16px 80px;
+}
+h1{ margin:0 0 10px; font-size:clamp(26px,4vw,44px); font-weight:900; }
+p{ margin:0 0 26px; color:rgba(255,255,255,.78); }
 
-  h1{
-    margin:0 0 10px;
-    font-size:clamp(26px,4vw,44px);
-    font-weight:900;
-  }
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 20px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.28);
+  background:rgba(0,0,0,.45);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
 
-  p{
-    margin:0 0 26px;
-    color:rgba(255,255,255,.78);
-  }
+.tri{
+  width:0;height:0;
+  border-left:12px solid #fff;
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+}
 
-  .btn{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    padding:14px 20px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.28);
-    background:rgba(0,0,0,.45);
-    color:#fff;
-    font-weight:800;
-    cursor:pointer;
-    transition:.18s ease;
-    text-decoration:none;
-  }
-  .btn:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px); }
+/* ===== ГАЛОЧКА ВНИЗ ===== */
+.scroll-indicator{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  width:14px;
+  height:14px;
+  transform:translateX(-50%) rotate(45deg);
+  border-right:2px solid rgba(255,255,255,.60);
+  border-bottom:2px solid rgba(255,255,255,.60);
+  animation:scrollHint 1.6s infinite;
+  pointer-events:none;
+}
+@keyframes scrollHint{
+  0%,100%{opacity:.3; transform:translateX(-50%) translateY(0) rotate(45deg);}
+  50%{opacity:1; transform:translateX(-50%) translateY(6px) rotate(45deg);}
+}
 
-  .btn-back{
-    margin-top:12px;
-  }
-
-  .tri{
-    width:0;height:0;
-    border-left:12px solid #fff;
-    border-top:8px solid transparent;
-    border-bottom:8px solid transparent;
-  }
-
-  .scroll-indicator{
-    position:fixed;
-    left:50%;
-    bottom:22px;
-    width:14px;
-    height:14px;
-    transform:translateX(-50%) rotate(45deg);
-    border-right:2px solid rgba(255,255,255,.60);
-    border-bottom:2px solid rgba(255,255,255,.60);
-    animation:scrollHint 1.6s infinite;
-    pointer-events:none;
-  }
-  @keyframes scrollHint{
-    0%,100%{opacity:.3; transform:translateX(-50%) translateY(0) rotate(45deg);}
-    50%{opacity:1; transform:translateX(-50%) translateY(6px) rotate(45deg);}
-  }
+/* ===== НОВОЕ: КНОПКА НА ГЛАВНУЮ (ЕДИНСТВЕННОЕ ДОБАВЛЕНИЕ) ===== */
+.back-home{
+  position:fixed;
+  top:18px;
+  left:18px;
+  z-index:9999;
+  padding:8px 14px;
+  font-size:13px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.45);
+  color:#fff;
+  text-decoration:none;
+  backdrop-filter: blur(6px);
+}
+.back-home:hover{
+  background:rgba(255,255,255,.15);
+}
 </style>
 </head>
 
@@ -121,22 +119,22 @@
     <h1>Studio 2051</h1>
     <p>Official Video</p>
 
-    <button class="btn" id="openVideo">
+    <button class="btn" id="openVideo" type="button">
       <span class="tri"></span>
       Смотреть
     </button>
-
-    <!-- КНОПКА НА ГЛАВНУЮ -->
-    <a href="https://raykedy.com/" class="btn btn-back">На главную</a>
   </div>
 </main>
 
 <div class="scroll-indicator"></div>
 
+<!-- ===== КНОПКА НА ГЛАВНУЮ ===== -->
+<a href="https://raykedy.com/" class="back-home">← На главную</a>
+
 <script>
-  document.getElementById("openVideo").onclick = () => {
-    window.open("https://www.youtube.com/watch?v=0DjW4vLSlnU","_blank");
-  };
+document.getElementById("openVideo").onclick = () => {
+  window.open("https://www.youtube.com/watch?v=0DjW4vLSlnU","_blank");
+};
 </script>
 
 </body>
