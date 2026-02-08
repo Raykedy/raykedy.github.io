@@ -1,51 +1,100 @@
 <!DOCTYPE html>
+
 <html lang="ru">
+
 <head>
+
 <meta charset="UTF-8" />
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>2051: Алгоритм Пробуждение — Рэй Кеди</title>
+
 <meta name="description" content="Официальная страница книги Рэй Кеди «2051: Алгоритм Пробуждение».">
+
 <meta property="og:title" content="2051: Алгоритм Пробуждение — Рэй Кеди">
+
 <meta property="og:description" content="Официальный хаб. Telegram, соцсети, покупка, Web3.">
+
 <meta property="og:type" content="website">
+
 <meta property="og:url" content="https://raykedy.com/">
 
+
+
 <style>
+
   html { min-height:100%; background:#000; }
+
   body {
+
     margin:0; min-height:100%; background:#000; color:#fff;
+
     font-family: Arial, sans-serif; overflow-y:auto;
+
   }
+
+
 
   #bgVideo{
+
     position:fixed; inset:0; width:100%; height:100%;
+
     object-fit:cover; z-index:0; pointer-events:none; background:#000;
+
   }
 
+
+
   .fixed-line-top{
+
     position:fixed; top:calc(8px + env(safe-area-inset-top)); left:50%; transform:translateX(-50%);
+
     z-index:3; color:#ffcc66; background:rgba(0,0,0,.45);
+
     padding:10px 16px; border-radius:12px; text-align:center;
+
     max-width:calc(100% - 24px); font-size:1.05rem; line-height:1.3;
+
     box-shadow:0 2px 10px rgba(0,0,0,.35);
+
   }
+
   .clickable{
+
     cursor:pointer;
+
     box-shadow:0 0 0 0 rgba(255,140,0,.7);
+
     animation:pulse 1.5s ease-in-out infinite;
+
   }
+
   @keyframes pulse{
+
     0%{ box-shadow:0 0 0 0 rgba(255,140,0,.7);}
+
     70%{ box-shadow:0 0 0 14px rgba(255,140,0,0);}
+
     100%{ box-shadow:0 0 0 0 rgba(255,140,0,0);}
+
   }
+
   .hint{
+
     position:fixed; left:50%; bottom:calc(64px + env(safe-area-inset-bottom)); transform:translateX(-50%);
+
     color:#ddd; font-size:.95rem; text-align:center; z-index:3;
+
     padding:8px 14px; background:rgba(0,0,0,.45); border-radius:8px;
+
     opacity:0; transition:opacity .25s ease;
+
   }
+
   .hint.show{ opacity:1; }
+
+
 
   .page { position:relative; z-index:1; display:flex; flex-direction:column; min-height:100vh; padding: 28vh 16px 12vh; box-sizing:border-box; }
   .hero { text-align:center; margin: 0 auto 28px; max-width: 900px; }
@@ -54,96 +103,187 @@
   .cta-wrap { width:min(440px,96%); margin:0 auto; }
   .cta-list { display:grid; grid-template-columns:1fr; gap:12px; }
   .cta{
+
     display:flex; align-items:center; justify-content:center;
+
     min-height:52px; padding:0 16px; border-radius:14px;
+
     background:rgba(5,15,20,.45); color:#e9faff; text-decoration:none; font-weight:700;
+
     border:1px solid rgba(180,240,255,.35); backdrop-filter: blur(4px);
+
     box-shadow: inset 0 0 12px rgba(120,220,255,.18), 0 6px 18px rgba(0,0,0,.35);
+
     text-shadow: 0 0 10px rgba(160,240,255,.5);
+
     transition: transform .15s ease, filter .25s ease;
+
   }
   .cta:hover{ transform:translateY(-2px); filter:brightness(1.08); }
   .cta.disabled{ pointer-events:none; opacity:.55; filter:grayscale(.3); }
 
+
+
   @media (max-width: 600px){ .page{ padding-top: 26vh; } .hero h1{ font-size:2.2rem; } .hero p { font-size:1.05rem; } }
+
   @media (max-width: 380px){ .page{ padding-top: 24vh; } .hero h1{ font-size:1.9rem; } .hero p { font-size:.98rem; } }
+
 </style>
+
 </head>
+
+
 
 <body>
 
+
+
 <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+
   <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
+
 </video>
 
+
+
 <audio id="bgMusic" preload="auto" loop>
+
   <source src="https://raw.githubusercontent.com/Raykedy/raykedy.github.io/main/motivational-adventure-cinematic-150072(2).mp3?v=3" type="audio/mpeg">
+
 </audio>
 
+
+
 <div id="topBanner" class="fixed-line-top clickable" role="button" tabindex="0" aria-label="Включить звук и видео">
+
   <div>Официальный хаб раздачи.</div>
+
   <div>Скачать книгу можно здесь.</div>
+
 </div>
 <div id="hint" class="hint"></div>
 
+
+
 <main class="page">
+
   <section class="hero">
+
     <h1>2051: Алгоритм Пробуждение</h1>
+
     <p>Добро пожаловать в мир, где технологии стирают грань между разумным и сверхразумным.</p>
+
   </section>
+
+
 
   <section class="cta-wrap" aria-label="Площадки книги">
+
     <div class="cta-list">
+
       <a class="cta" href="download.html">Скачать</a>
+
       <a class="cta" href="read.html">Читать</a>
+
+      <a class="cta" href="studio2051.html">Проект</a>
+
       <a class="cta" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Telegram</a>
+
       <a class="cta" href="https://bastyon.com/raykedy" target="_blank" rel="noopener">Bastyon</a>
+
       <a class="cta" href="https://youtube.com/@raykedy?si=zV6cvntxmkS8sNbw" target="_blank" rel="noopener">YouTube</a>
+
       <a class="cta" href="https://www.tiktok.com/@raykedy1" target="_blank" rel="noopener">TikTok</a>
+
       <a class="cta" href="https://t.me/Ray_Kedy" target="_blank" rel="noopener">Отправить сообщение</a>
+
     </div>
+
   </section>
 
+
+
   <div style="height:12vh;"></div>
+
 </main>
 
+
+
 <script>
+
 (function () {
+
   const video  = document.getElementById('bgVideo');
+
   const audio  = document.getElementById('bgMusic');
+
   const banner = document.getElementById('topBanner');
+
   const hint   = document.getElementById('hint');
 
+
+
   function showHint(msg){
+
     hint.textContent = msg;
+
     hint.classList.add('show');
+
     clearTimeout(showHint._t);
+
     showHint._t = setTimeout(()=>hint.classList.remove('show'), 2400);
+
   }
+
+
 
   audio.volume = 0;
 
+
+
   function fadeIn(target=1, step=0.03, interval=100){
+
     let v = audio.volume;
+
     const id = setInterval(()=>{
+
       v = Math.min(target, v + step);
+
       audio.volume = v;
+
       if (v >= target) clearInterval(id);
+
     }, interval);
+
   }
+
+
 
   async function startMedia(){
+
     try { video.muted = true; await video.play(); } catch(e) {}
+
     try { await audio.play(); fadeIn(); } catch(e) {}
+
     if (!audio.paused) banner.classList.remove('clickable');
+
   }
 
+
+
   startMedia().then(()=> {
+
     if (audio.paused) {
+
       banner.classList.add('clickable');
+
       showHint('Тапни по баннеру, чтобы включить звук');
+
     }
+
   });
+
+
 
   const userKick = () => { startMedia(); };
   banner.addEventListener('click', userKick);
@@ -152,10 +292,18 @@
   document.addEventListener('touchend',   userKick, { once:true });
   document.addEventListener('keydown',    userKick, { once:true });
 
+
+
   video.addEventListener('canplay', ()=> { if (video.paused) { video.play().catch(()=>{}); } });
+
 })();
+
 </script>
 
+
+
 </body>
+
 </html>
+
 
