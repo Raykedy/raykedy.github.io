@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>2051: Алгоритм Пробуждение — Сериал</title>
+  <meta name="description" content="Официальная страница проекта экранизации «2051: Алгоритм Пробуждение»." />
+  <meta property="og:title" content="2051: Алгоритм Пробуждение — Сериал" />
+  <meta property="og:description" content="Проект полномасштабного сериала по роману «2051: Алгоритм Пробуждение»." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0ea15a" />
+  <link rel="icon" href="/favicon.ico" />
+
+  <style>
+    :root{
+      --fg:#e7f2ec; --muted:#9fb4aa;
+      --accent:#0ea15a; --accent-2:#ff6a00;
+      --border:rgba(255,255,255,.15);
+      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:18px; --max:800px;
+      --btn:#1e6eff; --btn-hover:#1656c7;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{-webkit-text-size-adjust:100%}
+    body{
+      margin:0; color:var(--fg);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      line-height:1.55; letter-spacing:.2px;
+      display:flex; justify-content:center; align-items:flex-start;
+      min-height:100vh; padding:24px;
+    }
+    #bgVideo{
+      position:fixed; inset:0; width:100%; height:100%;
+      object-fit:cover; z-index:0; pointer-events:none; background:#000;
+    }
+    .wrap{width:100%; max-width:var(--max); text-align:center; position:relative; z-index:1;}
+    .card{
+      background:rgba(17,23,28,.45);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:
+        0 0 20px rgba(14,161,90,.25),
+        0 0 40px rgba(255,106,0,.15),
+        var(--shadow);
+      backdrop-filter:blur(14px);
+      padding:clamp(24px,3.5vw,40px);
+      margin-top:clamp(-70px, -30px, -20px);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:inherit;
+      padding:2px;
+      background:linear-gradient(120deg, rgba(14,161,90,.4), rgba(255,106,0,.35));
+      -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor; mask-composite:exclude;
+      pointer-events:none;
+    }
+    .hero h2{
+      font-size:clamp(26px,5vw,40px); line-height:1.15; margin:6px 0 10px; font-weight:800;
+      background:linear-gradient(90deg,var(--accent-2),var(--accent));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero p{margin:0 auto; color:var(--muted); font-size:clamp(15px,4vw,18px); max-width:600px;}
+    .buttons{display:grid; gap:14px; margin-top:12px; width:100%;}
+    @media(min-width:700px){.buttons{grid-template-columns:1fr 1fr;}}
+    .btn{
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; background:var(--btn); color:#fff; font-weight:800;
+      padding:16px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 6px 16px rgba(0,0,0,.25); transition:.12s; width:100%;
+    }
+    .btn:hover{transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.32); background:var(--btn-hover);}
+    .faq h3{margin:.8rem 0 .6rem; font-size:18px}
+    .faq p{margin:.2rem 0 .9rem}
+    footer{margin-top:22px; color:var(--muted); font-size:12px; text-align:center}
+    .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--border);
+      background:rgba(14,161,90,.07); color:#cfe9dc; font-size:12px; font-weight:700;}
+    .divider{height:1px; background:var(--border); margin:16px 0}
+    @media (max-width:480px){
+      body{padding:16px;}
+      .card{padding:20px 16px;}
+      .hero h2{font-size:28px;}
+      .hero p{font-size:15px;}
+      .faq h3{font-size:16px;}
+      .faq p{font-size:14px;}
+    }
+  </style>
+</head>
+
+<body>
+
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <source src="https://raykedy.github.io/fastvideobackground_faststart.webm" type="video/webm">
+    <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
+  </video>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="hero">
+        <span class="chip">Проект экранизации</span>
+        <h2>Сериал «2051: Алгоритм Пробуждение»</h2>
+        <p>Работа над экранизацией уже началась. Следите за созданием независимого полномасштабного сериала по роману «2051: Алгоритм Пробуждение».</p>
+        <div class="buttons">
+          <a class="btn" href="https://t.me/raykedy2051" target="_blank" rel="noopener">Смотреть тизеры</a>
+          <a class="btn" href="support.html">Поддержать проект</a>
+        </div>
+      </div>
+
+      <div class="faq">
+        <h3>О проекте</h3>
+        <p>В настоящее время ведётся разработка концепции сериала, сценария, визуального стиля и подготовка к будущему производству. В официальном Telegram-канале публикуются тизеры, концепт-арты, новости проекта и материалы о ходе создания сериала.</p>
+
+        <div class="divider"></div>
+
+        <h3>Что вас ждёт?</h3>
+        <p>Полномасштабный сериал по роману «2051: Алгоритм Пробуждение» — масштабная научно-фантастическая история о будущем человечества, искусственном интеллекте, свободе выбора и борьбе с системой. Проект объединяет кинематографичную атмосферу, философскую глубину и современные технологии визуального повествования.</p>
+      </div>
+    </section>
+
+    <footer>© <span id="y"></span> Ray Kedy • Официальный хаб</footer>
+  </main>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
