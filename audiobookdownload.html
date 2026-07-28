@@ -160,9 +160,60 @@
       filter: invert(1);
     }
 
+    .gratitude {
+      margin-top: 26px;
+      padding: 22px 20px;
+      border: 1px solid rgba(14, 161, 90, 0.35);
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 161, 90, 0.12),
+          rgba(255, 106, 0, 0.08)
+        );
+      box-shadow:
+        0 0 18px rgba(14, 161, 90, 0.12),
+        inset 0 0 20px rgba(255, 255, 255, 0.02);
+    }
+
+    .gratitude h3 {
+      margin: 0 0 10px;
+      font-size: clamp(19px, 4vw, 24px);
+      line-height: 1.25;
+      font-weight: 800;
+      background: linear-gradient(
+        90deg,
+        var(--accent-2),
+        var(--accent)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .gratitude p {
+      max-width: 660px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
     @media (max-width: 500px) {
+      body {
+        padding: 16px;
+      }
+
+      .card {
+        padding: 22px 16px;
+      }
+
       .stores {
         grid-template-columns: 1fr;
+      }
+
+      .gratitude {
+        padding: 19px 15px;
       }
     }
   </style>
@@ -183,11 +234,12 @@
 
   <main class="wrap">
     <section class="card">
+
       <div class="hero">
-        <h2>Купить и слушать аудиокнигу</h2>
+        <h2>Слушать аудиокнигу</h2>
 
         <p>
-          Выберите удобную платформу для покупки и прослушивания
+          Выберите удобную платформу для прослушивания
           аудиокниги «2051: Алгоритм Пробуждение».
         </p>
       </div>
@@ -257,6 +309,18 @@
         </a>
 
       </div>
+
+      <div class="gratitude">
+        <h3>Благодарим вас за поддержку</h3>
+
+        <p>
+          Ваша помощь помогает проекту развиваться.
+          Все полученные средства направляются на создание
+          полнометражного видеосериала по роману
+          «2051: Алгоритм Пробуждение».
+        </p>
+      </div>
+
     </section>
   </main>
 </body>
