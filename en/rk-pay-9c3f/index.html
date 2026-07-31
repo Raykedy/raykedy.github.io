@@ -1,0 +1,50 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Payment</title>
+<body style="font-family:system-ui;padding:24px;background:#0b0f13;color:#e8eef4">
+  <h1>Payment</h1>
+  <p style="opacity:.8">This page is hidden and available only through a direct link.</p>
+
+  <h2>1) Choose a Format</h2>
+  <label><input type="radio" name="fmt" value="pdf" checked> PDF (file)</label><br>
+  <label><input type="radio" name="fmt" value="fixed"> Fixed eBook</label><br>
+  <label><input type="radio" name="fmt" value="reflow"> Reflow eBook</label>
+
+  <h2 style="margin-top:18px">2) Automatic Payment</h2>
+  <p>Amount: <b>5.99 USD</b> in <b>USDT (TRC20)</b>. The NOWPayments checkout page will open.</p>
+  <p>
+    <a id="pay" href="#" target="_blank" rel="noopener"
+       style="display:inline-block;padding:12px 16px;border:1px solid #2b3948;border-radius:10px;color:#e8eef4;text-decoration:none">
+      Proceed to Payment
+    </a>
+  </p>
+
+  <div style="opacity:.85;margin:14px 0">
+    <b>Payment-page statuses:</b>
+    <ul>
+      <li><b>Waiting</b> — the invoice has been created and is awaiting payment.</li>
+      <li><b>Confirming</b> — the transfer has been received and is awaiting network confirmation.</li>
+      <li><b>Finished/Paid</b> — payment has been accepted.</li>
+      <li><b>Expired</b> — the invoice has expired; create a new one.</li>
+    </ul>
+  </div>
+
+  <script>
+    // сейчас все три ведут на один и тот же инвойс; позже подменим отдельно
+    const PDF_LINK   = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+    const FIXED_LINK = "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+    const REFLOW_LINK= "https://nowpayments.io/payment/?iid=5001517878&paymentId=4431373785";
+
+    const payBtn = document.getElementById('pay');
+    const radios = document.querySelectorAll('input[name="fmt"]');
+
+    function setLink() {
+      const fmt = [...radios].find(r => r.checked).value;
+      payBtn.href = fmt === 'pdf' ? PDF_LINK : (fmt === 'fixed' ? FIXED_LINK : REFLOW_LINK);
+    }
+    radios.forEach(r => r.addEventListener('change', setLink));
+    setLink();
+  </script>
+</body>

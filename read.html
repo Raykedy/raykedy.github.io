@@ -97,10 +97,20 @@
       .faq h3{font-size:16px;}
       .faq p{font-size:14px;}
     }
-  </style>
+  
+  /* Language switch */
+  .lang-switch{position:fixed;top:14px;right:14px;z-index:10000;display:flex;align-items:center;gap:4px;padding:5px;background:rgba(5,10,16,.78);border:1px solid rgba(185,238,255,.35);border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.35);backdrop-filter:blur(8px);font:700 12px/1 Arial,system-ui,sans-serif;letter-spacing:.06em}
+  .lang-switch a,.lang-switch span{display:block;padding:7px 9px;border-radius:999px;text-decoration:none;color:#d9eef8}
+  .lang-switch .active{background:rgba(112,214,255,.22);color:#fff}
+  .lang-switch-home{top:58px}
+</style>
+
+  <link rel="alternate" hreflang="ru" href="https://raykedy.com/read.html">
+  <link rel="alternate" hreflang="en" href="https://raykedy.com/en/read.html">
 </head>
 
 <body>
+<nav class="lang-switch" aria-label="Language"><span class="active">RU</span><a href="en/read.html" lang="en" hreflang="en">EN</a></nav>
 
   <!-- Видео как на главной -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">

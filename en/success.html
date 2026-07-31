@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Оплата получена • 2051</title>
+  <title>Payment Received • 2051</title>
 
   <style>
     html { min-height:100%; background:#000; }
@@ -60,7 +60,7 @@
   <link rel="alternate" hreflang="en" href="https://raykedy.com/en/success.html">
 </head>
 <body>
-<nav class="lang-switch" aria-label="Language"><span class="active">RU</span><a href="en/success.html" lang="en" hreflang="en">EN</a></nav>
+<nav class="lang-switch" aria-label="Language"><a href="../success.html" lang="ru" hreflang="ru">RU</a><span class="active">EN</span></nav>
 
   <!-- Видео как на криптопей -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
@@ -68,16 +68,16 @@
   </video>
 
   <main class="page">
-    <section class="card" aria-label="Оплата подтверждена">
-      <h1>Спасибо! Платёж подтверждён</h1>
+    <section class="card" aria-label="Payment confirmed">
+      <h1>Thank You! Payment Confirmed</h1>
       <p class="muted">
-        Мы отправили ссылку на e-mail. Если письма нет пару минут — нажмите кнопку ниже.<br>
-        Ссылка активна 1 час. Если письма нет во «Входящих», проверьте папки «Промоакции» и «Спам».
+        We sent the download link to your email address. If it does not arrive within a few minutes, use the button below.<br>
+        The link remains active for one hour. Please also check your Promotions and Spam folders.
       </p>
 
-      <button id="resendBtn" class="btn">📧 Переслать письмо</button>
+      <button id="resendBtn" class="btn">📧 Resend Email</button>
 
-      <div id="msg" class="ok" hidden>Готово: ссылка отправлена на почту.</div>
+      <div id="msg" class="ok" hidden>Done: the link has been sent by email.</div>
       <div id="err" class="err"></div>
     </section>
   </main>
@@ -97,7 +97,7 @@
     resendBtn.addEventListener('click', async ()=>{
       resendBtn.disabled = true; clearErr(); show(msg,'');
       try{
-        const email = prompt('Укажите e-mail, на который отправить ссылку:');
+        const email = prompt('Enter the email address for the download link:');
         if (!email){ resendBtn.disabled = false; return; }
 
         const r = await fetch('/api/resend', {
@@ -105,10 +105,10 @@
           body: JSON.stringify({ orderId, email })
         });
         const d = await r.json();
-        if (d.ok) show(msg, 'Готово: ссылка отправлена на почту.');
-        else showErr('Не удалось отправить письмо. Попробуйте ещё раз.');
+        if (d.ok) show(msg, 'Done: the link has been sent by email.');
+        else showErr('We could not send the email. Please try again.');
       }catch(e){
-        showErr('Ошибка сети. Попробуйте ещё раз.');
+        showErr('Network error. Please try again.');
       }finally{
         resendBtn.disabled = false;
       }

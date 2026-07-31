@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Оплата криптовалютой • 2051</title>
+  <title>Crypto Payment • 2051</title>
 
   <style>
     html { min-height:100%; background:#000; }
@@ -100,7 +100,7 @@
   <link rel="alternate" hreflang="en" href="https://raykedy.com/en/cryptopay.html">
 </head>
 <body>
-<nav class="lang-switch" aria-label="Language"><span class="active">RU</span><a href="en/cryptopay.html" lang="en" hreflang="en">EN</a></nav>
+<nav class="lang-switch" aria-label="Language"><a href="../cryptopay.html" lang="ru" hreflang="ru">RU</a><span class="active">EN</span></nav>
 
   <!-- Видео как на главной -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
@@ -108,20 +108,20 @@
   </video>
 
   <main class="page">
-    <section class="card" aria-label="Оплата криптовалютой">
-      <h1>Оплата криптовалютой</h1>
+    <section class="card" aria-label="Crypto payment">
+      <h1>Crypto Payment</h1>
       <p class="sub">
-        Укажите e-mail. После оплаты ссылка на книгу придёт на почту и будет активна 1 час.<br/>
-        Если письма нет во «Входящих», проверьте папку «Спам».
+        Enter your email address. After payment, a download link will be sent to you and remain active for one hour.<br/>
+        If it does not appear in your inbox, please check your spam folder.
       </p>
 
-      <label for="email">Ваш e-mail, на который придёт книга</label>
+      <label for="email">Email address for book delivery</label>
       <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
 
       <!-- Выбор монеты убран -->
-      <button class="btn" id="payBtn">Перейти к оплате</button>
+      <button class="btn" id="payBtn">Proceed to Payment</button>
 
-      <div class="note">Оплата и безопасность на стороне NOWPayments.</div>
+      <div class="note">Payments and transaction security are handled by NOWPayments.</div>
       <div class="err" id="errBox"></div>
     </section>
   </main>
@@ -134,7 +134,7 @@
       err.classList.remove('show'); err.textContent = '';
 
       const email = $("#email").value.trim();
-      if (!email) { err.textContent = "Укажи e-mail"; err.classList.add('show'); return; }
+      if (!email) { err.textContent = "Please enter your email address"; err.classList.add('show'); return; }
 
       const amountUsd = 3.99;
       const asset = ""; // «Любая» монета
@@ -150,12 +150,12 @@
         if (d.ok && d.url) {
           location.href = d.url;
         } else {
-          err.textContent = "Не удалось создать счёт. Попробуй ещё раз.";
+          err.textContent = "We could not create the invoice. Please try again.";
           err.classList.add('show');
           console.log("create-invoice fail:", d);
         }
       } catch (e) {
-        err.textContent = "Сеть недоступна. Попробуй ещё раз.";
+        err.textContent = "The network is unavailable. Please try again.";
         err.classList.add('show');
         console.error(e);
       }

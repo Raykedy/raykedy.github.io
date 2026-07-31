@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no" />
-  <title>2051: Алгоритм Пробуждение — Поддержать проект</title>
-  <meta name="description" content="Поддержать проект «2051: Алгоритм Пробуждение». Средства собираются на создание киносериала, перевод книги на другие языки и продвижение проекта." />
-  <meta property="og:title" content="2051: Алгоритм Пробуждение — Поддержать проект" />
-  <meta property="og:description" content="Средства собираются на создание киносериала, перевод книги на другие языки и продвижение проекта." />
+  <title>2051: The Awakening Algorithm — Read</title>
+  <meta name="description" content="Official reading page for “2051: The Awakening Algorithm.” Follow new chapters and updates on Telegram or Bastyon." />
+  <meta property="og:title" content="2051: The Awakening Algorithm — Read" />
+  <meta property="og:description" content="Follow chapters and project updates on Telegram or Bastyon." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0ea15a" />
   <link rel="icon" href="/favicon.ico" />
@@ -31,13 +31,16 @@
       min-height:100vh; padding:24px;
     }
 
+    /* === ВИДЕО-ФОН === */
     #bgVideo{
       position:fixed; inset:0; width:100%; height:100%;
       object-fit:cover; z-index:0; pointer-events:none; background:#000;
     }
 
+    /* Контент поверх видео */
     .wrap{width:100%; max-width:var(--max); text-align:center; position:relative; z-index:1;}
 
+    /* Полупрозрачная карточка со свечением */
     .card{
       background:rgba(17,23,28,.45);
       border:1px solid var(--border);
@@ -69,7 +72,8 @@
       -webkit-background-clip:text; background-clip:text; color:transparent;
     }
     .hero p{margin:0 auto; color:var(--muted); font-size:clamp(15px,4vw,18px); max-width:600px;}
-    .buttons{display:grid; gap:14px; margin-top:18px; width:100%;}
+    .buttons{display:grid; gap:14px; margin-top:12px; width:100%;}
+    @media(min-width:700px){.buttons{grid-template-columns:1fr 1fr;}}
     .btn{
       display:flex; align-items:center; justify-content:center;
       text-decoration:none; background:var(--btn); color:#fff; font-weight:800;
@@ -77,12 +81,9 @@
       box-shadow:0 6px 16px rgba(0,0,0,.25); transition:.12s; width:100%;
     }
     .btn:hover{transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.32); background:var(--btn-hover);}
-    .btn.disabled{background:rgba(120,130,140,.45); color:rgba(255,255,255,.72); cursor:not-allowed; pointer-events:none;}
-    .audio-demo{margin:18px auto 6px; padding:16px; border:1px solid var(--border); border-radius:14px; background:rgba(0,0,0,.18);}
-    .audio-demo h3{margin:.1rem 0 .4rem; font-size:18px;}
-    .audio-demo p{margin:.2rem auto .8rem; color:var(--muted); font-size:14px; max-width:560px;}
     .faq h3{margin:.8rem 0 .6rem; font-size:18px}
     .faq p{margin:.2rem 0 .9rem}
+    aside{text-align:center;}
     .note{margin-top:18px; font-size:13px; color:#a7b8b0; border-top:1px dashed var(--border); padding-top:14px;}
     footer{margin-top:22px; color:var(--muted); font-size:12px; text-align:center}
     .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; border:1px solid var(--border);
@@ -104,57 +105,53 @@
   .lang-switch-home{top:58px}
 </style>
 
-  <link rel="alternate" hreflang="ru" href="https://raykedy.com/support.html">
-  <link rel="alternate" hreflang="en" href="https://raykedy.com/en/support.html">
+  <link rel="alternate" hreflang="ru" href="https://raykedy.com/read.html">
+  <link rel="alternate" hreflang="en" href="https://raykedy.com/en/read.html">
 </head>
 
 <body>
-<nav class="lang-switch" aria-label="Language"><span class="active">RU</span><a href="en/support.html" lang="en" hreflang="en">EN</a></nav>
+<nav class="lang-switch" aria-label="Language"><a href="../read.html" lang="ru" hreflang="ru">RU</a><span class="active">EN</span></nav>
 
+  <!-- Видео как на главной -->
   <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+    <!-- Для Android/Chrome -->
     <source src="https://raykedy.github.io/fastvideobackground_faststart.webm" type="video/webm">
+    <!-- Для Safari/iOS -->
     <source src="https://raykedy.github.io/fastvideobackground_faststart.mp4" type="video/mp4">
   </video>
 
   <main class="wrap">
     <section class="card">
       <div class="hero">
-        <span class="chip">Официальная страница проекта</span>
-        <h2>Поддержать проект</h2>
-        <p>Средства собираются на создание киносериала по роману «2051: Алгоритм Пробуждение», перевод книги на другие языки и продвижение проекта по всему миру. Каждая ваша поддержка помогает приблизить реализацию этой цели.</p>
-
+        <span class="chip">Official Reading</span>
+        <h2>Read the Book Online</h2>
+        <p>Choose a platform to follow new chapters, revisions, and project updates.</p>
         <div class="buttons">
-          <a class="btn" href="https://nowpayments.io/donation/raykedy2051" target="_blank" rel="noopener">❤️ Поддержать проект</a>
+          <a class="btn" href="https://t.me/readme2051" target="_blank" rel="noopener">Follow on Telegram</a>
+          <a class="btn" href="https://bastyon.com/raykedy?ref=PTnZ6KD5EfeFP9A1GqZjH9F6c6Mqyb9KFK" target="_blank" rel="noopener">Follow on Bastyon</a>
         </div>
       </div>
 
-      <div class="audio-demo">
-        <h3>На что пойдут средства?</h3>
-        <p>• Создание киносериала по книге.</p>
-        <p>• Перевод книги на иностранные языки.</p>
-        <p>• Продвижение проекта, аудиокниги и фильма.</p>
-      </div>
-
       <div class="faq">
-        <h3>Как поддержать?</h3>
-        <p><strong>1.</strong> Нажмите кнопку «Поддержать проект».</p>
-        <p><strong>2.</strong> Выберите удобный способ оплаты через сервис NowPayments.</p>
-        <p><strong>3.</strong> После успешного перевода средства поступят на развитие проекта.</p>
+        <h3>How Does It Work?</h3>
+        <p><strong>1.</strong> Select your preferred platform.</p>
+        <p><strong>2.</strong> Open the Telegram or Bastyon channel.</p>
+        <p><strong>3.</strong> Access chapters and project updates.</p>
 
         <div class="divider"></div>
 
-        <h3>Спасибо!</h3>
-        <p>Спасибо каждому, кто помогает «2051: Алгоритм Пробуждение». Благодаря вашей поддержке книга получает шанс стать международным проектом и будущим киносериалом.</p>
+        <h3>What Will You Find?</h3>
+        <p>Completed chapters, final-version revisions, visual materials, and behind-the-scenes notes from the project.</p>
       </div>
 
-      <aside>
-        <h3 style="margin:.2rem 0 .6rem;">Важно</h3>
-        <p>Все пожертвования являются добровольными и направляются исключительно на развитие проекта.</p>
-        <p class="note">Платежи обрабатываются через защищённую систему NowPayments.</p>
+      <aside class="muted">
+        <h3 style="margin:.2rem 0 .6rem;">Please Note</h3>
+        <p>Some content may appear with a delay due to platform moderation.</p>
+        <p class="note">By selecting a button, you will be redirected to a third-party service and agree to its terms.</p>
       </aside>
     </section>
 
-    <footer>© <span id="y"></span> Ray Kedy • Официальный хаб</footer>
+    <footer>© <span id="y"></span> Ray Kedy • Official Hub</footer>
   </main>
 
   <script>

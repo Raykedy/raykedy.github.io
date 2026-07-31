@@ -1,0 +1,6 @@
+READY-TO-UPLOAD BILINGUAL SITE
+
+1. Upload the CONTENTS of this folder to the root of the GitHub repository.
+2. Keep the folder structure unchanged.
+3. The Russian site remains at / and the English version is at /en/.
+4. Do not delete existing large media files from the repository if GitHub asks about conflicts.
