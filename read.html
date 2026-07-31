@@ -103,6 +103,43 @@
   .lang-switch a,.lang-switch span{display:block;padding:7px 9px;border-radius:999px;text-decoration:none;color:#d9eef8}
   .lang-switch .active{background:rgba(112,214,255,.22);color:#fff}
   .lang-switch-home{top:58px}
+
+  /* Mobile vertical language switch */
+  @media (max-width: 620px) {
+    .lang-switch {
+      top: calc(8px + env(safe-area-inset-top));
+      right: max(3px, env(safe-area-inset-right));
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1px;
+      padding: 3px;
+      border-radius: 12px;
+      font-size: 10px;
+    }
+
+    .lang-switch a,
+    .lang-switch span {
+      min-width: 27px;
+      padding: 6px 4px;
+      text-align: center;
+      border-radius: 8px;
+    }
+
+    .lang-switch-home {
+      top: calc(8px + env(safe-area-inset-top));
+    }
+
+    /* On the home page, reserve a slim lane for the vertical switch. */
+    .fixed-line-top {
+      left: 8px;
+      right: calc(43px + env(safe-area-inset-right));
+      transform: none;
+      max-width: none;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+  }
+
 </style>
 
   <link rel="alternate" hreflang="ru" href="https://raykedy.com/read.html">

@@ -1,6 +1,5 @@
-READY-TO-UPLOAD BILINGUAL SITE
+MOBILE VERTICAL LANGUAGE SWITCH — ALL PAGES
 
-1. Upload the CONTENTS of this folder to the root of the GitHub repository.
-2. Keep the folder structure unchanged.
-3. The Russian site remains at / and the English version is at /en/.
-4. Do not delete existing large media files from the repository if GitHub asks about conflicts.
+The archive contains only updated HTML files.
+Upload all root HTML files and the entire en folder to the root of the GitHub repository.
+Desktop layout is unchanged. On phones, RU/EN is vertical.
