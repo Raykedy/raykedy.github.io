@@ -115,6 +115,40 @@
   .lang-switch a,.lang-switch span{display:block;padding:7px 9px;border-radius:999px;text-decoration:none;color:#d9eef8}
   .lang-switch .active{background:rgba(112,214,255,.22);color:#fff}
   .lang-switch-home{top:58px}
+
+  @media (max-width: 600px){
+    /* On phones, reserve a narrow rail to the right of the top banner
+       and place the language selector vertically inside it. */
+    .fixed-line-top{
+      left:12px;
+      right:52px;
+      transform:none;
+      max-width:none;
+      padding:8px 10px;
+      font-size:.88rem;
+      line-height:1.25;
+    }
+
+    .lang-switch-home{
+      top:calc(8px + env(safe-area-inset-top));
+      right:6px;
+      flex-direction:column;
+      align-items:stretch;
+      gap:2px;
+      padding:3px;
+      border-radius:12px;
+      font-size:10px;
+      letter-spacing:.04em;
+    }
+
+    .lang-switch-home a,
+    .lang-switch-home span{
+      min-width:27px;
+      padding:6px 4px;
+      border-radius:8px;
+      text-align:center;
+    }
+  }
 </style>
 
   <link rel="alternate" hreflang="ru" href="https://raykedy.com/index.html">
