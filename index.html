@@ -3,6 +3,27 @@
 
 <head>
 <meta charset="UTF-8" />
+<script>
+(function () {
+  try {
+    const languageKey = 'raykedyLanguage';
+    const savedLanguage = localStorage.getItem(languageKey);
+    const browserLanguage =
+      (navigator.languages && navigator.languages[0]) ||
+      navigator.language ||
+      '';
+
+    const shouldOpenEnglish =
+      savedLanguage === 'en' ||
+      (!savedLanguage && /^en(?:-|$)/i.test(browserLanguage));
+
+    if (shouldOpenEnglish) {
+      window.location.replace('/en/');
+    }
+  } catch (error) {}
+})();
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>2051: Алгоритм Пробуждение — Рэй Кеди</title>
 <meta name="description" content="Официальная страница книги Рэй Кеди «2051: Алгоритм Пробуждение».">
@@ -219,6 +240,27 @@
 })();
 </script>
 
+
+<script>
+(function () {
+  const languageKey = 'raykedyLanguage';
+  const pageLanguage = document.documentElement.lang === 'en' ? 'en' : 'ru';
+
+  try {
+    if (!localStorage.getItem(languageKey)) {
+      localStorage.setItem(languageKey, pageLanguage);
+    }
+  } catch (error) {}
+
+  document.querySelectorAll('.lang-switch a[lang]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      try {
+        localStorage.setItem(languageKey, link.getAttribute('lang'));
+      } catch (error) {}
+    });
+  });
+})();
+</script>
 </body>
 </html>
 
